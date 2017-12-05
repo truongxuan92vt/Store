@@ -39,7 +39,6 @@ class LoginController extends Controller
     public function __construct()
     {
 //        $this->middleware('guest')->except('auth.logout');
-//        $this->middleware('auth', ['except' => ['auth.logout', 'auth.login','auth.login.form']]);
     }
     public function showLoginForm(){
         Auth::logout();
@@ -49,9 +48,15 @@ class LoginController extends Controller
     {
         $username = $request->get('username');
         $password = $request->get('password');
+        $remember = $request->get('remember');
+        if($remember){
+            $auth = Auth::attempt(['username' => $username, 'password' => $password],1);
+        }
+        else{
+            $auth = Auth::attempt(['username' => $username, 'password' => $password]);
+        }
 //        $user = Auth::loginUsingId(1);
-        if (Auth::attempt(['username' => $username, 'password' => $password])) {
-            // Authentication passed...
+        if ($auth) {
             return redirect()->intended($this->redirectTo);
         }
         return redirect()->route($this->redirectToLogin);

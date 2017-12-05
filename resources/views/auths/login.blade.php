@@ -15,7 +15,7 @@
                         <input id="password" name="password" type="password" class="input" data-type="password">
                     </div>
                     <div class="group">
-                        <input id="check" type="checkbox" class="check" checked>
+                        <input id="check" name="remember" type="checkbox" class="check">
                         <label for="check"><span class="icon"></span> Keep me Signed in</label>
                     </div>
                     <div class="group">

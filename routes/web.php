@@ -42,6 +42,9 @@ $router->group([
     $router->get('admin',function(){
         return view('home');
     });
+    $router->get('',function(){
+        return redirect('admin');
+    });
 });
 
 
