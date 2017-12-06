@@ -116,5 +116,7 @@ return [
         ],
 
     ],
-
+    //Set return Array or Object(stdClass)
+//    'fetch' => PDO::FETCH_CLASS,
+//    'fetch' => PDO::FETCH_ASSOC
 ];

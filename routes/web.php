@@ -35,16 +35,20 @@ $router->group([
     ]);
 });
 $router->group([
-    'prefix'     => '',
+    'prefix'     => 'admin',
     'middleware' => ['auth'],
 //    'namespace'  => 'Auth',
 ], function ($router) {
-    $router->get('admin',function(){
+    $router->get('',function(){
         return view('home');
     });
-    $router->get('',function(){
-        return redirect('admin');
-    });
+    $router->get('function',[
+        'as'=>'admin.function',
+        'uses'=>'FunctionController@getMenu'
+    ]);
+});
+$router->get('',function(){
+    return redirect('admin');
 });
 
 
