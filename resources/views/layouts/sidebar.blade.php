@@ -34,7 +34,7 @@
                 @if(count($item['subs'])>0)
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-share"></i> <span>{{$item['function_name']}}</span>
+                            <i class="{{$item['icon']}}"></i> <span>{{$item['function_name']}}</span>
                             <span class="pull-right-container">
                               <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -44,7 +44,7 @@
                                 @if(count($subL1['subs'])>0)
                                 <li class="treeview">
                                     <a href="#">
-                                        <i class="fa fa-share"></i> <span>{{$subL1['function_name']}}</span>
+                                        <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['function_name']}}</span>
                                         <span class="pull-right-container">
                                           <i class="fa fa-angle-left pull-right"></i>
                                         </span>
@@ -54,31 +54,31 @@
                                             @if(count($subL2['subs'])>0)
                                                 <li class="treeview">
                                                     <a href="#">
-                                                        <i class="fa fa-share"></i> <span>{{$subL2['function_name']}}</span>
+                                                        <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['function_name']}}</span>
                                                         <span class="pull-right-container">
                                                           <i class="fa fa-angle-left pull-right"></i>
                                                         </span>
                                                     </a>
                                                     <ul class="treeview-menu">
                                                         @foreach($subL2['subs'] as $subL3)
-                                                            <li><a href="{{$subL3['url']}}"><i class="fa fa-circle-o"></i> {{$subL3['function_name']}}</a></li>
+                                                            <li><a href="{{$subL3['url']}}"><i class="{{$subL3['icon']}}"></i> {{$subL3['function_name']}}</a></li>
                                                         @endforeach
                                                     </ul>
                                                 </li>
                                             @else
-                                                <li><a href="{{$subL2['url']}}"><i class="fa fa-circle-o"></i> {{$subL2['function_name']}}</a></li>
+                                                <li><a href="{{$subL2['url']}}"><i class="{{$subL2['icon']}}"></i> {{$subL2['function_name']}}</a></li>
                                             @endif
                                         @endforeach
                                     </ul>
                                 </li>
                                 @else
-                                    <li><a href="{{$subL1['url']}}"><i class="fa fa-circle-o"></i> {{$subL1['function_name']}}</a></li>
+                                    <li><a href="{{$subL1['url']}}"><i class="{{$subL1['icon']}}"></i> {{$subL1['function_name']}}</a></li>
                                 @endif
                             @endforeach
                         </ul>
                     </li>
                 @else
-                    <li><a href="{{$item['url']}}"><i class="fa fa-circle-o"></i> {{$item['function_name']}}</a></li>
+                    <li><a href="{{$item['url']}}"><i class="{{$item['icon']}}"></i> {{$item['function_name']}}</a></li>
                 @endif
             @endforeach
             <li class="header">LABELS</li>
