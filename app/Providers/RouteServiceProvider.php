@@ -17,6 +17,8 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'App\Http\Controllers';
 
     protected $namespaceAdmin = 'App\Http\Controllers\Admin';
+    protected $namespaceWeb = 'App\Http\Controllers\Web';
+    protected $namespaceAPI = 'App\Http\Controllers\API';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -55,7 +57,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
+             ->namespace($this->namespaceWeb)
              ->group(base_path('routes/web.php'));
     }
 
@@ -69,8 +71,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('auth.api')
-             ->namespace($this->namespace)
+             ->middleware('api')
+             ->namespace($this->namespaceAPI)
              ->group(base_path('routes/api.php'));
     }
 

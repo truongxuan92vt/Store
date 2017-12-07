@@ -53,7 +53,7 @@ class FunctionController extends Controller {
     }
 
     function getFunctionList(){
-        $res = DB::table('functions')->get();
+        $res = $this->getMenu();
         return view('admins.functions.index',['data'=>$res]);
     }
 }

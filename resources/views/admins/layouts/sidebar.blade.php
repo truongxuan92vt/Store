@@ -61,24 +61,40 @@
                                                     </a>
                                                     <ul class="treeview-menu">
                                                         @foreach($subL2['subs'] as $subL3)
-                                                            <li><a href="{{$subL3['url']}}"><i class="{{$subL3['icon']}}"></i> {{$subL3['function_name']}}</a></li>
+                                                            <li>
+                                                                <a href="{{$subL3['url']}}">
+                                                                    <i class="{{$subL3['icon']}}"></i> <span>{{$subL3['function_name']}}</span>
+                                                                </a>
+                                                            </li>
                                                         @endforeach
                                                     </ul>
                                                 </li>
                                             @else
-                                                <li><a href="{{$subL2['url']}}"><i class="{{$subL2['icon']}}"></i> {{$subL2['function_name']}}</a></li>
+                                                <li>
+                                                    <a href="{{$subL2['url']}}">
+                                                        <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['function_name']}}</span>
+                                                    </a>
+                                                </li>
                                             @endif
                                         @endforeach
                                     </ul>
                                 </li>
                                 @else
-                                    <li><a href="{{$subL1['url']}}"><i class="{{$subL1['icon']}}"></i> {{$subL1['function_name']}}</a></li>
+                                    <li>
+                                        <a href="{{$subL1['url']}}">
+                                            <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['function_name']}}</span>
+                                        </a>
+                                    </li>
                                 @endif
                             @endforeach
                         </ul>
                     </li>
                 @else
-                    <li><a href="{{$item['url']}}"><i class="{{$item['icon']}}"></i> {{$item['function_name']}}</a></li>
+                    <li>
+                        <a href="{{$item['url']}}">
+                            <i class="{{$item['icon']}}"></i> <span>{{$item['function_name']}}</span>
+                        </a>
+                    </li>
                 @endif
             @endforeach
             <li class="header">LABELS</li>
