@@ -13,7 +13,7 @@ class FunctionController extends Controller {
         $functions = DB::table('functions')->get();
         $functions = json_decode(json_encode($functions),true);
         $menu = $this->ordered_menu($functions);
-        return view($menu,['data'=>$menu]);
+        return $menu;
     }
 
     public function ordered_menu($array, $parent_id = 0){
