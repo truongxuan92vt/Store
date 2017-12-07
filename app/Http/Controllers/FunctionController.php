@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FunctionController extends Controller {
@@ -10,7 +11,12 @@ class FunctionController extends Controller {
     }
 
     public function getMenu(){
-        $functions = DB::table('functions')->get();
+        $user = Auth::user();
+        $functions = DB::table('functions')->select('functions.*')
+            ->leftJoin('function_roles','function_roles.function_id','functions.id')
+            ->leftJoin('user_roles','user_roles.id','function_roles.role_id')
+            ->where('user_roles.user_id',$user->id)
+            ->get();
         $functions = json_decode(json_encode($functions),true);
         $menu = $this->ordered_menu($functions);
         return $menu;
