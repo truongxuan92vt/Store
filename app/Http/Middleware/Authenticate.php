@@ -39,7 +39,7 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if (empty(Auth::user())) {
-            return redirect()->route('auth.login.form');
+            return redirect()->route('admin.auth.login.form');
         }
         return $next($request);
     }

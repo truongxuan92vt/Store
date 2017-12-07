@@ -28,8 +28,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
-    protected $redirectToLogin = 'auth.login.form';
+    protected $redirectTo = 'admin.home';
+    protected $redirectToLogin = 'admin.auth.login.form';
 
     /**
      * Create a new controller instance.
@@ -38,11 +38,12 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+//        $this->middleware('auth.admin', ['except' => ['auth.*']]);
 //        $this->middleware('guest')->except('auth.logout');
     }
     public function showLoginForm(){
         Auth::logout();
-        return view('auths.login');
+        return view('admins.auths.login');
     }
     public function login(Request $request)
     {
@@ -57,7 +58,7 @@ class LoginController extends Controller
         }
 //        $user = Auth::loginUsingId(1);
         if ($auth) {
-            return redirect()->intended($this->redirectTo);
+            return redirect()->route($this->redirectTo);
         }
         return redirect()->route($this->redirectToLogin);
     }

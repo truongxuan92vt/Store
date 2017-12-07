@@ -11,46 +11,9 @@
 |
 */
 
-
-$router->group([
-    'prefix'     => 'auth',
-//    'middleware' => ['auth'],
-    'namespace'  => 'Auth',
-], function ($router) {
-    $router->get('login',[
-        'as' => 'auth.login.form',
-        'uses' => 'LoginController@showLoginForm'
-    ]);
-    $router->post('login',[
-        'as' => 'auth.login',
-        'uses' => 'LoginController@login'
-    ]);
-    $router->get('logout',[
-        'as' => 'auth.logout',
-        'uses' => 'LoginController@logout'
-    ]);
-    $router->post('register',[
-        'as' => 'auth.register',
-        'uses' => 'RegisterController@create'
-    ]);
-});
-$router->group([
-    'prefix'     => 'admin',
-    'middleware' => ['auth'],
-//    'namespace'  => 'Auth',
-], function ($router) {
-    $router->get('',function(){
-        return view('home');
-    });
-    $router->get('function',[
-        'as'=>'admin.function',
-        'uses'=>'FunctionController@getMenu'
-    ]);
-});
 $router->get('',function(){
     return redirect('admin');
 });
-
 
 
 
