@@ -37,3 +37,13 @@ $router->group([
     ]);
 });
 
+$router->group([
+    'prefix'     => 'user',
+    'middleware' => ['auth.admin'],
+],function($router){
+    $router->get('',[
+        'as'    =>'admin.user.index',
+        'uses'  =>'UserController@index'
+    ]);
+});
+

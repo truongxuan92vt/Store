@@ -57,8 +57,9 @@
                 <small>@yield('action')</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
+                <li><a href="/"><i class="fa fa-dashboard"></i> @yield('parent')</a></li>
+                <li class="active">@yield('parent2')</li>
+                <li class="active">@yield('parent3')</li>
             </ol>
         </section>
 
