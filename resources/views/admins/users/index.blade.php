@@ -6,13 +6,17 @@
 @section('parent2', 'Admin Management')
 @section('parent3', 'User')
 @section('content')
+    <div>
+        <button id='btnCreate' type="button" class="btn btn-success btn-sm" onclick="openPopup()">Create</button>
+        <button type="button" class="btn btn-primary btn-sm">Search</button>
+    </div>
     <table class="table" xmlns="">
         <thead>
             <tr>
                 <th></th>
                 <th>Username</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
+                <th>First name</th>
+                <th>Last name</th>
                 <th>Email</th>
             </tr>
         </thead>
@@ -20,7 +24,7 @@
             @foreach($data as $user)
             <tr>
                 <td><input type="checkbox"></td>
-                <td><a href="" class="openPopup">{{$user->username}}</a></td>
+                <td><a href="#" onclick="openPopup()">{{$user->username}}</a></td>
                 <td></td>
                 <td></td>
                 <td>{{$user->email}}</td>
@@ -28,12 +32,14 @@
             @endforeach
         </tbody>
     </table>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
     <script>
-        $('.openPopup').on('click',function(){
-            $('.modal-body').load('user/detail',function(){
-                $('#myModal').modal('show');
-            });
+        $('.btnCreate').on('click',function(){
+
         });
+        function openPopup(){
+            $('.modal-body').load('user/detail',function(){
+                $('#myModal').modal({show:true});
+            });
+        }
     </script>
 @endsection
