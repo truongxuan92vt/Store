@@ -6,7 +6,7 @@
 @section('parent2', 'Admin Management')
 @section('parent3', 'User')
 @section('content')
-    <table class="table">
+    <table class="table" xmlns="">
         <thead>
             <tr>
                 <th></th>
@@ -20,7 +20,7 @@
             @foreach($data as $user)
             <tr>
                 <td><input type="checkbox"></td>
-                <td><a href="">{{$user->username}}</a></td>
+                <td><a href="" class="openPopup">{{$user->username}}</a></td>
                 <td></td>
                 <td></td>
                 <td>{{$user->email}}</td>
@@ -28,4 +28,12 @@
             @endforeach
         </tbody>
     </table>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script>
+        $('.openPopup').on('click',function(){
+            $('.modal-body').load('user/detail',function(){
+                $('#myModal').modal('show');
+            });
+        });
+    </script>
 @endsection
