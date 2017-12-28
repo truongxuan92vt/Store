@@ -189,7 +189,7 @@ $(function () {
     // Fixed layout
     + '<div class="form-group">'
     + '<label class="control-sidebar-subheading">'
-    + '<input type="checkbox"data-layout="fixed"class="pull-right"/> '
+    + '<input type="checkbox"data-layout="fixed"class="pull-right" checked/> '
     + 'Fixed layout'
     + '</label>'
     + '<p>Activate the fixed layout. You can\'t use fixed and boxed layouts together</p>'

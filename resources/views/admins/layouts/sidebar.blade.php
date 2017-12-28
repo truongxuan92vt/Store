@@ -28,8 +28,11 @@
         </form>
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu" data-widget="tree">
+        <ul class="sidebar-menu" >
             <li class="header">MAIN NAVIGATION</li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree" style="height: calc(100vh - 135px); overflow-y: scroll;-webkit-overflow-scrolling: touch;">
+
             @foreach($menu as $item)
                 @if(count($item['subs'])>0)
                     <li class="treeview">
