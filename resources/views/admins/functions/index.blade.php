@@ -1,11 +1,11 @@
 @extends('admins.layouts.master')
-@section('title', 'Dashboard')
+@section('title', 'Function')
 @section('controller', 'Function')
-@section('action', 'List')
+@section('action', 'Index')
+@section('parent', 'Home')
+@section('parent2', 'Admin Management')
+@section('parent3', 'Function')
 @section('content')
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <table class="table">
         <thead>
         <tr>
