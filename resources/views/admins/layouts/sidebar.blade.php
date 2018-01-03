@@ -2,7 +2,18 @@
     use \App\Http\Controllers\Admin\FunctionController;
     $function = new FunctionController();
     $menu = $function->getMenu();
+    $active = $function->getActiveMenu();
 ?>
+<script>
+    var data = {{$active}}
+    $(document).ready(function(){
+        $('.sidebar-menu li').removeClass('active');
+        for(i=0; i<data.length;i++){
+            $('#m_'+data[i]).addClass("active");
+        }
+    });
+
+</script>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -35,7 +46,7 @@
 
             @foreach($menu as $item)
                 @if(count($item['subs'])>0)
-                    <li class="treeview">
+                    <li class="treeview" id="m_{{$item['id']}}">
                         <a href="#">
                             <i class="{{$item['icon']}}"></i> <span>{{$item['function_name']}}</span>
                             <span class="pull-right-container">
@@ -45,7 +56,7 @@
                         <ul class="treeview-menu">
                             @foreach($item['subs'] as $subL1)
                                 @if(count($subL1['subs'])>0)
-                                <li class="treeview">
+                                <li class="treeview" id="m_{{$subL1['id']}}">
                                     <a href="#">
                                         <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['function_name']}}</span>
                                         <span class="pull-right-container">
@@ -55,7 +66,7 @@
                                     <ul class="treeview-menu">
                                         @foreach($subL1['subs'] as $subL2)
                                             @if(count($subL2['subs'])>0)
-                                                <li class="treeview">
+                                                <li class="treeview" id="m_{{$subL2['id']}}">
                                                     <a href="#">
                                                         <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['function_name']}}</span>
                                                         <span class="pull-right-container">
@@ -64,7 +75,7 @@
                                                     </a>
                                                     <ul class="treeview-menu">
                                                         @foreach($subL2['subs'] as $subL3)
-                                                            <li>
+                                                            <li id="m_{{$subL3['id']}}">
                                                                 <a href="{{$subL3['url']}}">
                                                                     <i class="{{$subL3['icon']}}"></i> <span>{{$subL3['function_name']}}</span>
                                                                 </a>
@@ -73,7 +84,7 @@
                                                     </ul>
                                                 </li>
                                             @else
-                                                <li>
+                                                <li id="m_{{$subL2['id']}}">
                                                     <a href="{{$subL2['url']}}">
                                                         <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['function_name']}}</span>
                                                     </a>
@@ -83,7 +94,7 @@
                                     </ul>
                                 </li>
                                 @else
-                                    <li>
+                                    <li id="m_{{$subL1['id']}}">
                                         <a href="{{$subL1['url']}}">
                                             <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['function_name']}}</span>
                                         </a>
@@ -93,7 +104,7 @@
                         </ul>
                     </li>
                 @else
-                    <li>
+                    <li id="m_{{$item['id']}}">
                         <a href="{{$item['url']}}">
                             <i class="{{$item['icon']}}"></i> <span>{{$item['function_name']}}</span>
                         </a>

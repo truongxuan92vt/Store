@@ -13,12 +13,7 @@ class FunctionController extends Controller {
 
     public function getMenu(){
         $user = Auth::user();
-        $functions = DB::table('functions')->select('functions.*')
-            ->leftJoin('function_roles','function_roles.function_id','functions.id')
-            ->leftJoin('user_roles','user_roles.id','function_roles.role_id')
-            ->where('user_roles.user_id',$user->id)
-            ->get();
-        $functions = json_decode(json_encode($functions),true);
+        $functions = $this->getMenuByUser($user->id);
         $menu = $this->ordered_menu($functions);
         return $menu;
     }
@@ -36,6 +31,31 @@ class FunctionController extends Controller {
         return $temp_array;
     }
 
+    public function getActiveMenu(){
+        $user = Auth::user();
+        $menu = $this->getMenuByUser($user->id);
+        $data = [];
+        $res = $this->getListParent($menu,3,$data);
+        return json_encode($data);
+    }
+
+    public function getListParent($array, $child_id,&$data=[]){
+        foreach ($array as $item){
+            if($item['id'] == $child_id){
+                $data[] = $item['id'];
+                $this->getListParent($array,$item['parent_id'],$data);
+            }
+        }
+    }
+    public function getMenuByUser($user_id){
+        $functions = DB::table('functions')->select('functions.*')
+            ->leftJoin('function_roles','function_roles.function_id','functions.id')
+            ->leftJoin('user_roles','user_roles.id','function_roles.role_id')
+            ->where('user_roles.user_id',$user_id)
+            ->get();
+        $functions = json_decode(json_encode($functions),true);
+        return $functions;
+    }
     function html_ordered_menu($array,$parent_id = 0)
     {
         $menu_html = '<ul>';

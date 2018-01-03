@@ -123,11 +123,12 @@
         </div>
     </body>
     <script>
-        $(function() {
-            $(".ul li").on("click", function() {
-                $(this).siblings().removeClass('active');
-                $(this).addClass("active");
-            });
+
+        $(document).ready(function(){
+            // $('.sidebar-menu li').removeClass('active');
+            // $('#m_2').addClass("active");
+            // $('#m_3').addClass("active");
+
         });
     </script>
 </html>
