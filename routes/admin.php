@@ -49,5 +49,9 @@ $router->group([
         'as'     =>  'admin.user.detail',
         'uses'   =>  'UserController@detail'
     ]);
+    $router->post('save',[
+        'as'     =>  'admin.user.save',
+        'uses'   =>  'UserController@save'
+    ]);
 });
 

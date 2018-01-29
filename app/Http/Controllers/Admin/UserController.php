@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller {
     public function index(){
@@ -24,5 +25,28 @@ class UserController extends Controller {
             }
         }
         return view('admins.users.detail',['data'=>$data]);
+    }
+    public function save(Request $request){
+        $user_id = $request->get('id');
+        if(empty($user_id)){
+            $dataIns = [
+                'username'=>$request->get('username'),
+                'first_name'=>$request->get('first_name'),
+                'last_name'=>$request->get('last_name'),
+                'email'=>$request->get('email')
+            ];
+            DB::table('users')->insert($dataIns);
+        }
+        else{
+            $dataUpdate = [
+                'first_name'=>$request->get('first_name'),
+                'last_name'=>$request->get('last_name'),
+                'email'=>$request->get('email')
+            ];
+            DB::table('users')->where('id',$user_id)->update($dataUpdate);
+        }
+//        $res = DB::table('users')->where('username',$request->get('username'))->first();
+        $data = DB::table('users')->get();
+        return Redirect::back()->with('message','Operation Successful !');
     }
 }
