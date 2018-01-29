@@ -46,8 +46,8 @@ $router->group([
         'uses'  =>'UserController@index'
     ]);
     $router->get('detail',[
-       'as'     =>  'admin.user.detail',
-       'uses'   =>  'UserController@detail'
+        'as'     =>  'admin.user.detail',
+        'uses'   =>  'UserController@detail'
     ]);
 });
 

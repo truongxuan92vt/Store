@@ -59,7 +59,7 @@
         <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="../AdminLTE/dist/js/demo.js"></script>
-        <script src="../js/common.js"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/util.js') }}"></script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini fixed">
         <div class="wrapper">
@@ -120,6 +120,32 @@
                 </div>
             </div>
             <!-- End Modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="windowpopup" tabindex="-1" role="dialog" aria-labelledby="windowpopup_title"
+                 aria-hidden="true">
+                <div id="windowpopup_size" class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="ClosePopup();">
+                                &times;
+                            </button>
+                            <a onclick="Maximinepopup();" style="float: right; margin-right: 10px;">
+                                <input id="windowpopup_size_hidden_maximine" type="hidden" value="min" />
+                                <i class="popup_maximine glyphicon glyphicon-resize-full"></i>
+                            </a>
+                            <h4 class="modal-title" id="windowpopup_title" style="text-align: center"></h4>
+                        </div>
+                        <div class="modal-body" id="windowpopup_content">
+                            {{--<iframe id="modal-body-iframe" width="600px" height="600px">--}}
+                            {{--</iframe>--}}
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
         </div>
     </body>
     <script>

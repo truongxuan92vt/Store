@@ -14,7 +14,15 @@ class UserController extends Controller {
     public function create(Request $request){
         return true;
     }
-    public function detail(){
-        return view('admins.users.detail');
+    public function detail(Request $request){
+        $userID = $request->get('id');
+        $data = [];
+        if(!empty($userID)){
+            $user = DB::table('users')->where('id',$userID)->first();
+            if($user){
+                $data = $user;
+            }
+        }
+        return view('admins.users.detail',['data'=>$data]);
     }
 }
