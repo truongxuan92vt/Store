@@ -31,12 +31,18 @@ class FunctionController extends Controller {
         return $temp_array;
     }
 
-    public function getActiveMenu(){
+    public function getActiveMenu($routeUrl){
         $user = Auth::user();
         $menu = $this->getMenuByUser($user->id);
         $data = [];
-        $res = $this->getListParent($menu,3,$data);
-        return json_encode($data);
+        $currentFunctionId = DB::table('functions')->where('url','/'.$routeUrl)->first();
+        if($currentFunctionId){
+            $res = $this->getListParent($menu,$currentFunctionId->id,$data);
+            return json_encode($data);
+        }
+        else{
+            return json_encode([]);
+        }
     }
 
     public function getListParent($array, $child_id,&$data=[]){

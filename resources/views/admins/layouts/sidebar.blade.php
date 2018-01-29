@@ -2,7 +2,8 @@
     use \App\Http\Controllers\Admin\FunctionController;
     $function = new FunctionController();
     $menu = $function->getMenu();
-    $active = $function->getActiveMenu();
+    $url = Route::current()->uri;
+    $active = $function->getActiveMenu($url);
 ?>
 <script>
     var data = {{$active}}
@@ -12,7 +13,6 @@
             $('#m_'+data[i]).addClass("active");
         }
     });
-
 </script>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
