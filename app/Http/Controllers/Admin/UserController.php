@@ -28,7 +28,7 @@ class UserController extends Controller {
         $userID = $request->get('id');
         $data = [];
         if(!empty($userID)){
-            $user = DB::table('users')->where('id',$userID)->first();
+            $user = $this->_repository->find($userID);
             if($user){
                 $data = $user;
             }
