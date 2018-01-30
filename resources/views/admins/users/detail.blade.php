@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <div class="form-group col-md-12">
                 <label class="col-sm-6"> Username</label>
-                <input class="col-sm-6" id="txt_username" name="username" value="{{isset($data->username)?$data->username:''}}">
+                <input class="col-sm-6" id="txt_username" name="username" value="{{isset($data->username)?$data->username:''}}" >
             </div>
             <div class="form-group col-md-12">
                 <label class="col-sm-6">First name</label>
