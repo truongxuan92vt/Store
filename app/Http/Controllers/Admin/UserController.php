@@ -21,11 +21,15 @@ class UserController extends Controller {
     }
 
     public function index(){
-        $data = $this->_repository->getList($this->_request);
+        $data = $this->_repository->getList();
         return view('admins.users.index',['data'=>$data]);
     }
-    public function detail(Request $request){
-        $userID = $request->get('id');
+    public function search(){
+        $res = $this->_repository->searchUser($this->_request);
+        return $this->respond(true,$res,'');
+    }
+    public function detail(){
+        $userID = $this->_request->get('id');
         $data = [];
         if(!empty($userID)){
             $user = $this->_repository->find($userID);
@@ -35,23 +39,23 @@ class UserController extends Controller {
         }
         return view('admins.users.detail',['data'=>$data]);
     }
-    public function save(Request $request){
-        $user_id = $request->get('id');
+    public function save(){
+        $user_id = $this->_request->get('id');
         $res = null;
         if(empty($user_id)){
             $dataIns = [
-                'username'=>$request->get('username'),
-                'first_name'=>$request->get('first_name'),
-                'last_name'=>$request->get('last_name'),
-                'email'=>$request->get('email')
+                'username'=>$this->_request->get('username'),
+                'first_name'=>$this->_request->get('first_name'),
+                'last_name'=>$this->_request->get('last_name'),
+                'email'=>$this->_request->get('email')
             ];
             $res =  $this->_repository->create($dataIns);
         }
         else{
             $dataUpdate = [
-                'first_name'=>$request->get('first_name'),
-                'last_name'=>$request->get('last_name'),
-                'email'=>$request->get('email')
+                'first_name'=>$this->_request->get('first_name'),
+                'last_name'=>$this->_request->get('last_name'),
+                'email'=>$this->_request->get('email')
             ];
             $this->_repository->update($user_id,$dataUpdate);
             $res = $this->_repository->find($user_id);

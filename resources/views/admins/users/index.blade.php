@@ -30,28 +30,38 @@
     </div>
     <div style="text-align: center;">
         <button id='btn_create' type="button" class="btn btn-success btn-sm">Create</button>
-        <button type="btn_search" class="btn btn-primary btn-sm">Search</button>
+        <button type="btn_search" class="btn btn-primary btn-sm" onclick="searchUser()">Search</button>
     </div>
     <br/>
-    <table class="table" xmlns="">
+    <table id="tbl_user" class="table" xmlns="" style="background-color: #ffffff">
         <thead>
             <tr>
-                <th></th>
-                <th>Username</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Email</th>
+                <th style="text-align: center">No</th>
+                <th style="text-align: center">Username</th>
+                <th style="text-align: center">First name</th>
+                <th style="text-align: center">Last name</th>
+                <th style="text-align: center">Email</th>
+                <th style="text-align: center">Created By</th>
+                <th style="text-align: center">Created On</th>
+                <th style="text-align: center">Updated By</th>
+                <th style="text-align: center">Updated On</th>
             </tr>
         </thead>
         <tbody>
+            <?php $i=1;?>
             @foreach($data as $user)
             <tr>
-                <td><input type="checkbox"></td>
+                <td style="text-align: center">{{$i}}</td>
                 <td><a href="#" onclick="openUserDetail('{{$user->id}}')">{{$user->username}}</a></td>
                 <td>{{$user->first_name}}</td>
                 <td>{{$user->last_name}}</td>
                 <td>{{$user->email}}</td>
+                <td>{{$user->created_by}}</td>
+                <td>{{$user->created_at}}</td>
+                <td>{{$user->updated_by}}</td>
+                <td>{{$user->updated_at}}</td>
             </tr>
+            <?php $i+=1;?>
             @endforeach
         </tbody>
     </table>
@@ -61,6 +71,70 @@
         });
         function openUserDetail(id) {
             loadpopup('user/detail?id='+id,'<b>Detail</b>','80%',false);
+        }
+        function searchUser(){
+
+            var postData = {
+                userName : $('#txt_usernameSearch').val(),
+                firstName : $('#txt_firtNameSearch').val(),
+                lastName : $('#txt_lastNameSearch').val(),
+                email : $('#txt_emailSearch').val()
+            };
+            $.ajax({
+                cache: false,
+                type: "get",
+                url: "{{route('admin.user.search')}}",
+                data: postData,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                complete: function (data) {
+                    console.log(data);
+                },
+                success: function (data) {
+                    $("#tbl_user > tbody > tr").remove();
+                    console.log(data['data']);
+                    for(i=0; i<data['data'].length;i++){
+                        row = data['data'][i];
+                        num = i+1;
+                        first_name = ''
+                        if(row['first_name'] != null && row['first_name']!=''){
+                            first_name = row['first_name'];
+                        }
+                        last_name = ''
+                        if(row['last_name'] != null && row['last_name']!=''){
+                            last_name = row['last_name'];
+                        }
+                        created_by = ''
+                        if(row['created_by'] != null && row['created_by']!=''){
+                            created_by = row['created_by'];
+                        }
+                        updated_by = ''
+                        if(row['updated_by'] != null && row['updated_by']!=''){
+                            updated_by = row['updated_by'];
+                        }
+                        email = ''
+                        if(row['email'] != null && row['email']!=''){
+                            email = row['email'];
+                        }
+                        newRowContent = "<tr>" +
+                                "<td style='text-align: center'>"+num+"</td>" +
+                                "<td><a href='#' onclick='openUserDetail("+row['id']+")'>"+row['username']+"</td>" +
+                                "<td>"+first_name+"</td>" +
+                                "<td>"+last_name+"</td>" +
+                                "<td>"+email+"</td>" +
+                                "<td>"+created_by+"</td>" +
+                                "<td>"+row['created_at']+"</td>" +
+                                "<td>"+updated_by+"</td>" +
+                                "<td>"+row['updated_at']+"</td>" +
+                            "</tr>";
+                        $("#tbl_user tbody").append(newRowContent);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError);
+                },
+                traditional: true
+            });
         }
     </script>
 @endsection

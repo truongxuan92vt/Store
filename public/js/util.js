@@ -109,3 +109,12 @@ var ClosePopup = function () {
     // alert('t');
     //this.submit();
 }
+var onclickMenu = function(url){
+    $.ajax({
+        type: "get",
+        url: url,
+        success: function(content){
+            $(".wrapper").html(content);
+        }
+    });
+}

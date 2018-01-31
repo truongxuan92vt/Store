@@ -33,4 +33,19 @@ class Controller extends BaseController
 //        $this->data['current'] = $this->router->fetch_method();
 //        log_message('debug', "Controller Class Initialized");
 //    }
+    public function respondForward($response)
+    {
+        return $this->respond($response['status'],$response['data']??null,$response['message']??"",$response['statusCode']??null,$response['headers']??[]);
+    }
+
+    public function respond($status,$data=null,$message="",$statusCode=null,$headers = [])
+    {
+        if($statusCode===null)
+            $statusCode=200;
+        $return = [];
+        $return['status'] = $status;
+        $return['data'] = $data;
+        $return['message'] = $message;
+        return response()->json($return, $statusCode, $headers);
+    }
 }

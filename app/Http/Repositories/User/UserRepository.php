@@ -14,8 +14,16 @@ class UserRepository extends BaseRepository{
         return User::class;
     }
 
-    public function getList($data){
+    public function getList(){
         $res = $this->_model->get();
+        return $res;
+    }
+    public function searchUser($data){
+        $query = $this->_model->select('*');
+        if(!empty($data['userName'])){
+            $query->where('username',$data['userName']);
+        }
+        $res = $query->get();
         return $res;
     }
 

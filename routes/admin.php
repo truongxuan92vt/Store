@@ -45,6 +45,10 @@ $router->group([
         'as'    =>'admin.user.index',
         'uses'  =>'UserController@index'
     ]);
+    $router->get('/search',[
+        'as'    =>'admin.user.search',
+        'uses'  =>'UserController@search'
+    ]);
     $router->get('detail',[
         'as'     =>  'admin.user.detail',
         'uses'   =>  'UserController@detail'

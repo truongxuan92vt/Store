@@ -20,4 +20,7 @@ class User extends BaseModel
         'updated_at',
         'updated_by'
     ];
+    protected $hidden = [
+        'password'
+    ];
 }
