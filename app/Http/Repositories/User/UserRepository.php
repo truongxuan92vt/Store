@@ -23,6 +23,15 @@ class UserRepository extends BaseRepository{
         if(!empty($data['userName'])){
             $query->where('username',$data['userName']);
         }
+        if(!empty($data['firstName'])){
+            $query->where('first_name',$data['firstName']);
+        }
+        if(!empty($data['lastName'])){
+            $query->where('last_name',$data['lastName']);
+        }
+        if(!empty($data['email'])){
+            $query->where('email',$data['email']);
+        }
         $res = $query->get();
         return $res;
     }

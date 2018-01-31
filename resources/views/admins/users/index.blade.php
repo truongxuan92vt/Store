@@ -6,7 +6,7 @@
 @section('parent2', 'Admin Management')
 @section('parent3', 'User')
 @section('content')
-    <div>
+    <div id="frm_searchUser">
         <div class="col-md-6">
             <div class="form-group col-md-12">
                 <label class="col-sm-6"> Username</label>
@@ -66,6 +66,12 @@
         </tbody>
     </table>
     <script>
+        $('#frm_searchUser').keypress(function(event) {
+            var keycode = event.keyCode || event.which;
+            if(keycode == '13') {
+                searchUser();
+            }
+        });
         $('#btn_create').on('click',function(){
             loadpopup('user/detail','<b>New</b>','80%',false);
         });
