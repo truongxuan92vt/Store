@@ -42,7 +42,6 @@ class UserController extends Controller {
     public function save(){
         $user_id = $this->_request->get('id');
         $res = null;
-//        dd(json_encode($this->_request->all()));
         $res = self::fileUpload('/upload/avatar');
         if(empty($user_id)){
             $dataIns = [
@@ -50,6 +49,7 @@ class UserController extends Controller {
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
                 'email'=>$this->_request->get('email'),
+                'password'=>bcrypt($this->_request->get('password')),
                 'image'=>!empty($res['fileName'])?$res['fileName']:'avatar.jpeg'
             ];
             $res =  $this->_repository->create($dataIns);
@@ -58,6 +58,7 @@ class UserController extends Controller {
             $dataUpdate = [
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
+                'password'=>bcrypt($this->_request->get('password')),
                 'email'=>$this->_request->get('email')
             ];
             if(!empty($res['fileName'])){

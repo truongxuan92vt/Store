@@ -216,13 +216,13 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{!empty(Auth::user()->image)?'../upload/avatar/'.Auth::user()->image:'../image/avatar.jpeg'}}" class="user-image" alt="User Image">
-                        <span class="hidden-xs">{{ Auth::user()->username }}</span>
+                        <?php $full_name=Auth::user()->last_name.' '.Auth::user()->first_name;if(empty(Auth::user()->first_name) && empty(Auth::user()->first_name))$full_name=Auth::user()->username?>
+                        <span class="hidden-xs">{{$full_name}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
                             <img src="{{!empty(Auth::user()->image)?'../upload/avatar/'.Auth::user()->image:'../image/avatar.jpeg'}}" class="img-circle" alt="User Image">
-
                             <p>
                                 {{ Auth::user()->username }} - Web Developer
                                 <small>Member since {{Carbon\Carbon::parse(Auth::user()->created_at)->format('M. Y')}}</small>
