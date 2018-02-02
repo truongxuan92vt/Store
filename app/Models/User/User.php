@@ -15,6 +15,7 @@ class User extends BaseModel
         'first_name',
         'last_name',
         'email',
+        'image',
         'created_at',
         'created_by',
         'updated_at',

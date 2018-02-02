@@ -1,8 +1,12 @@
-<form method="post" action="{{route('admin.user.save')}}" autocomplete="off" id="frm_userDetail">
+<form method="post" action="{{route('admin.user.save')}}" autocomplete="off" id="frm_userDetail" enctype="multipart/form-data">
     {{ csrf_field() }}
     <input type="hidden" id="user_id" name="id" value="{{isset($data->id)?$data->id:''}}">
-    <div>
-        <div class="col-md-6">
+    <div class="col-lg-12">
+        <div class="col-md-3">
+            <img id="image" src="{{!empty($data->image)?'../upload/avatar/'.$data->image:'../image/avatar.jpeg'}}" alt="your image" height="180" width="200" style="margin-bottom: 10px;"/>
+            <input type='file' id="imgInp" name="image" value="{{!empty($data->image)?'../upload/avatar/'.$data->image:'../image/avatar.jpeg'}}"/>
+        </div>
+        <div class="col-md-9">
             <div class="form-group col-md-12">
                 <label class="col-sm-6"> Username</label>
                 <input class="col-sm-6" id="txt_username" name="username" value="{{isset($data->username)?$data->username:''}}" >
@@ -11,8 +15,7 @@
                 <label class="col-sm-6">First name</label>
                 <input class="col-sm-6" id="txt_firtName" name="first_name" value="{{isset($data->first_name)?$data->first_name:''}}">
             </div>
-        </div>
-        <div class="col-md-6">
+
             <div class="form-group col-md-12">
                 <label class="col-sm-6">Last name</label>
                 <input class="col-sm-6" id="txt_lastName" name="last_name" value="{{isset($data->last_name)?$data->last_name:''}}">
@@ -28,7 +31,40 @@
         <button id='btn_cancel' type="button" class="btn btn-default btn-sm" data-dismiss="modal" aria-hidden="true">Cancel</button>
     </div>
 </form>
+<form id="form1" runat="server" hidden>
+    <input type='file' id="imgInp2" multiple />
+</form>
 <script>
+    function readUrlReviewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#imgInp").change(function() {
+        readUrlReviewImage(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var i;
+            for (i = 0; i < input.files.length; ++i) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#form1').append('<img src="'+e.target.result+'">');
+                }
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    }
+
+    $("#imgInp2").change(function(){
+        readURL(this);
+    });
+
     $( "#btn_save" ).click(function() {
         username = $('#txt_username').val();
         firstName = $('#txt_firtName').val();
@@ -45,3 +81,4 @@
         $( "#frm_userDetail" ).submit();
     });
 </script>
+

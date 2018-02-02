@@ -42,12 +42,16 @@ class UserController extends Controller {
     public function save(){
         $user_id = $this->_request->get('id');
         $res = null;
+//        dd(json_encode($this->_request->all()));
+        $res = self::fileUpload('/upload/avatar');
+        $image = !empty($res['fileName'])?$res['fileName']:'avatar.jpeg';
         if(empty($user_id)){
             $dataIns = [
                 'username'=>$this->_request->get('username'),
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
-                'email'=>$this->_request->get('email')
+                'email'=>$this->_request->get('email'),
+                'image'=>$image
             ];
             $res =  $this->_repository->create($dataIns);
         }
@@ -55,11 +59,32 @@ class UserController extends Controller {
             $dataUpdate = [
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
-                'email'=>$this->_request->get('email')
+                'email'=>$this->_request->get('email'),
+                'image'=>$image
             ];
             $this->_repository->update($user_id,$dataUpdate);
             $res = $this->_repository->find($user_id);
         }
         return Redirect::back()->with('message','Operation Successful !');
+    }
+    public function fileUpload($path) {
+        $result = [
+            'status'=>false,
+            'fileName'=>''
+        ];
+        $request = $this->_request;
+//        $this->validate($request, [
+//            'image' => 'required|image|mimes:jfif,jpeg,png,jpg,gif,svg|max:2048',
+//        ]);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path($path);
+            $image->move($destinationPath, $name);
+//            $this->save();
+            $result['status']=true;
+            $result['fileName']=$name;
+        }
+        return $result;
     }
 }

@@ -37,6 +37,7 @@
         <thead>
             <tr>
                 <th style="text-align: center">No</th>
+                <th style="text-align: center">Avatar</th>
                 <th style="text-align: center">Username</th>
                 <th style="text-align: center">First name</th>
                 <th style="text-align: center">Last name</th>
@@ -52,6 +53,7 @@
             @foreach($data as $user)
             <tr>
                 <td style="text-align: center">{{$i}}</td>
+                <td style="text-align: center"><img src="{{!empty($user->image)?'../upload/avatar/'.$user->image:'../image/avatar.jpeg'}}" height="30" width="30"></td>
                 <td><a href="#" onclick="openUserDetail('{{$user->id}}')">{{$user->username}}</a></td>
                 <td>{{$user->first_name}}</td>
                 <td>{{$user->last_name}}</td>
@@ -122,8 +124,13 @@
                         if(row['email'] != null && row['email']!=''){
                             email = row['email'];
                         }
+                        image = '../image/avatar.jpeg';
+                        if(row['image'] != null && row['image']!=''){
+                            image = '../upload/avatar/'+row['image'];
+                        }
                         newRowContent = "<tr>" +
                                 "<td style='text-align: center'>"+num+"</td>" +
+                                "<td style='text-align: center'><img src="+image+" height='30' width='30'></td>" +
                                 "<td><a href='#' onclick='openUserDetail("+row['id']+")'>"+row['username']+"</td>" +
                                 "<td>"+first_name+"</td>" +
                                 "<td>"+last_name+"</td>" +
