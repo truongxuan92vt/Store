@@ -19,8 +19,8 @@
     <section class="sidebar">
         <!-- Sidebar user panel -->
         <div class="user-panel">
-            <div class="pull-left image">
-                <img src="../image/favicon.jfif" class="img-circle" alt="User Image">
+            <div class="pull-left image" style="margin-top: 5%;margin-left: 3%;">
+                <img src="{{!empty(Auth::user()->image)?'../upload/avatar/'.Auth::user()->image:'../image/avatar.jpeg'}}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>{{ Auth::user()->username }}</p>
