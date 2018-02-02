@@ -44,14 +44,13 @@ class UserController extends Controller {
         $res = null;
 //        dd(json_encode($this->_request->all()));
         $res = self::fileUpload('/upload/avatar');
-        $image = !empty($res['fileName'])?$res['fileName']:'avatar.jpeg';
         if(empty($user_id)){
             $dataIns = [
                 'username'=>$this->_request->get('username'),
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
                 'email'=>$this->_request->get('email'),
-                'image'=>$image
+                'image'=>!empty($res['fileName'])?$res['fileName']:'avatar.jpeg'
             ];
             $res =  $this->_repository->create($dataIns);
         }
@@ -59,9 +58,11 @@ class UserController extends Controller {
             $dataUpdate = [
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
-                'email'=>$this->_request->get('email'),
-                'image'=>$image
+                'email'=>$this->_request->get('email')
             ];
+            if(!empty($res['fileName'])){
+                $dataUpdate['image']=$res['fileName'];
+            }
             $this->_repository->update($user_id,$dataUpdate);
             $res = $this->_repository->find($user_id);
         }

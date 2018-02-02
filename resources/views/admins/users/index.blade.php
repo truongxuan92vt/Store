@@ -150,4 +150,11 @@
             });
         }
     </script>
+    <style>
+        #tbl_user td
+        {
+            /*text-align:center;*/
+            vertical-align:middle;
+        }
+    </style>
 @endsection

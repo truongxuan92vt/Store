@@ -21,16 +21,16 @@ class UserRepository extends BaseRepository{
     public function searchUser($data){
         $query = $this->_model->select('*');
         if(!empty($data['userName'])){
-            $query->where('username',$data['userName']);
+            $query->where('username','like','%'.$data['userName'].'%');
         }
         if(!empty($data['firstName'])){
-            $query->where('first_name',$data['firstName']);
+            $query->where('first_name','like','%'.$data['firstName'].'%');
         }
         if(!empty($data['lastName'])){
-            $query->where('last_name',$data['lastName']);
+            $query->where('last_name','like','%'.$data['lastName'].'%');
         }
         if(!empty($data['email'])){
-            $query->where('email',$data['email']);
+            $query->where('email','like','%'.$data['email'].'%');
         }
         $res = $query->get();
         return $res;

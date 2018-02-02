@@ -31,9 +31,6 @@
         <button id='btn_cancel' type="button" class="btn btn-default btn-sm" data-dismiss="modal" aria-hidden="true">Cancel</button>
     </div>
 </form>
-<form id="form1" runat="server" hidden>
-    <input type='file' id="imgInp2" multiple />
-</form>
 <script>
     function readUrlReviewImage(input) {
         if (input.files && input.files[0]) {
@@ -46,23 +43,6 @@
     }
     $("#imgInp").change(function() {
         readUrlReviewImage(this);
-    });
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var i;
-            for (i = 0; i < input.files.length; ++i) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#form1').append('<img src="'+e.target.result+'">');
-                }
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
-    }
-
-    $("#imgInp2").change(function(){
-        readURL(this);
     });
 
     $( "#btn_save" ).click(function() {
@@ -79,6 +59,29 @@
             return;
         }
         $( "#frm_userDetail" ).submit();
+    });
+</script>
+
+{{--upload multi form--}}
+<form id="form1" runat="server" hidden>
+    <input type='file' id="imgInp2" multiple />
+</form>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var i;
+            for (i = 0; i < input.files.length; ++i) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#form1').append('<img src="'+e.target.result+'">');
+                }
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    }
+
+    $("#imgInp2").change(function(){
+        readURL(this);
     });
 </script>
 
