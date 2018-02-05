@@ -82,4 +82,26 @@ class FunctionController extends Controller {
         $res = $this->getMenu();
         return view('admins.functions.index',['data'=>$res]);
     }
+    function getDataFullMenu(){
+        $functions = DB::table('functions')->select('id','icon','function_name as text','parent_id')
+            ->get();
+        $functions = json_decode(json_encode($functions),true);
+        $menu = $this->subFunction($functions);
+        return $menu;
+//        return $functions;
+    }
+
+    public function subFunction($array, $parent_id = 0){
+        $temp_array = array();
+        foreach($array as $element)
+        {
+            $element['state']=['selected'=>true];
+            if($element['parent_id']==$parent_id)
+            {
+                $element['children'] = $this->subFunction($array,$element['id']);
+                $temp_array[] = $element;
+            }
+        }
+        return $temp_array;
+    }
 }

@@ -35,6 +35,10 @@ $router->group([
         'as'=>'admin.function',
         'uses'=>'FunctionController@getFunctionList'
     ]);
+    $router->get('list',[
+        'as'=>'admin.function.list',
+        'uses'=>'FunctionController@getDataFullMenu'
+    ]);
 });
 
 $router->group([

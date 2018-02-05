@@ -6,79 +6,46 @@
 @section('parent2', 'Admin Management')
 @section('parent3', 'Function')
 @section('content')
-    <table class="table">
-        <thead>
-        <tr>
-            <th width="1%"></th>
-            <th width="30%">Function Name</th>
-            <th width="15%">Url</th>
-            <th width="10%">Icon</th>
-        </tr>
-        </thead>
-        <tbody>
-            @foreach($data as $item)
-                <tr>
-                    <td><input type="checkbox" /></td>
-                    <td>{{$item['function_name']}}</td>
-                    <td>{{$item['url']}}</td>
-                    <td><i class="{{$item['icon']}}" aria-hidden="true"></i></td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <table class="table table-responsive table-hover">
-        <thead>
-        <tr><th>Column</th><th>Column</th><th>Column</th><th>Column</th></tr>
-        </thead>
-        <tbody>
-        <tr class="clickable" data-toggle="collapse" data-target="#group-of-rows-1" aria-expanded="false" aria-controls="group-of-rows-1">
-            <td><i class="fa fa-plus" aria-hidden="true"></i></td>
-            <td>data</td>
-            <td>data</td>
-            <td>data</td>
-        </tr>
-        </tbody>
-        <tbody id="group-of-rows-1" class="collapse">
-        <tr>
-            <td>- child row</td>
-            <td>data 1</td>
-            <td>data 1</td>
-            <td>data 1</td>
-        </tr>
-        <tr>
-            <td>- child row</td>
-            <td>data 1</td>
-            <td>data 1</td>
-            <td>data 1</td>
-        </tr>
-        </tbody>
-        <tbody>
-        <tr class="clickable" data-toggle="collapse" data-target="#group-of-rows-2" aria-expanded="false" aria-controls="group-of-rows-2">
-            <td><i class="fa fa-plus" aria-hidden="true"></i></td>
-            <td>data</td>
-            <td>data</td>
-            <td>data</td>
-        </tr>
-        </tbody>
-        <tbody id="group-of-rows-2" class="collapse">
-        <tr>
-            <td>- child row</td>
-            <td>data 2</td>
-            <td>data 2</td>
-            <td>data 2</td>
-        </tr>
-        <tr>
-            <td>- child row</td>
-            <td>data 2</td>
-            <td>data 2</td>
-            <td>data 2</td>
-        </tr>
-        </tbody>
-    </table>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <div id="jstree"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script>
-        /* fix = code from bootstrap 3 */
-        tbody.collapse.in {
-            display: table-row-group;
-        }
+        $(function () {
+            // 6 create an instance when the DOM is ready
+            $('#jstree').jstree({
+                "types": {
+                    "default": {
+                        "icon": "fa fa-folder-open treeFolderIcon",
+                    }
+                },
+                "plugins": ["json_data", "types", "wholerow", "search", "checkbox"],
+                'core' : {
+                    'data' : {
+                        'url' : "../admin/function/list",
+                        'data' : function (node) {
+                            console.log(node);
+                            return { 'id' : node.id};
+                        }
+                    },},
+                "json_data": {
+                    ajax: {
+                        "url": '../admin/function',
+                        "type": "GET",
+                        "dataType": "json",
+                        "contentType": "application/json charset=utf-8",
+                    },
+                },
+            });
+            // 7 bind to events triggered on the tree
+            $('#jstree').on("changed.jstree", function (e, data) {
+                console.log(data.selected);
+            });
+            // 8 interact with the tree - either way is OK
+            $('button').on('click', function () {
+                $('#jstree').jstree(true).select_node('child_node_1');
+                $('#jstree').jstree('select_node', 'child_node_1');
+                $.jstree.reference('#jstree').select_node('child_node_1');
+            });
+        });
     </script>
 @endsection
