@@ -62,4 +62,13 @@ $router->group([
         'uses'   =>  'UserController@save'
     ]);
 });
+$router->group([
+    'prefix'     => 'permission',
+    'middleware' => ['auth.admin'],
+], function ($router) {
+    $router->get('',[
+        'as'=>'admin.permission.index',
+        'uses'=>'PermissionController@index'
+    ]);
+});
 
