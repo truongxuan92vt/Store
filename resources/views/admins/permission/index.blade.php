@@ -12,7 +12,7 @@
             <form class="form-group">
                 <label class="col-md-2" style="margin-top: 5px;">Permission</label>
                 <div class="col-md-4">
-                    <select class="form-control">
+                    <select class="form-control" id="cbo_role">
                         <option value="" selected="selected">Select a Permission</option>
                         @foreach($roles as $role)
                             <option value="{{$role->id}}">{{$role->role_name}}</option>
@@ -63,15 +63,19 @@
                 $.jstree.reference('#jstree').select_node('child_node_1');
             });
         });
-        $(document).ready(function () {
-            $('.combobox').combobox();
-            //$('.combobox').combobox({newOptionsAllowed: false});
-            $('form').submit(function(e){
-                e.preventDefault();
-                alert($('input[name="normal"]').val());
-                alert($('input[name="horizontal"]').val());
-                alert($('input[name="inline"]').val());
-            });
+        // $(document).ready(function () {
+        //     $('.combobox').combobox();
+        //     //$('.combobox').combobox({newOptionsAllowed: false});
+        //     $('form').submit(function(e){
+        //         e.preventDefault();
+        //         alert($('input[name="normal"]').val());
+        //         alert($('input[name="horizontal"]').val());
+        //         alert($('input[name="inline"]').val());
+        //     });
+        // });
+        $('#cbo_role').on('change',function () {
+            $('#jstree').jstree(true).refresh();
+            alert($(this).val());
         });
     </script>
 @endsection
