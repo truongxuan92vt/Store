@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -58,50 +59,76 @@ class FunctionController extends Controller {
             ->leftJoin('function_roles','function_roles.function_id','functions.id')
             ->leftJoin('user_roles','user_roles.id','function_roles.role_id')
             ->where('user_roles.user_id',$user_id)
+            ->where('functions.status','EN')
             ->get();
         $functions = json_decode(json_encode($functions),true);
         return $functions;
     }
-    function html_ordered_menu($array,$parent_id = 0)
-    {
-        $menu_html = '<ul>';
-        foreach($array as $element)
-        {
-            if($element['parent_id']==$parent_id)
-            {
-                $menu_html .= '<li><a href="'.$element['url'].'">'.$element['name'].'</a>';
-                $menu_html .= ordered_menu($array,$element['id']);
-                $menu_html .= '</li>';
-            }
-        }
-        $menu_html .= '</ul>';
-        return $menu_html;
-    }
+//    function html_ordered_menu($array,$parent_id = 0)
+//    {
+//        $menu_html = '<ul>';
+//        foreach($array as $element)
+//        {
+//            if($element['parent_id']==$parent_id)
+//            {
+//                $menu_html .= '<li><a href="'.$element['url'].'">'.$element['name'].'</a>';
+//                $menu_html .= ordered_menu($array,$element['id']);
+//                $menu_html .= '</li>';
+//            }
+//        }
+//        $menu_html .= '</ul>';
+//        return $menu_html;
+//    }
 
     function getFunctionList(){
         $res = $this->getMenu();
         return view('admins.functions.index',['data'=>$res]);
     }
     function getDataFullMenu(){
-        $functions = DB::table('functions')->select('id','icon','function_name as text','parent_id')
+        $functions = DB::table('functions')->select('id','icon','function_name as text','parent_id','status')
             ->get();
         $functions = json_decode(json_encode($functions),true);
         $menu = $this->subFunction($functions);
         return $menu;
 //        return $functions;
     }
-
     public function subFunction($array, $parent_id = 0){
         $temp_array = array();
         foreach($array as $element)
         {
-            $element['state']=['selected'=>true];
+            $status = false;
+            if($element['status']=='EN'){
+                $status = true;
+            }
+            $element['state']=['selected'=>$status];
             if($element['parent_id']==$parent_id)
             {
                 $element['children'] = $this->subFunction($array,$element['id']);
+                if(count($element['children'])>0)
+                    $element['state']=['selected'=>false];
                 $temp_array[] = $element;
             }
         }
         return $temp_array;
+    }
+    public function updateFunction(Request $request){
+        $data = $request->all();
+        if(!empty($data)){
+            $id = $data['id'];
+            $sts = $data['status']==1?'EN':'DI';
+            DB::table('functions')->where('id',$id)->update(['status'=>$sts]);
+            DB::table('functions')->where('parent_id',$id)->update(['status'=>$sts]);
+            $isExistParent = DB::table('functions')->where('id',$id)->first();
+            if($isExistParent && $sts == "EN"){
+                DB::table('functions')->where('id',$isExistParent->parent_id)->update(['status'=>$sts]);
+            }
+            if($isExistParent && $sts == "DI"){
+                $numChild = DB::table('functions')->where('parent_id',$isExistParent->parent_id)->count();
+                $numDisable = DB::table('functions')->where('parent_id',$isExistParent->parent_id)->where('status','DI')->count();
+                if($numChild==$numDisable)
+                    DB::table('functions')->where('id',$isExistParent->parent_id)->update(['status'=>$sts]);
+            }
+        }
+        return $this->respondForward(['status'=>true,'message'=>'Update success']);
     }
 }

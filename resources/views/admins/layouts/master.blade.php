@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <link rel="icon" href="../image/favicon.jfif">
         <title>Store | @yield('title')</title>
         <!-- Tell the browser to be responsive to screen width -->
@@ -59,6 +60,7 @@
         <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="../AdminLTE/dist/js/demo.js"></script>
+        <script src="../js/notify.js"></script>
         <script type="text/javascript" src="{{ URL::asset('js/util.js') }}"></script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -149,7 +151,11 @@
         </div>
     </body>
     <script>
-
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $(document).ready(function(){
             // $('.sidebar-menu li').removeClass('active');
             // $('#m_2').addClass("active");

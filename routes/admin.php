@@ -39,6 +39,10 @@ $router->group([
         'as'=>'admin.function.list',
         'uses'=>'FunctionController@getDataFullMenu'
     ]);
+    $router->put('update',[
+        'as'=>'admin.function.update',
+        'uses'=>'FunctionController@updateFunction'
+    ]);
 });
 
 $router->group([
