@@ -26,6 +26,7 @@
     <div id="jstree"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script>
+        idTree = [];
         $(function () {
             // 6 create an instance when the DOM is ready
             $('#jstree').jstree({
@@ -54,7 +55,8 @@
             });
             // 7 bind to events triggered on the tree
             $('#jstree').on("changed.jstree", function (e, data) {
-                console.log(data.selected);
+                idTree = data.selected;
+                console.log(idTree);
             });
             // 8 interact with the tree - either way is OK
             $('button').on('click', function () {
