@@ -60,6 +60,7 @@ class FunctionController extends Controller {
             ->leftJoin('user_roles','user_roles.id','function_roles.role_id')
             ->where('user_roles.user_id',$user_id)
             ->where('functions.status','EN')
+            ->where('function_roles.status','EN')
             ->get();
         $functions = json_decode(json_encode($functions),true);
         return $functions;
@@ -129,6 +130,6 @@ class FunctionController extends Controller {
                     DB::table('functions')->where('id',$isExistParent->parent_id)->update(['status'=>$sts]);
             }
         }
-        return $this->respondForward(['status'=>true,'message'=>'Update success']);
+        return $this->respondForward(['status'=>true,'message'=>'Function was updated success']);
     }
 }

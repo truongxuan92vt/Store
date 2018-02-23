@@ -60,6 +60,7 @@
         <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="../AdminLTE/dist/js/demo.js"></script>
+
         <script src="../js/notify.js"></script>
         <script type="text/javascript" src="{{ URL::asset('js/util.js') }}"></script>
     </head>

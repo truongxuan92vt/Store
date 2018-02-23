@@ -1,10 +1,10 @@
 @extends('admins.layouts.master')
-@section('title', 'Function')
-@section('controller', 'Function')
+@section('title', 'Permission')
+@section('controller', 'Permission')
 @section('action', 'Index')
 @section('parent', 'Home')
 @section('parent2', 'Admin Management')
-@section('parent3', 'Function')
+@section('parent3', 'Permission')
 @section('content')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     <div class="container">
@@ -13,7 +13,7 @@
                 <label class="col-md-2" style="margin-top: 5px;">Permission</label>
                 <div class="col-md-4">
                     <select class="form-control" id="cbo_role">
-                        <option value="" selected="selected">Select a Permission</option>
+                        <option value="0" selected="selected">Select a Permission</option>
                         @foreach($roles as $role)
                             <option value="{{$role->id}}">{{$role->role_name}}</option>
                         @endforeach
@@ -26,58 +26,73 @@
     <div id="jstree"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script>
-        idTree = [];
+        var idRole = 0;
         $(function () {
-            // 6 create an instance when the DOM is ready
+            createTreeFunction();
+            // 7 bind to events triggered on the tree
+            // $('#jstree').on("changed.jstree", function (e, data) {
+            //     // idTree = data.selected;
+            //     // console.log(idTree);
+            //     data = $('#jstree').jstree(true).get_selected();
+            //     console.log(data);
+            // });
+            // $('#jstree').on("select_node.jstree deselect_node.jstree", function (e, data) {
+            //     data = {
+            //         'roleId' : idRole,
+            //         'function':{'id':data.node.id,'status':data.node.state.selected}
+            //     }
+            //     data = JSON.stringify(data);
+            //     updatePermissionRole(data);
+            // });
+        });
+
+        $('#cbo_role').on('change',function () {
+            idRole = $(this).val();
+            createTreeFunction($(this).val());
+            // $('#jstree').jstree(true).refresh();
+        });
+        function updatePermissionRole(data){
+            console.log(data);
+            $.ajax({
+                type:'put',
+                url:"{{route('admin.permission.update')}}",
+                data:data ,
+                dataType:'json',
+                contentType:'application/json',
+                success:function(res){
+                    status = 'error';
+                    if(res['status'])
+                        status = 'success';
+                    $.notify(res['message'], status);
+                }
+            });
+        }
+        function createTreeFunction(role=0){
+            $.jstree.destroy ();
             $('#jstree').jstree({
                 "types": {
                     "default": {
                         "icon": "fa fa-folder-open treeFolderIcon",
                     }
                 },
-                "plugins": ["json_data", "types", "wholerow", "search", "checkbox"],
+                "plugins": ["json_data", "wholerow", "search", "checkbox", 'changed'],
                 'core' : {
                     'data' : {
-                        'url' : "../admin/function/list",
-                        'data' : function (node) {
-                            console.log(node);
-                            return { 'id' : node.id};
-                        }
-                    },},
-                "json_data": {
-                    ajax: {
-                        "url": '../admin/function',
-                        "type": "GET",
-                        "dataType": "json",
-                        "contentType": "application/json charset=utf-8",
+                        'url' : "../admin/permission/list/"+role,
+                        // 'data' : function (node) {
+                        //     console.log(node);
+                        //     return { 'id' : node.id};
+                        // }
                     },
                 },
+            }).on("select_node.jstree deselect_node.jstree", function (e, data) {
+                data = {
+                    'roleId' : idRole,
+                    'function':{'id':data.node.id,'status':data.node.state.selected}
+                }
+                data = JSON.stringify(data);
+                updatePermissionRole(data);
             });
-            // 7 bind to events triggered on the tree
-            $('#jstree').on("changed.jstree", function (e, data) {
-                idTree = data.selected;
-                console.log(idTree);
-            });
-            // 8 interact with the tree - either way is OK
-            $('button').on('click', function () {
-                $('#jstree').jstree(true).select_node('child_node_1');
-                $('#jstree').jstree('select_node', 'child_node_1');
-                $.jstree.reference('#jstree').select_node('child_node_1');
-            });
-        });
-        // $(document).ready(function () {
-        //     $('.combobox').combobox();
-        //     //$('.combobox').combobox({newOptionsAllowed: false});
-        //     $('form').submit(function(e){
-        //         e.preventDefault();
-        //         alert($('input[name="normal"]').val());
-        //         alert($('input[name="horizontal"]').val());
-        //         alert($('input[name="inline"]').val());
-        //     });
-        // });
-        $('#cbo_role').on('change',function () {
-            $('#jstree').jstree(true).refresh();
-            alert($(this).val());
-        });
+        }
     </script>
 @endsection

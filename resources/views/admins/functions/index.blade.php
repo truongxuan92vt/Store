@@ -50,18 +50,7 @@
                 data = JSON.stringify({'id':data.node.id,'status':data.node.state.selected});
                 updateFunction(data);
             });
-            // 8 interact with the tree - either way is OK
-            // $('button').on('click', function () {
-            //     $('#jstree').jstree(true).select_node('child_node_1');
-            //     $('#jstree').jstree('select_node', 'child_node_1');
-            //     $.jstree.reference('#jstree').select_node('child_node_1');
-            // });
         });
-        // $("#jstree") .on("changed.jstree", function (e, data) {
-        //     console.log(data.changed.selected); // newly selected
-        //     // console.log(data.changed.deselected); // newly deselected
-        // })
-
         // $('#jstree').on("changed.jstree", function (e, data) {
         //     console.log(data.selected);
         //     // updateFunction(data.selected)

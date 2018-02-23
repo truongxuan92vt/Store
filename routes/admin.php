@@ -74,5 +74,13 @@ $router->group([
         'as'=>'admin.permission.index',
         'uses'=>'PermissionController@index'
     ]);
+    $router->get('list/{role}',[
+        'as'=>'admin.permission.index',
+        'uses'=>'PermissionController@listPermissionByRole'
+    ]);
+    $router->put('update',[
+        'as'=>'admin.permission.update',
+        'uses'=>'PermissionController@updatePermission'
+    ]);
 });
 
