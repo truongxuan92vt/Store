@@ -42,6 +42,7 @@
                 <th style="text-align: center">First name</th>
                 <th style="text-align: center">Last name</th>
                 <th style="text-align: center">Email</th>
+                <th style="text-align: center">Role</th>
                 <th style="text-align: center">Created By</th>
                 <th style="text-align: center">Created On</th>
                 <th style="text-align: center">Updated By</th>
@@ -58,6 +59,7 @@
                 <td>{{$user->first_name}}</td>
                 <td>{{$user->last_name}}</td>
                 <td>{{$user->email}}</td>
+                <td>{{$user->role_name}}</td>
                 <td>{{$user->created_by}}</td>
                 <td>{{$user->created_at}}</td>
                 <td>{{$user->updated_by}}</td>

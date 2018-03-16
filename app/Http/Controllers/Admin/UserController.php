@@ -32,40 +32,52 @@ class UserController extends Controller {
         $userID = $this->_request->get('id');
         $data = [];
         if(!empty($userID)){
-            $user = $this->_repository->find($userID);
+            $user = $this->_repository->detail($userID);
             if($user){
                 $data = $user;
             }
         }
-        return view('admins.users.detail',['data'=>$data]);
+        $role = DB::table('roles')->get();
+        return view('admins.users.detail',['data'=>$data,'roles'=>$role]);
     }
     public function save(){
         $user_id = $this->_request->get('id');
         $res = null;
         $res = self::fileUpload('/upload/avatar');
         if(empty($user_id)){
+            $pass = $this->_request->get('password')??'12345';
             $dataIns = [
                 'username'=>$this->_request->get('username'),
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
                 'email'=>$this->_request->get('email'),
-                'password'=>bcrypt($this->_request->get('password')),
+                'password'=>bcrypt($pass),
                 'image'=>!empty($res['fileName'])?$res['fileName']:'avatar.jpeg'
             ];
             $res =  $this->_repository->create($dataIns);
+            if($res && !empty($this->_request->get('role_id'))){
+                DB::table('user_roles')->insert(['user_id'=>$res->id,'role_id'=>$this->_request->get('role_id')]);
+            }
         }
         else{
             $dataUpdate = [
                 'first_name'=>$this->_request->get('first_name'),
                 'last_name'=>$this->_request->get('last_name'),
-                'password'=>bcrypt($this->_request->get('password')),
                 'email'=>$this->_request->get('email')
             ];
             if(!empty($res['fileName'])){
                 $dataUpdate['image']=$res['fileName'];
             }
+            if(!empty($this->_request->get('password'))){
+                $dataUpdate['password']=bcrypt($this->_request->get('password'));
+            }
             $this->_repository->update($user_id,$dataUpdate);
             $res = $this->_repository->find($user_id);
+            if($res && !empty($this->_request->get('role_id'))){
+                $role = DB::table('user_roles')->where('user_id',$res->id)->where('role_id',$this->_request->get('role_id'))->first();
+                if(!$role)
+                    DB::table('user_roles')->insert(['user_id'=>$res->id,'role_id'=>$this->_request->get('role_id')]);
+            }
         }
         return Redirect::back()->with('message','Operation Successful !');
     }

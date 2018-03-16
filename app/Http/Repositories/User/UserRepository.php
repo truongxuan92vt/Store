@@ -15,7 +15,13 @@ class UserRepository extends BaseRepository{
     }
 
     public function getList(){
-        $res = $this->_model->get();
+        $res = $this->_model
+            ->select('users.*','roles.role_name', 'user_roles.role_id')
+            ->leftJoin('user_roles','users.id','user_roles.user_id')
+            ->leftJoin('roles','user_roles.role_id','roles.id')
+            ->distinct('users.id')
+            ->get()
+            ;
         return $res;
     }
     public function searchUser($data){
@@ -35,5 +41,13 @@ class UserRepository extends BaseRepository{
         $res = $query->get();
         return $res;
     }
-
+    public function detail($user_id){
+        $res = $this->_model
+            ->select('users.*','roles.role_name', 'user_roles.role_id')
+            ->leftJoin('user_roles','users.id','user_roles.user_id')
+            ->leftJoin('roles','user_roles.role_id','roles.id')
+            ->where('users.id',$user_id)
+            ->first();
+        return $res;
+    }
 }
