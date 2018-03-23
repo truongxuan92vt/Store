@@ -108,6 +108,10 @@ var checkparameterURL = function (url)
 var ClosePopup = function () {
     // alert('t');
     //this.submit();
+    $(".modal:visible").modal('toggle');
+    // $('#windowpopup').removeData();
+    // // $('#windowpopup').remove();
+    // $('#windowpopup').data('modal', null);
 }
 var onclickMenu = function(url){
     $.ajax({

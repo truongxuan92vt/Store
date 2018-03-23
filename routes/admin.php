@@ -84,3 +84,25 @@ $router->group([
     ]);
 });
 
+$router->group([
+    'prefix'        =>  'role',
+    'middleware'    =>  ['auth.admin'],
+], function($router){
+    $router->get('',[
+        'as'    =>  'admin.role.index',
+        'uses'  =>  'RoleController@index'
+    ]);
+    $router->get('/search',[
+        'as'    =>'admin.role.search',
+        'uses'  =>'RoleController@search'
+    ]);
+    $router->get('detail',[
+        'as'     =>  'admin.role.detail',
+        'uses'   =>  'RoleController@detail'
+    ]);
+    $router->post('save',[
+        'as'     =>  'admin.role.save',
+        'uses'   =>  'RoleController@save'
+    ]);
+});
+

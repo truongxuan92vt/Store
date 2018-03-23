@@ -2,11 +2,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class PermissionController extends BaseController
 {
+    protected $request;
+    public function __construct(Request $_request)
+    {
+        $this->_request = $_request;
+    }
     public function index()
     {
         $role = DB::table('roles')->get();

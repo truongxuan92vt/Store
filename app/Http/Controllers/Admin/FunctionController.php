@@ -1,12 +1,12 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class FunctionController extends Controller {
+class FunctionController extends BaseController {
 
     public function __construct()
     {
@@ -57,7 +57,7 @@ class FunctionController extends Controller {
     public function getMenuByUser($user_id){
         $functions = DB::table('functions')->select('functions.*')
             ->leftJoin('function_roles','function_roles.function_id','functions.id')
-            ->leftJoin('user_roles','user_roles.id','function_roles.role_id')
+            ->leftJoin('user_roles','user_roles.role_id','function_roles.role_id')
             ->where('user_roles.user_id',$user_id)
             ->where('functions.status','EN')
             ->where('function_roles.status','EN')

@@ -1,8 +1,7 @@
 <?php
-namespace App\Http\Repositories\User;
+namespace App\Http\Repositories;
 
-use App\Models\User\User;
-use App\Http\Repositories\BaseRepository;
+use App\Models\User;
 
 class UserRepository extends BaseRepository{
     /**
@@ -49,5 +48,8 @@ class UserRepository extends BaseRepository{
             ->where('users.id',$user_id)
             ->first();
         return $res;
+    }
+    public function save($data){
+
     }
 }

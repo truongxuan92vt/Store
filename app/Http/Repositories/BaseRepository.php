@@ -94,4 +94,10 @@ abstract class BaseRepository
 
         return false;
     }
+    public function getFirstBy($key,$value){
+        return $this->_model->where($key,$value)->first();
+    }
+    public function getBy($key,$value){
+        return $this->_model->where($key,$value)->get();
+    }
 }

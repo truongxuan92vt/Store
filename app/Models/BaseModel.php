@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 class BaseModel extends Model
 {
     public $timestamps = false;
+    protected $primaryKey = 'id';
 
     public static function getTableName()
     {

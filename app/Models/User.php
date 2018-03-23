@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models;
 
 use App\Models\BaseModel;
 
 class User extends BaseModel
 {
     protected $table = 'users';
-    protected $primaryKey = 'id';
 
     protected $fillable = [
         'username',

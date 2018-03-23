@@ -22,7 +22,7 @@
             </div>
             <div class="form-group col-md-12">
                 <label class="col-sm-6">Email</label>
-                <input class="col-sm-6" id="txt_email" name="email" value="">
+                <input class="col-sm-6" id="txt_email" name="email" value="{{isset($data->email)?$data->email:''}}">
             </div>
             <div class="form-group col-md-12">
                 <label class="col-sm-6">Password</label>
@@ -32,9 +32,9 @@
                 <label class="col-sm-6">Role</label>
                 <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
                     <select class="form-control" id="cbo_role" name="role_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                        <option value="{{isset($data->role_id)?$data->role_id:'0'}}" selected="selected">Select a Permission</option>
+                        <option value="0" selected="selected">Select a Permission</option>
                         @foreach($roles as $role)
-                            <option value="{{$role->id}}">{{$role->role_name}}</option>
+                            <option value="{{$role->id}}" @if(isset($data->role_id) && $role->id==$data->role_id) selected="selected" @endif>{{$role->role_name}} </option>
                         @endforeach
                     </select>
                 </div>

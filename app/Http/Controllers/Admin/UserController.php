@@ -1,82 +1,87 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User\User;
-use App\Http\Controllers\Controller;
-use App\Http\Repositories\User\UserRepository;
+use App\Http\Controllers\BaseController;
+use App\Http\Repositories\RoleRepository;
+use App\Http\Repositories\UserRepository;
+use App\Http\Repositories\UserRoleRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
-class UserController extends Controller {
+class UserController extends BaseController {
 
-    protected $_repository;
-    protected $_request;
+    protected $request,$repos,$roleRepos,$userRoleRepos;
 
-    public function __construct(Request $request,UserRepository $repository)
+    public function __construct(Request $_request,UserRepository $_repos, RoleRepository $_roleRepos,UserRoleRepository $_userRoleRepos)
     {
-        $this->_repository = $repository;
-        $this->_request = $request;
+        $this->repos = $_repos;
+        $this->roleRepos = $_roleRepos;
+        $this->userRoleRepos = $_userRoleRepos;
+        $this->request = $_request;
     }
 
     public function index(){
-        $data = $this->_repository->getList();
+        $data = $this->repos->getList();
         return view('admins.users.index',['data'=>$data]);
     }
     public function search(){
-        $res = $this->_repository->searchUser($this->_request);
+        $res = $this->repos->searchUser($this->request);
         return $this->respond(true,$res,'');
     }
     public function detail(){
-        $userID = $this->_request->get('id');
+        $userID = $this->request->get('id');
         $data = [];
         if(!empty($userID)){
-            $user = $this->_repository->detail($userID);
+            $user = $this->repos->detail($userID);
             if($user){
                 $data = $user;
             }
         }
-        $role = DB::table('roles')->get();
+        $role = $this->roleRepos->getAll();
         return view('admins.users.detail',['data'=>$data,'roles'=>$role]);
     }
     public function save(){
-        $user_id = $this->_request->get('id');
+        $user_id = $this->request->get('id');
         $res = null;
         $res = self::fileUpload('/upload/avatar');
         if(empty($user_id)){
-            $pass = $this->_request->get('password')??'12345';
+            $pass = $this->request->get('password')??'12345';
             $dataIns = [
-                'username'=>$this->_request->get('username'),
-                'first_name'=>$this->_request->get('first_name'),
-                'last_name'=>$this->_request->get('last_name'),
-                'email'=>$this->_request->get('email'),
+                'username'=>$this->request->get('username'),
+                'first_name'=>$this->request->get('first_name'),
+                'last_name'=>$this->request->get('last_name'),
+                'email'=>$this->request->get('email'),
                 'password'=>bcrypt($pass),
                 'image'=>!empty($res['fileName'])?$res['fileName']:'avatar.jpeg'
             ];
-            $res =  $this->_repository->create($dataIns);
-            if($res && !empty($this->_request->get('role_id'))){
-                DB::table('user_roles')->insert(['user_id'=>$res->id,'role_id'=>$this->_request->get('role_id')]);
+            $res =  $this->repos->create($dataIns);
+            if($res && !empty($this->request->get('role_id'))){
+                $this->userRoleRepos->create(['user_id'=>$res->id,'role_id'=>$this->request->get('role_id')]);
             }
         }
         else{
             $dataUpdate = [
-                'first_name'=>$this->_request->get('first_name'),
-                'last_name'=>$this->_request->get('last_name'),
-                'email'=>$this->_request->get('email')
+                'first_name'=>$this->request->get('first_name'),
+                'last_name'=>$this->request->get('last_name'),
+                'email'=>$this->request->get('email')
             ];
             if(!empty($res['fileName'])){
                 $dataUpdate['image']=$res['fileName'];
             }
-            if(!empty($this->_request->get('password'))){
-                $dataUpdate['password']=bcrypt($this->_request->get('password'));
+            if(!empty($this->request->get('password'))){
+                $dataUpdate['password']=bcrypt($this->request->get('password'));
             }
-            $this->_repository->update($user_id,$dataUpdate);
-            $res = $this->_repository->find($user_id);
-            if($res && !empty($this->_request->get('role_id'))){
-                $role = DB::table('user_roles')->where('user_id',$res->id)->where('role_id',$this->_request->get('role_id'))->first();
+            $this->repos->update($user_id,$dataUpdate);
+            $res = $this->repos->find($user_id);
+            if($res && !empty($this->request->get('role_id'))){
+                $role = $this->userRoleRepos->getFirstBy('user_id',$res->id);
                 if(!$role)
-                    DB::table('user_roles')->insert(['user_id'=>$res->id,'role_id'=>$this->_request->get('role_id')]);
+                    $this->userRoleRepos->create(['user_id'=>$res->id,'role_id'=>$this->request->get('role_id')]);
+                else{
+                    $role->role_id = $this->request->get('role_id');
+                    $role->update();
+                }
             }
         }
         return Redirect::back()->with('message','Operation Successful !');
@@ -86,7 +91,7 @@ class UserController extends Controller {
             'status'=>false,
             'fileName'=>''
         ];
-        $request = $this->_request;
+        $request = $this->request;
 //        $this->validate($request, [
 //            'image' => 'required|image|mimes:jfif,jpeg,png,jpg,gif,svg|max:2048',
 //        ]);
