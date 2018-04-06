@@ -22,7 +22,9 @@ class FunctionRoleRepository extends BaseRepository
         $res = $this->model->select('function_id')->where('role_id', $roleId)->where("status", ENABLE)->get();
         return $res;
     }
-    public function updateFunctionRole($roleId, $functionId, $status){
+
+    public function updateFunctionRole($roleId, $functionId, $status)
+    {
         try {
             DB::beginTransaction();
             $children = Functions::where('parent_id', $functionId)->where('status', 'EN')->get();
