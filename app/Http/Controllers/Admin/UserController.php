@@ -27,7 +27,7 @@ class UserController extends BaseController {
     }
     public function search(){
         $res = $this->repos->searchUser($this->request);
-        return $this->respond(true,$res,'');
+        return $this->respond('',true,$res);
     }
     public function detail(){
         $userID = $this->request->get('id');

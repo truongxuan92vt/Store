@@ -14,7 +14,7 @@ class UserRepository extends BaseRepository{
     }
 
     public function getList(){
-        $res = $this->_model
+        $res = $this->model
             ->select('users.*','roles.role_name', 'user_roles.role_id')
             ->leftJoin('user_roles','users.id','user_roles.user_id')
             ->leftJoin('roles','user_roles.role_id','roles.id')
@@ -24,7 +24,7 @@ class UserRepository extends BaseRepository{
         return $res;
     }
     public function searchUser($data){
-        $query = $this->_model->select('*');
+        $query = $this->model->select('*');
         if(!empty($data['userName'])){
             $query->where('username','like','%'.$data['userName'].'%');
         }
@@ -41,7 +41,7 @@ class UserRepository extends BaseRepository{
         return $res;
     }
     public function detail($user_id){
-        $res = $this->_model
+        $res = $this->model
             ->select('users.*','roles.role_name', 'user_roles.role_id')
             ->leftJoin('user_roles','users.id','user_roles.user_id')
             ->leftJoin('roles','user_roles.role_id','roles.id')

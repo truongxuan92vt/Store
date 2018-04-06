@@ -50,6 +50,6 @@ class RoleController extends BaseController
     }
     public function search(){
         $res = $this->repos->searchRole($this->request);
-        return $this->respond(true,$res,'');
+        return $this->respond('',true,$res);
     }
 }

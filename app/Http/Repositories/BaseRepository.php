@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Repositories;
 
 abstract class BaseRepository
@@ -6,7 +7,7 @@ abstract class BaseRepository
     /**
      * @var \Illuminate\Database\Eloquent\Model
      */
-    protected $_model;
+    protected $model;
 
     /**
      * EloquentRepository constructor.
@@ -27,7 +28,7 @@ abstract class BaseRepository
      */
     public function setModel()
     {
-        $this->_model = app()->make(
+        $this->model = app()->make(
             $this->getModel()
         );
     }
@@ -38,7 +39,7 @@ abstract class BaseRepository
      */
     public function getAll()
     {
-        return $this->_model->all();
+        return $this->model->all();
     }
 
     /**
@@ -48,7 +49,7 @@ abstract class BaseRepository
      */
     public function find($id)
     {
-        $result = $this->_model->find($id);
+        $result = $this->model->find($id);
         return $result;
     }
 
@@ -59,7 +60,7 @@ abstract class BaseRepository
      */
     public function create(array $attributes)
     {
-        return $this->_model->create($attributes);
+        return $this->model->create($attributes);
     }
 
     /**
@@ -71,7 +72,7 @@ abstract class BaseRepository
     public function update($id, array $attributes)
     {
         $result = $this->find($id);
-        if($result) {
+        if ($result) {
             $result->update($attributes);
             return $result;
         }
@@ -87,17 +88,25 @@ abstract class BaseRepository
     public function delete($id)
     {
         $result = $this->find($id);
-        if($result) {
+        if ($result) {
             $result->delete();
             return true;
         }
 
         return false;
     }
-    public function getFirstBy($key,$value){
-        return $this->_model->where($key,$value)->first();
+
+    public function getFirstBy($key, $value)
+    {
+        return $this->model->where($key, $value)->first();
     }
-    public function getBy($key,$value){
-        return $this->_model->where($key,$value)->get();
+
+    public function getBy($key, $value)
+    {
+        return $this->model->where($key, $value)->get();
+    }
+
+    public function get(){
+        return $this->model->get();
     }
 }

@@ -53,5 +53,8 @@ class BaseModel extends Model
             $table->created_at = date('Y-m-d H:i:s');
             $table->updated_at = date('Y-m-d H:i:s');
         });
+        static::retrieved(function ($model) {
+
+        });
     }
 }

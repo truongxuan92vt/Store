@@ -15,14 +15,14 @@ class RoleRepository extends BaseRepository
         return Role::class;
     }
     public function getList(){
-        $data = $this->_model
+        $data = $this->model
             ->select(Role::getTableName().'.*',CodeDetail::getTableName().'.cm_name')
             ->leftJoin(CodeDetail::getTableName(),CodeDetail::getTableName().'.cm_code',Role::getTableName().'.status')
             ->get();
         return $data;
     }
     public function searchRole($data){
-        $query = $this->_model
+        $query = $this->model
             ->select(Role::getTableName().'.*',CodeDetail::getTableName().'.cm_name')
             ->leftJoin(CodeDetail::getTableName(),CodeDetail::getTableName().'.cm_code',Role::getTableName().'.status');
         if(isset($data['roleName']) && !empty($data['roleName'])){

@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
 //    protected $request;
 //    public function __construct(Request $_request)
 //    {
@@ -42,13 +43,13 @@ class BaseController extends Controller
 //    }
     public function respondForward($response)
     {
-        return $this->respond($response['status'],$response['data']??null,$response['message']??"",$response['statusCode']??null,$response['headers']??[]);
+        return $this->respond($response['message'] ?? "", $response['status'], $response['data'] ?? null,  $response['statusCode'] ?? null, $response['headers'] ?? []);
     }
 
-    public function respond($status,$data=null,$message="",$statusCode=null,$headers = [])
+    public function respond($message = "", $status=false, $data = null,  $statusCode = null, $headers = [])
     {
-        if($statusCode===null)
-            $statusCode=200;
+        if ($statusCode === null)
+            $statusCode = 200;
         $return = [];
         $return['status'] = $status;
         $return['data'] = $data;
