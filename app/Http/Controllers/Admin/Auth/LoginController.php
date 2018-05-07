@@ -50,6 +50,7 @@ class LoginController extends BaseController
         $username = $request->get('username');
         $password = $request->get('password');
         $remember = $request->get('remember');
+        session(['LIMIT' => PAGINATION]);
         if($remember){
             $auth = Auth::attempt(['username' => $username, 'password' => $password],1);
         }

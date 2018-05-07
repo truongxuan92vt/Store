@@ -30,7 +30,12 @@ class BaseModel extends Model
 
     public function getCreatedAtAttribute($attr)
     {
-        return Carbon::parse($attr)->format('m/d/Y H:m:s');
+        return Carbon::parse($attr)->format('H:m:s d-m-Y');
+    }
+
+    public function getUpdatedAtAttribute($attr)
+    {
+        return Carbon::parse($attr)->format('H:m:s d-m-Y');
     }
 
     public static function boot() {

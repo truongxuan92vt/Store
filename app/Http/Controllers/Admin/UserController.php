@@ -5,6 +5,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Repositories\RoleRepository;
 use App\Http\Repositories\UserRepository;
 use App\Http\Repositories\UserRoleRepository;
+use App\Libraries\GoogleAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -23,6 +24,7 @@ class UserController extends BaseController {
 
     public function index(){
         $data = $this->repos->getList();
+//        dd(json_decode(json_encode($data)));
         return view('admins.users.index',['data'=>$data]);
     }
     public function search(){
@@ -67,7 +69,7 @@ class UserController extends BaseController {
                 'email'=>$this->request->get('email')
             ];
             if(!empty($res['fileName'])){
-                $dataUpdate['image']=$res['fileName'];
+                $dataUpdate['image']=$res['id'];
             }
             if(!empty($this->request->get('password'))){
                 $dataUpdate['password']=bcrypt($this->request->get('password'));
@@ -97,13 +99,22 @@ class UserController extends BaseController {
 //        ]);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $name = time().'.'.$image->getClientOriginalExtension();
+            $currentDate = date('YmdHis');
+            $name = $currentDate.'.'.$image->getClientOriginalExtension();
+            $result = GoogleAPI::uploadImage($image,$name);
+//            dd(json_encode($result->getId()));
             $destinationPath = public_path($path);
             $image->move($destinationPath, $name);
 //            $this->save();
             $result['status']=true;
             $result['fileName']=$name;
+            $result['id']=$result->getId();
         }
         return $result;
+    }
+    public function setSession(){
+        $limit = $this->request->get('limit');
+        session(['LIMIT'=>$limit]);
+        return $this->respondForward(['status' => true, 'message' => 'Permission was updated success']);
     }
 }
