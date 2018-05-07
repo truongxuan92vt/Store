@@ -65,6 +65,10 @@ $router->group([
         'as'     =>  'admin.user.save',
         'uses'   =>  'UserController@save'
     ]);
+    $router->put('set-session',[
+        'as'     =>  'admin.user.setSession',
+        'uses'   =>  'UserController@setSession'
+    ]);
 });
 $router->group([
     'prefix'     => 'permission',

@@ -227,5 +227,12 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    'google' => [
+        'application_name' => 'truongxuan_web',
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect_uri' => env('GOOGLE_REDIRECT_URI'),
+//        'developer_key' => env('GOOGLE_DEVELOPER_KEY'),
+//        'prompt' => env('GOOGLE_PROMPT'),
+    ],
 ];

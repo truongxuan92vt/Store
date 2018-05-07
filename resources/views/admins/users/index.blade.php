@@ -50,11 +50,11 @@
             </tr>
         </thead>
         <tbody>
-            <?php $i=1;?>
+            <?php $i=$data->firstItem();?>
             @foreach($data as $user)
             <tr>
                 <td style="text-align: center">{{$i}}</td>
-                <td style="text-align: center"><img src="{{!empty($user->image)?'../upload/avatar/'.$user->image:'../image/avatar.jpeg'}}" height="30" width="30"></td>
+                <td style="text-align: center"><img src="{{!empty($user->image)?PRE_LINK_IMAGE_ONL.$user->image:'../image/avatar.jpeg'}}" height="30" width="30"></td>
                 <td><a href="#" onclick="openUserDetail('{{$user->id}}')">{{$user->username}}</a></td>
                 <td>{{$user->first_name}}</td>
                 <td>{{$user->last_name}}</td>
@@ -67,9 +67,47 @@
             </tr>
             <?php $i+=1;?>
             @endforeach
+            <tr>
+                <td colspan="11">
+                    <div style="margin-top: 10px;">
+                        <div style="float: left;">
+                            <?php echo $data->links();?>
+                        </div>
+                        <p style="background: white; float: right; margin-top: 8px;margin-right: 10px;">{{$data->count()}}/{{$data->total()}} items</p>
+                        <div style="padding-left: 0px; padding-right: 0px; height: 30px; float: right; margin-right: 10px;">
+                            <select class="form-control" id="cbo_limit" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px; margin-top: 3px; width: 65px">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </td>
+
+            </tr>
         </tbody>
     </table>
+
     <script>
+        $(document).ready(function(){
+            $('#cbo_limit').val({{session('LIMIT')}});
+        });
+        $('#cbo_limit').on('change',function (e) {
+            $.ajax({
+                url: "{{route('admin.user.setSession')}}",
+                data: JSON.stringify({ limit: $('#cbo_limit').val() }),
+                type:'put',
+                dataType:'json',
+                contentType:'application/json',
+                success:function(res){
+                    location.reload();
+                }
+            });
+
+        });
         $('#frm_searchUser').keypress(function(event) {
             var keycode = event.keyCode || event.which;
             if(keycode == '13') {
@@ -128,7 +166,7 @@
                         }
                         image = '../image/avatar.jpeg';
                         if(row['image'] != null && row['image']!=''){
-                            image = '../upload/avatar/'+row['image'];
+                            image = "{{PRE_LINK_IMAGE_ONL}}"+row['image'];
                         }
                         newRowContent = "<tr>" +
                                 "<td style='text-align: center'>"+num+"</td>" +
@@ -153,6 +191,10 @@
         }
     </script>
     <style>
+        .pagination{
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
         #tbl_user td
         {
             /*text-align:center;*/

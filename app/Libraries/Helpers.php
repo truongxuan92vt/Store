@@ -8,4 +8,10 @@ class Helpers{
         }
         return $res;
     }
+    public static function getLimit(){
+        $limit = PAGINATION;
+        if(!empty(session('LIMIT')))
+            $limit = session('LIMIT');
+        return $limit;
+    }
 }

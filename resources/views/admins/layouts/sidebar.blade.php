@@ -20,7 +20,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image" style="margin-top: 5%;margin-left: 3%;">
-                <img src="{{!empty(Auth::user()->image)?'../upload/avatar/'.Auth::user()->image:'../image/avatar.jpeg'}}" class="img-circle" alt="User Image">
+                <img src="{{!empty(Auth::user()->image)?PRE_LINK_IMAGE_ONL.Auth::user()->image:'../image/avatar.jpeg'}}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>{{ Auth::user()->username }}</p>

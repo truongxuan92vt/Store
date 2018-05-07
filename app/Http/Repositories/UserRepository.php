@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Repositories;
 
+use App\Libraries\Helpers;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository extends BaseRepository{
     /**
@@ -14,13 +16,28 @@ class UserRepository extends BaseRepository{
     }
 
     public function getList(){
+        $selectField = array(
+            'users.id',
+            'users.username',
+            'users.password',
+            'users.email',
+            'users.first_name',
+            'users.last_name',
+            'users.image',
+            'users.created_by',
+            'users.created_at',
+            'users.updated_by',
+            'users.updated_at',
+            'roles.role_name',
+            'roles.role_name',
+            'user_roles.role_id'
+        );
         $res = $this->model
-            ->select('users.*','roles.role_name', 'user_roles.role_id')
+            ->select($selectField)
             ->leftJoin('user_roles','users.id','user_roles.user_id')
             ->leftJoin('roles','user_roles.role_id','roles.id')
-            ->distinct('users.id')
-            ->get()
-            ;
+            ->groupBy($selectField)
+            ->paginate( Helpers::getLimit(),['users.id']);
         return $res;
     }
     public function searchUser($data){
