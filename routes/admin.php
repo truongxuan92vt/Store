@@ -110,3 +110,26 @@ $router->group([
     ]);
 });
 
+$router->group([
+    'prefix'        =>  'category',
+    'middleware'    =>  ['auth.admin'],
+], function($router){
+    $router->get('',[
+        'as'    =>  'admin.category.index',
+        'uses'  =>  'CategoryController@index'
+    ]);
+    $router->get('/search',[
+        'as'    =>'admin.category.search',
+        'uses'  =>'CategoryController@search'
+    ]);
+    $router->get('detail',[
+        'as'     =>  'admin.category.detail',
+        'uses'   =>  'CategoryController@detail'
+    ]);
+    $router->post('save',[
+        'as'     =>  'admin.category.save',
+        'uses'   =>  'CategoryController@save'
+    ]);
+});
+
+

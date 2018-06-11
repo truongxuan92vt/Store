@@ -10,7 +10,7 @@ class UserRepository extends BaseRepository{
      * get model
      * @return string
      */
-    public function getModel()
+    public function model()
     {
         return User::class;
     }

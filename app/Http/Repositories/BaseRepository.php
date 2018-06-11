@@ -21,7 +21,7 @@ abstract class BaseRepository
      * get model
      * @return string
      */
-    abstract public function getModel();
+    abstract public function model();
 
     /**
      * Set model
@@ -29,7 +29,7 @@ abstract class BaseRepository
     public function setModel()
     {
         $this->model = app()->make(
-            $this->getModel()
+            $this->model()
         );
     }
 

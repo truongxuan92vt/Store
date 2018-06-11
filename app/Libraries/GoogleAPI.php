@@ -41,15 +41,19 @@ class GoogleAPI{
         return $client;
     }
 
-    public static function uploadImage($fileUpload,$name=null){
+    public static function uploadImage($fileUpload,$name=null,$folderId=null,$folderName=null){
         $client = self::getClient();
 
         $service = new \Google_Service_Drive($client);
 
+        if(empty($folderId)){
+            $folderId=env('GOOGLE_FOLDER_ID');
+        }
+
         //Insert a file
         $file = new \Google_Service_Drive_DriveFile([
             'name'=>$name,
-            'parents'=>array(env('GOOGLE_FOLDER_ID'))
+            'parents'=>array($folderId)
         ]);
         $data = file_get_contents($fileUpload);
 

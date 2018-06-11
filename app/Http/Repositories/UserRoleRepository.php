@@ -9,7 +9,7 @@ class UserRoleRepository extends BaseRepository
      * get model
      * @return string
      */
-    public function getModel()
+    public function model()
     {
         return UserRole::class;
     }

@@ -3,8 +3,8 @@
     <input type="hidden" id="user_id" name="id" value="{{isset($data->id)?$data->id:''}}">
     <div class="col-lg-12">
         <div class="col-md-3">
-            <img id="image" src="{{!empty($data->image)?PRE_LINK_IMAGE_ONL.$data->image:'../image/avatar.jpeg'}}" alt="your image" height="180" width="200" style="margin-bottom: 10px;"/>
-            <input type='file' id="imgInp" name="image" value="{{!empty($data->image)?PRE_LINK_IMAGE_ONL.$data->image:'../image/avatar.jpeg'}}"/>
+            <img id="image" src="{{!empty($data->image)?SERVER_IMAGE.$data->image:'../image/avatar.jpeg'}}" alt="your image" height="180" width="200" style="margin-bottom: 10px;"/>
+            <input type='file' id="imgInp" name="image" value="{{!empty($data->image)?SERVER_IMAGE.$data->image:'../image/avatar.jpeg'}}"/>
         </div>
         <div class="col-md-9">
             <div class="form-group col-md-12">

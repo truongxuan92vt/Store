@@ -10,7 +10,7 @@ class FunctionRepository extends BaseRepository
      * get model
      * @return string
      */
-    public function getModel()
+    public function model()
     {
         return Functions::class;
     }

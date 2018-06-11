@@ -9,7 +9,7 @@ class CodeDetailRepository extends BaseRepository
      * get model
      * @return string
      */
-    public function getModel()
+    public function model()
     {
         return CodeDetail::class;
     }

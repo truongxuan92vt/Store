@@ -6,6 +6,7 @@ use App\Http\Repositories\RoleRepository;
 use App\Http\Repositories\UserRepository;
 use App\Http\Repositories\UserRoleRepository;
 use App\Libraries\GoogleAPI;
+use App\Libraries\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -46,7 +47,7 @@ class UserController extends BaseController {
     public function save(){
         $user_id = $this->request->get('id');
         $res = null;
-        $res = self::fileUpload('/upload/avatar');
+        $file = Helpers::uploadImage($this->request,'/upload/avatar');
         if(empty($user_id)){
             $pass = $this->request->get('password')??'12345';
             $dataIns = [
@@ -55,7 +56,7 @@ class UserController extends BaseController {
                 'last_name'=>$this->request->get('last_name'),
                 'email'=>$this->request->get('email'),
                 'password'=>bcrypt($pass),
-                'image'=>!empty($res['fileName'])?$res['fileName']:'avatar.jpeg'
+                'image'=>!empty($file['fileName'])?$file['fileName']:'avatar.jpeg'
             ];
             $res =  $this->repos->create($dataIns);
             if($res && !empty($this->request->get('role_id'))){
@@ -68,8 +69,8 @@ class UserController extends BaseController {
                 'last_name'=>$this->request->get('last_name'),
                 'email'=>$this->request->get('email')
             ];
-            if(!empty($res['fileName'])){
-                $dataUpdate['image']=$res['id'];
+            if(!empty($file['fileName'])){
+                $dataUpdate['image']=$file['fileName'];
             }
             if(!empty($this->request->get('password'))){
                 $dataUpdate['password']=bcrypt($this->request->get('password'));
@@ -87,30 +88,6 @@ class UserController extends BaseController {
             }
         }
         return Redirect::back()->with('message','Operation Successful !');
-    }
-    public function fileUpload($path) {
-        $result = [
-            'status'=>false,
-            'fileName'=>''
-        ];
-        $request = $this->request;
-//        $this->validate($request, [
-//            'image' => 'required|image|mimes:jfif,jpeg,png,jpg,gif,svg|max:2048',
-//        ]);
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $currentDate = date('YmdHis');
-            $name = $currentDate.'.'.$image->getClientOriginalExtension();
-            $result = GoogleAPI::uploadImage($image,$name);
-//            dd(json_encode($result->getId()));
-            $destinationPath = public_path($path);
-            $image->move($destinationPath, $name);
-//            $this->save();
-            $result['status']=true;
-            $result['fileName']=$name;
-            $result['id']=$result->getId();
-        }
-        return $result;
     }
     public function setSession(){
         $limit = $this->request->get('limit');

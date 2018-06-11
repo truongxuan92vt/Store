@@ -54,7 +54,7 @@
             @foreach($data as $user)
             <tr>
                 <td style="text-align: center">{{$i}}</td>
-                <td style="text-align: center"><img src="{{!empty($user->image)?PRE_LINK_IMAGE_ONL.$user->image:'../image/avatar.jpeg'}}" height="30" width="30"></td>
+                <td style="text-align: center"><img src="{{!empty($user->image)?SERVER_IMAGE.$user->image:'../image/avatar.jpeg'}}" height="30" width="30"></td>
                 <td><a href="#" onclick="openUserDetail('{{$user->id}}')">{{$user->username}}</a></td>
                 <td>{{$user->first_name}}</td>
                 <td>{{$user->last_name}}</td>
@@ -166,7 +166,7 @@
                         }
                         image = '../image/avatar.jpeg';
                         if(row['image'] != null && row['image']!=''){
-                            image = "{{PRE_LINK_IMAGE_ONL}}"+row['image'];
+                            image = "{{SERVER_IMAGE}}"+row['image'];
                         }
                         newRowContent = "<tr>" +
                                 "<td style='text-align: center'>"+num+"</td>" +
