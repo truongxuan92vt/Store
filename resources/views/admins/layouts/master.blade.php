@@ -63,51 +63,15 @@
 
         <script src="../js/notify.js"></script>
         <script type="text/javascript" src="{{ URL::asset('js/util.js') }}"></script>
+        <link rel="stylesheet" href="../plugin/loader/main.css">
+        <script src="../plugin/loader/main.js"></script>
     </head>
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet"/>--}}
-    {{--<link href="https://fonts.googleapis.com/css?family=Alex+Brush" rel="stylesheet">--}}
-    <div id="loading"></div>
-    <style>
-        body {
-            background: #FFF url("https://i.imgur.com/KheAuef.png") top left repeat-x;
-            /*font-family: 'Alex Brush', cursive !important;*/
-        }
-
-        #loading {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(192, 192, 192, 0.5);
-            background-image: url("https://i.stack.imgur.com/MnyxU.gif");
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    </style>
-    <script>
-        function onReady(callback) {
-            var intervalId = window.setInterval(function() {
-                if (document.getElementsByTagName('body')[0] !== undefined) {
-                    window.clearInterval(intervalId);
-                    callback.call(this);
-                }
-            }, 100);
-        }
-
-        function setVisible(selector, visible) {
-            document.querySelector(selector).style.display = visible ? 'block' : 'none';
-        }
-
-        onReady(function() {
-            // setVisible('.page', true);
-            setVisible('#loading', false);
-        });
-    </script>
     <body class="hold-transition skin-blue sidebar-mini fixed">
-
+        <div id="loader-wrapper">
+            <div id="loader"></div>
+            {{--<div class="loader-section section-left"></div>--}}
+            {{--<div class="loader-section section-right"></div>--}}
+        </div>
         <div class="wrapper">
             <!-- Main Header-->
             @include('admins.layouts.header')
