@@ -58,13 +58,12 @@
         <script src="../AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
         <!-- AdminLTE App -->
         <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
-        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="../AdminLTE/dist/js/demo.js"></script>
 
-        <script src="../js/notify.js"></script>
         <script type="text/javascript" src="{{ URL::asset('js/util.js') }}"></script>
         <link rel="stylesheet" href="../plugin/loader/main.css">
-        <script src="../plugin/loader/main.js"></script>
+        <link rel="stylesheet" type="text/css" href="../plugin/dataTables/datatables.css"/>
+        <script type="text/javascript" src="../plugin/dataTables/datatables.js"></script>
+        <script type="text/javascript" src="../plugin/notify/notify.js"></script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini fixed">
         <div id="loader-wrapper">
@@ -162,13 +161,31 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function(xhr) {
+                $('body').removeClass('loaded');
+            },
+            complete   : function () {
+                $('body').addClass('loaded');
+            },
+            error: function (x, status, error) {
+                if (x.status == 403) {
+                    alert("Sorry, your session has expired. Please login again to continue");
+                    window.location.href ="/Account/Login";
+                }
+                else {
+                    alert("An error occurred: " + status + "nError: " + error);
+                }
             }
         });
+        $( document ).ajaxComplete(function( event, request, settings ) {
+            $('body').addClass('loaded');
+        });
         $(document).ready(function(){
-            // $('.sidebar-menu li').removeClass('active');
-            // $('#m_2').addClass("active");
-            // $('#m_3').addClass("active");
-
+            setTimeout(function(){
+                $('body').addClass('loaded');
+                // $('h1').css('color','#222222');
+            }, 300);
         });
     </script>
 </html>
