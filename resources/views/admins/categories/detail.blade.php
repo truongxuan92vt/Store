@@ -6,7 +6,7 @@
             <input class="col-sm-6" type="text" id="txt_categoryName_detail" name="category_name" value="{{isset($data->category_name)?$data->category_name:''}}">
         </div>
         <div class="form-group col-md-12">
-            <label class="col-sm-6">Role</label>
+            <label class="col-sm-6">Status</label>
             <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
                 <select class="form-control" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                     <option value="0" selected="">Select a Status</option>
