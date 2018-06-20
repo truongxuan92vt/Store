@@ -118,6 +118,10 @@ $router->group([
         'as'    =>  'admin.category.index',
         'uses'  =>  'CategoryController@index'
     ]);
+    $router->get('list',[
+        'as'    =>  'admin.category.list',
+        'uses'    =>  'CategoryController@list',
+    ]);
     $router->get('/search',[
         'as'    =>'admin.category.search',
         'uses'  =>'CategoryController@search'

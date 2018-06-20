@@ -13,8 +13,18 @@ class CategoryRepository extends BaseRepository
     {
         return Category::class;
     }
-    public function getList(){
-        $res = $this->model->get();
+    public function getList($data){
+        $res = $this->model;
+        if(!empty($data->status)){
+            $res = $res->where('status',$data->status);
+        }
+        if(!empty($data->note)){
+            $res = $res->where('note','like','%'.$data->note.'%');
+        }
+        if(!empty($data->category_name)){
+            $res = $res->where('category_name','like','%'.$data->category_name.'%');
+        }
+        $res = $res->get();
         return $res;
     }
 }

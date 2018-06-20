@@ -6,100 +6,127 @@
 @section('parent2', 'Master Data')
 @section('parent3', 'Category')
 @section('content')
-<div id="frm_searchCategory">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group col-md-12">
-                <label class="col-sm-6"> Username</label>
-                <input class="col-sm-6" id="txt_usernameSearch" value="">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <div id="frm_searchCategory">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group col-md-12">
+                    <label class="col-sm-6">Category Name</label>
+                    <input class="col-sm-6" id="txt_categoryName_search" value="">
+                </div>
             </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">First name</label>
-                <input class="col-sm-6" id="txt_firtNameSearch" value="">
+            <div class="col-md-6">
+                <div class="form-group col-md-12">
+                    <label class="col-sm-6">Description</label>
+                    <input class="col-sm-6" id="txt_note_search" value="">
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Last name</label>
-                <input class="col-sm-6" id="txt_lastNameSearch" value="">
-            </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Email</label>
-                <input class="col-sm-6" id="txt_emailSearch" value="">
+            <div class="col-md-6">
+                <div class="form-group col-md-12">
+                    <label class="col-sm-6">Status</label>
+                    <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+                        <select class="form-control" id="cbo_status_search" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                            <option value="" selected="">Select a status</option>
+                            @foreach($statusList as $item)
+                                <option value="{{$item['value']}}">{{$item['text']}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div style="text-align: center;">
-    <button id='btn_create' type="button" class="btn btn-success btn-sm">Create</button>
-    <button type="btn_search" class="btn btn-primary btn-sm">Search</button>
-</div>
-<br>
-<div style="background-color: white">
-    <table id="example" class="table table-striped table-bordered dt-responsive" style="width:100%"></table>
-</div>
+    <div style="text-align: center;">
+        <button id='btn_create' type="button" class="btn btn-success btn-sm">Create</button>
+        <button type="btn_search" class="btn btn-primary btn-sm" onclick="searchCategory()">Search</button>
+    </div>
+    <br>
+    <div style="background-color: white">
+        <table id="example" class="table table-striped table-bordered dt-responsive" style="width:100%"></table>
+    </div>
 
-<script>
-    var dataSet = [
-        [ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ],
-        [ "Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750" ],
-        [ "Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000" ],
-        [ "Cedric Kelly", "Senior Javascript Developer", "Edinburgh", "6224", "2012/03/29", "$433,060" ],
-        [ "Airi Satou", "Accountant", "Tokyo", "5407", "2008/11/28", "$162,700" ],
-        [ "Brielle Williamson", "Integration Specialist", "New York", "4804", "2012/12/02", "$372,000" ],
-        [ "Herrod Chandler", "Sales Assistant", "San Francisco", "9608", "2012/08/06", "$137,500" ],
-        [ "Rhona Davidson", "Integration Specialist", "Tokyo", "6200", "2010/10/14", "$327,900" ],
-        [ "Colleen Hurst", "Javascript Developer", "San Francisco", "2360", "2009/09/15", "$205,500" ],
-        [ "Sonya Frost", "Software Engineer", "Edinburgh", "1667", "2008/12/13", "$103,600" ],
-        [ "Jena Gaines", "Office Manager", "London", "3814", "2008/12/19", "$90,560" ],
-        [ "Quinn Flynn", "Support Lead", "Edinburgh", "9497", "2013/03/03", "$342,000" ],
-        [ "Charde Marshall", "Regional Director", "San Francisco", "6741", "2008/10/16", "$470,600" ],
-        [ "Haley Kennedy", "Senior Marketing Designer", "London", "3597", "2012/12/18", "$313,500" ],
-        [ "Tatyana Fitzpatrick", "Regional Director", "London", "1965", "2010/03/17", "$385,750" ],
-        [ "Michael Silva", "Marketing Designer", "London", "1581", "2012/11/27", "$198,500" ],
-        [ "Paul Byrd", "Chief Financial Officer (CFO)", "New York", "3059", "2010/06/09", "$725,000" ],
-        [ "Gloria Little", "Systems Administrator", "New York", "1721", "2009/04/10", "$237,500" ],
-        [ "Bradley Greer", "Software Engineer", "London", "2558", "2012/10/13", "$132,000" ],
-        [ "Dai Rios", "Personnel Lead", "Edinburgh", "2290", "2012/09/26", "$217,500" ],
-        [ "Jenette Caldwell", "Development Lead", "New York", "1937", "2011/09/03", "$345,000" ],
-        [ "Yuri Berry", "Chief Marketing Officer (CMO)", "New York", "6154", "2009/06/25", "$675,000" ],
-        [ "Caesar Vance", "Pre-Sales Support", "New York", "8330", "2011/12/12", "$106,450" ],
-        [ "Doris Wilder", "Sales Assistant", "Sidney", "3023", "2010/09/20", "$85,600" ],
-        [ "Angelica Ramos", "Chief Executive Officer (CEO)", "London", "5797", "2009/10/09", "$1,200,000" ],
-        [ "Gavin Joyce", "Developer", "Edinburgh", "8822", "2010/12/22", "$92,575" ],
-        [ "Jennifer Chang", "Regional Director", "Singapore", "9239", "2010/11/14", "$357,650" ],
-        [ "Brenden Wagner", "Software Engineer", "San Francisco", "1314", "2011/06/07", "$206,850" ],
-        [ "Fiona Green", "Chief Operating Officer (COO)", "San Francisco", "2947", "2010/03/11", "$850,000" ],
-        [ "Shou Itou", "Regional Marketing", "Tokyo", "8899", "2011/08/14", "$163,000" ],
-        [ "Michelle House", "Integration Specialist", "Sidney", "2769", "2011/06/02", "$95,400" ],
-        [ "Suki Burks", "Developer", "London", "6832", "2009/10/22", "$114,500" ],
-        [ "Prescott Bartlett", "Technical Author", "London", "3606", "2011/05/07", "$145,000" ],
-        [ "Gavin Cortez", "Team Leader", "San Francisco", "2860", "2008/10/26", "$235,500" ],
-        [ "Martena Mccray", "Post-Sales support", "Edinburgh", "8240", "2011/03/09", "$324,050" ],
-        [ "Unity Butler", "Marketing Designer", "San Francisco", "5384", "2009/12/09", "$85,675" ]
-    ];
-
-    $(document).ready(function() {
-        $('#example').DataTable({
-            "searching": false,
-            "dom": "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i> <'col-sm-2'l><'col-sm-5'p>>",
-            "ajax": {
-                "url": "data.json",
-                "contentType": "application/json",
-                "type": "POST",
-                "data": function ( d ) {
-                    return JSON.stringify( d );
-                }
-            },
-            columns: [
-                { title: "Name" },
-                { title: "Position" },
-                { title: "Office" },
-                { title: "Extn." },
-                { title: "Start date" },
-                { title: "Salary" }
-            ]
+    <script>
+        $('#btn_create').on('click',function(){
+            loadpopup('category/detail','<b>New</b>','60%',false);
         });
-    } );
-</script>
+        function searchCategory(){
+            categoryTbl.ajax.reload( null, false );
+        }
+        function openCategoryDetail(id) {
+            loadpopup('category/detail?id='+id,'<b>Detail</b>','60%',false);
+        }
+        $(document).ready(function() {
+            categoryTbl = $('#example').DataTable({
+                "searching": false,
+                "dom": "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i> <'col-sm-2'l><'col-sm-5'p>>",
+                "ajax": {
+                    "url": "{{route('admin.category.list')}}",
+                    "contentType": "application/json",
+                    "type": "GET",
+                    "dataType":'json',
+                    "dataSrc":function(res){
+                        if(res.status){
+                            console.log(res.data);
+                            return res.data;
+                        }
+                    },
+                    // "success":function(res){
+                    //     if(res.status){
+                    //         console.log(res.data);
+                    //         return res.data;
+                    //     }
+                    // },
+                    "data": function ( d ) {
+                        return {
+                            category_name : $('#txt_categoryName_search').val(),
+                            status : $('#cbo_status_search').val(),
+                            note : $('#txt_note_search').val(),
+                        };
+                    },
+                },
+                columns: [
+                    {title:"No",data: null,},
+                    // {title:"No",render: function (data, type, row, meta) {
+                    //         return meta.row + meta.settings._iDisplayStart + 1;
+                    //     }
+                    // },
+                    {name: "Name",
+                        data: "category_name",
+                        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            if(oData.category_name) {
+                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.category_name+"</a>");
+                                $(nTd).html('<a href="#" onclick="openCategoryDetail('+oData.id+')">'+oData.category_name+'</a>');
+                            }
+                        }
+                    },
+                    // {
+                    //     name: "Status 2",
+                    //     data: "status",
+                    //     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    //         if (oData.status == 'EN') {
+                    //             $html = '<label class="switch">\n' +
+                    //                 '  <input type="checkbox" checked>\n' +
+                    //                 '  <span class="slider round"></span>\n' +
+                    //                 '</label>';
+                    //             $(nTd).html('<input type="checkbox" checked data-toggle="toggle">');
+                    //         }
+                    //         else{
+                    //             $(nTd).html('<input type="checkbox" data-toggle="toggle">');
+                    //         }
+                    //     }
+                    // },
+                    {title:"Status",data:'status_name'},
+                    {title:"Description",data:'note'},
+                    {title:"Created at",data:'created_at'},
+                    {title:"Created by",data:'created_by'}
+                ],
+                "fnCreatedRow": function (row, data, index) {
+                    $('td', row).eq(0).html(index + 1);
+                },
+                select: true,
+                // "order": [[1, 'asc']]
+            });
+        });
+    </script>
 @endsection

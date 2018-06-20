@@ -7,7 +7,8 @@ class Category extends BaseModel
 {
     protected $table = 'categories';
 
-    protected $fillable = [
+    protected $guarded = [];
+   /* protected $fillable = [
         'category_name',
         'parent_id',
         'note',
@@ -15,5 +16,5 @@ class Category extends BaseModel
         'created_by',
         'updated_at',
         'updated_by'
-    ];
+    ];*/
 }
