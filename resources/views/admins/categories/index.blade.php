@@ -6,8 +6,6 @@
 @section('parent2', 'Master Data')
 @section('parent3', 'Category')
 @section('content')
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <div id="frm_searchCategory">
         <div class="row">
             <div class="col-md-6">
@@ -119,7 +117,9 @@
                     {title:"Status",data:'status_name'},
                     {title:"Description",data:'note'},
                     {title:"Created at",data:'created_at'},
-                    {title:"Created by",data:'created_by'}
+                    {title:"Created by",data:'created_by'},
+                    {title:"Updated at",data:'updated_at'},
+                    {title:"Updated by",data:'updated_by'}
                 ],
                 "fnCreatedRow": function (row, data, index) {
                     $('td', row).eq(0).html(index + 1);

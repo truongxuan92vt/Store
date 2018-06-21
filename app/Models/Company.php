@@ -10,7 +10,7 @@ class Company extends BaseModel
     protected $fillable = [
         'company_name',
         'address_id',
-        'sts',
+        'status',
         'created_at',
         'created_by',
         'updated_at',

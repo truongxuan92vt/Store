@@ -41,6 +41,12 @@ class BaseModel extends Model
     public static function boot() {
         parent::boot();
 
+        static::creating(function($table)
+        {
+            $table->created_by = $table->updated_by = Auth::user()->username;
+            $table->created_at = date('Y-m-d H:i:s');
+            $table->updated_at = date('Y-m-d H:i:s');
+        });
         // create a event to happen on updating
         static::updating(function($table)  {
             $table->updated_by = Auth::user()->username;
@@ -54,8 +60,11 @@ class BaseModel extends Model
 
         // create a event to happen on saving
         static::saving(function($table)  {
-            $table->created_by = $table->updated_by = Auth::user()->username;
-            $table->created_at = date('Y-m-d H:i:s');
+            if(empty($table->created_by)){
+                $table->created_by = Auth::user()->username;
+                $table->created_at = date('Y-m-d H:i:s');
+            }
+            $table->updated_by = Auth::user()->username;
             $table->updated_at = date('Y-m-d H:i:s');
         });
         static::retrieved(function ($model) {
