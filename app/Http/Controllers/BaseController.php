@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -10,7 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class BaseController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs;
 
     protected $request,$repos;
     public function __construct(Request $_request,$_repos=null)
@@ -34,5 +35,21 @@ class BaseController extends Controller
         $return['data'] = $data;
         $return['message'] = $message;
         return response()->json($return, $statusCode, $headers);
+    }
+    public function validator($data=[],$rules=[],$messages = [])
+    {
+        $error = null;
+        $validator = Validator::make($data, $rules, $messages);
+
+        if ($validator->fails()) {
+            $messageList = [];
+            foreach ($validator->getMessageBag()->toArray() as $item){
+                foreach ($item as $v){
+                    $messageList[] = $v;
+                }
+            }
+            $error = implode('\n', $messageList);
+        }
+        return $error;
     }
 }

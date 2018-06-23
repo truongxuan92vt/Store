@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', url('/')),
 
     /*
     |--------------------------------------------------------------------------
@@ -235,4 +235,5 @@ return [
 //        'developer_key' => env('GOOGLE_DEVELOPER_KEY'),
 //        'prompt' => env('GOOGLE_PROMPT'),
     ],
+    'server_upload'=>env('SERVER_UPLOAD',url('/'))
 ];

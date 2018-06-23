@@ -136,4 +136,25 @@ $router->group([
     ]);
 });
 
+$router->group([
+    'prefix'        =>  'item',
+    'middleware'    =>  ['auth.admin'],
+], function($router){
+    $router->get('',[
+        'as'    =>  'admin.item.index',
+        'uses'  =>  'ItemController@index'
+    ]);
+    $router->get('list',[
+        'as'    =>  'admin.item.list',
+        'uses'    =>  'ItemController@list',
+    ]);
+    $router->get('detail',[
+        'as'     =>  'admin.item.detail',
+        'uses'   =>  'ItemController@detail'
+    ]);
+    $router->post('save',[
+        'as'     =>  'admin.item.save',
+        'uses'   =>  'ItemController@save'
+    ]);
+});
 

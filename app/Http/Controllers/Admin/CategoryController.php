@@ -20,7 +20,7 @@ class CategoryController extends BaseController {
         $data = $this->request;
         $data = $this->repos->getList($data);
         foreach ($data as $item){
-            $item->status_name = STATUS_SYS[$item->status];
+            $item->status_name = STATUS_SYS[$item->status]??'';
         }
         return $this->respondForward(['status'=>true,'data'=>$data,'message'=>'']);
     }
@@ -40,11 +40,11 @@ class CategoryController extends BaseController {
             if($category){
                 $category->update($dataIns);
             }
-            return $this->respondForward(['message'=>'Role was updated successful','data'=>null,'status'=>true]);
+            return $this->respondForward(['message'=>'Category was updated successful','data'=>null,'status'=>true]);
         }
         else{
             $this->repos->create($dataIns);
-            return $this->respondForward(['message'=>'Role was created successful','data'=>null,'status'=>true]);
+            return $this->respondForward(['message'=>'Category was created successful','data'=>null,'status'=>true]);
         }
     }
 }

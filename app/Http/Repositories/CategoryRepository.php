@@ -27,4 +27,8 @@ class CategoryRepository extends BaseRepository
         $res = $res->get();
         return $res;
     }
+    static public function getOption($data=null){
+        $res = Category::select('id','category_name')->get()->toArray();
+        return $res;
+    }
 }

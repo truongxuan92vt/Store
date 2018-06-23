@@ -54,7 +54,7 @@
             @foreach($data as $user)
             <tr>
                 <td style="text-align: center">{{$i}}</td>
-                <td style="text-align: center"><img src="{{!empty($user->image)?SERVER_IMAGE.$user->image:'../image/avatar.jpeg'}}" height="30" width="30"></td>
+                <td style="text-align: center"><img src="{{!empty($user->image)?config('filesystems.disks.pulbic.url').$user->image:url('/').'/image/avatar.jpeg'}}" height="30" width="30"></td>
                 <td><a href="#" onclick="openUserDetail('{{$user->id}}')">{{$user->username}}</a></td>
                 <td>{{$user->first_name}}</td>
                 <td>{{$user->last_name}}</td>
@@ -136,11 +136,10 @@
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 complete: function (data) {
-                    console.log(data);
+                    // console.log(data);
                 },
                 success: function (data) {
                     $("#tbl_user > tbody > tr").remove();
-                    console.log(data['data']);
                     for(i=0; i<data['data'].length;i++){
                         row = data['data'][i];
                         num = i+1;
@@ -164,9 +163,9 @@
                         if(row['email'] != null && row['email']!=''){
                             email = row['email'];
                         }
-                        image = '../image/avatar.jpeg';
+                        image = '{{url('/')}}/image/avatar.jpeg';
                         if(row['image'] != null && row['image']!=''){
-                            image = "{{SERVER_IMAGE}}"+row['image'];
+                            image = row['image'];
                         }
                         newRowContent = "<tr>" +
                                 "<td style='text-align: center'>"+num+"</td>" +

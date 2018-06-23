@@ -23,4 +23,10 @@ class User extends BaseModel
     protected $hidden = [
         'password'
     ];
+
+    public static function boot(){
+        static::retrieved(function ($model) {
+            $model->image = config('app.server_upload').$model->image;
+        });
+    }
 }

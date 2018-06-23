@@ -16,7 +16,7 @@ class Helpers{
             $limit = session('LIMIT');
         return $limit;
     }
-    public static function uploadImage(Request $request,$path,$keyFile=null,$server=null){
+    public static function uploadImage(Request $request,$path,$pre='',$keyFile=null,$server=null){
         if(empty($keyFile)){
             $keyFile = 'image';
         }
@@ -31,7 +31,7 @@ class Helpers{
         if ($request->hasFile($keyFile)) {
             $currentDate = date('YmdHis');
             $image = $request->file($keyFile);
-            $name = $currentDate.'.'.$image->getClientOriginalExtension();
+            $name = $pre.$currentDate.'.'.$image->getClientOriginalExtension();
             $id = '';
             switch ($server){
                 //Upfile to GOOGLE
@@ -46,7 +46,7 @@ class Helpers{
                     break;
             }
             $result['status']=true;
-            $result['fileName']=$name;
+            $result['url']= $path.$name;
             $result['id']=$id;
         }
         return $result;

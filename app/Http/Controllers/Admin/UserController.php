@@ -46,17 +46,18 @@ class UserController extends BaseController {
     }
     public function save(){
         $user_id = $this->request->get('id');
+        $userName = $this->request->get('username');
         $res = null;
-        $file = Helpers::uploadImage($this->request,'/upload/avatar');
+        $file = Helpers::uploadImage($this->request,PATH_IMAGE_USER,$userName."_");
         if(empty($user_id)){
             $pass = $this->request->get('password')??'12345';
             $dataIns = [
-                'username'=>$this->request->get('username'),
+                'username'=>$userName,
                 'first_name'=>$this->request->get('first_name'),
                 'last_name'=>$this->request->get('last_name'),
                 'email'=>$this->request->get('email'),
                 'password'=>bcrypt($pass),
-                'image'=>!empty($file['fileName'])?$file['fileName']:'avatar.jpeg'
+                'image'=>!empty($file['url'])?$file['url']:'avatar.jpeg'
             ];
             $res =  $this->repos->create($dataIns);
             if($res && !empty($this->request->get('role_id'))){
@@ -69,8 +70,8 @@ class UserController extends BaseController {
                 'last_name'=>$this->request->get('last_name'),
                 'email'=>$this->request->get('email')
             ];
-            if(!empty($file['fileName'])){
-                $dataUpdate['image']=$file['fileName'];
+            if(!empty($file['url'])){
+                $dataUpdate['image']=$file['url'];
             }
             if(!empty($this->request->get('password'))){
                 $dataUpdate['password']=bcrypt($this->request->get('password'));
