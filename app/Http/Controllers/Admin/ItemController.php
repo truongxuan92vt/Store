@@ -38,11 +38,13 @@ class ItemController extends BaseController {
         $categoryId = $this->request->get('category_id');
         $status = $this->request->get('status');
         $note = $this->request->get('note');
+        $des = $this->request->get('des');
         $dataIns = [
             'item_name'=>$name,
             'category_id'=>$categoryId,
             'status'=>$status,
-            'note'=>$note
+            'note'=>$note,
+            'des'=>$des
         ];
         $validate = $this->validator($dataIns,$this->rules);
         if(!empty(!empty($validate))){

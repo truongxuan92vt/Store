@@ -52,7 +52,6 @@
     <div style="background-color: white">
         <table id="example" class="table table-striped table-bordered dt-responsive" style="width:100%"></table>
     </div>
-
     <script>
         $('#btn_create').on('click',function(){
             document.location.href="{!! route('admin.item.detail'); !!}";
@@ -79,7 +78,7 @@
                     "dataType":'json',
                     "dataSrc":function(res){
                         if(res.status){
-                            console.log(res.data);
+                            // console.log(res.data);
                             return res.data;
                         }
                     },
@@ -88,7 +87,6 @@
                             item_name : $('#txt_itemName_search').val(),
                             status : $('#cbo_status_search').val(),
                             category : $('#cbo_category_search').val(),
-                            note : $('#txt_note_search').val(),
                         };
                     },
                 },
@@ -104,7 +102,7 @@
                         }
                     },
                     // {title:"Status",data:'status_name'},
-                    {title:"Description",data:'note'},
+                    {title:"Note",data:'note'},
                     {title:"Created at",data:'created_at'},
                     {title:"Created by",data:'created_by'},
                     {title:"Updated at",data:'updated_at'},

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends BaseController {
     public function home(){
-        return redirect('admin');
-//        return view('webs.home');
+//        return redirect('admin');
+        return view('webs.home');
     }
 }

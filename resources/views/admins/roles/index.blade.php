@@ -101,7 +101,7 @@
                 },
                 success: function (data) {
                     $("#tbl_role > tbody > tr").remove();
-                    console.log(data['data']);
+                    // console.log(data['data']);
                     for(i=0; i<data['data'].length;i++){
                         row = data['data'][i];
                         num = i+1;
