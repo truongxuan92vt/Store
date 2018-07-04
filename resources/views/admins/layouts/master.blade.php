@@ -60,6 +60,7 @@
         <link href="{{module_path()}}/toastr/build/toastr.css" rel="stylesheet"/>
         <script src="{{module_path()}}/toastr/toastr.js"></script>
         <!-- End Toastr -->
+
     </head>
     <body class="hold-transition skin-blue sidebar-mini fixed">
         <div id="loader-wrapper">

@@ -16,10 +16,7 @@ class Helpers{
             $limit = session('LIMIT');
         return $limit;
     }
-    public static function uploadImage(Request $request,$path,$pre='',$keyFile=null,$server=null){
-        if(empty($keyFile)){
-            $keyFile = 'image';
-        }
+    public static function uploadImage($image,$path,$pre='',$server=null){
         if(empty($server)){
             $server = LOCAL;
         }
@@ -28,9 +25,8 @@ class Helpers{
             'fileName'=>'',
             'id'=>''
         ];
-        if ($request->hasFile($keyFile)) {
+        {
             $currentDate = date('YmdHis');
-            $image = $request->file($keyFile);
             $name = $pre.$currentDate.'.'.$image->getClientOriginalExtension();
             $id = '';
             switch ($server){

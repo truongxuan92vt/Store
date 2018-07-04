@@ -13,4 +13,13 @@
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
+.row{
+    /*margin-bottom: 5px;*/
+    margin: 0px 0px 0px 0px;
+}
+label{
+    margin-top: 5px;
+    margin-bottom: 0px;
+    width: 100%;
+}
 /* End set*/

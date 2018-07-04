@@ -48,7 +48,9 @@ class UserController extends BaseController {
         $user_id = $this->request->get('id');
         $userName = $this->request->get('username');
         $res = null;
-        $file = Helpers::uploadImage($this->request,PATH_IMAGE_USER,$userName."_");
+        if($this->request->hasFile('image')){
+            $file = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_USER,$userName."_");
+        }
         if(empty($user_id)){
             $pass = $this->request->get('password')??'12345';
             $dataIns = [
@@ -57,7 +59,7 @@ class UserController extends BaseController {
                 'last_name'=>$this->request->get('last_name'),
                 'email'=>$this->request->get('email'),
                 'password'=>bcrypt($pass),
-                'image'=>!empty($file['url'])?$file['url']:'avatar.jpeg'
+                'image'=>!empty($file['url'])?$file['url']:'/image/avatar.jpeg'
             ];
             $res =  $this->repos->create($dataIns);
             if($res && !empty($this->request->get('role_id'))){
