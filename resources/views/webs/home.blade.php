@@ -1,5 +1,7 @@
-<a id = 'btn_login' href="{{route('admin.home')}}">Admin</a>
+@extends('webs.layouts.master')
+@section('title', 'Dashboard')
+@section('controller', 'Dashboard')
+@section('action', 'Controller pannel')
+@section('content')
 
-<script>
-
-</script>
+@endsection
