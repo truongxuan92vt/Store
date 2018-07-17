@@ -134,6 +134,10 @@ $router->group([
         'as'     =>  'admin.category.save',
         'uses'   =>  'CategoryController@save'
     ]);
+    $router->get('list-web',[
+        'as'     =>  'admin.category.web',
+        'uses'   =>  'CategoryController@getCategoryForWeb'
+    ]);
 });
 
 $router->group([
@@ -157,4 +161,6 @@ $router->group([
         'uses'   =>  'ItemController@save'
     ]);
 });
+
+
 

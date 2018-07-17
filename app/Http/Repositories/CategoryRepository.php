@@ -13,6 +13,10 @@ class CategoryRepository extends BaseRepository
     {
         return Category::class;
     }
+    public static function getCategoryForWeb(){
+        $result = Category::get();
+        return  $result;
+    }
     public function getList($data){
         $res = $this->model;
         if(!empty($data->status)){

@@ -7,6 +7,7 @@ use App\Libraries\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends BaseController {
     public function __construct(Request $_request,CategoryRepository $_repos)
@@ -15,6 +16,10 @@ class CategoryController extends BaseController {
     }
     public function index(){
         return view('admins.categories.index',['statusList'=>Helpers::convertCombo(STATUS_SYS)]);
+    }
+    public static function getCategoryForWeb(){
+        $res = CategoryRepository::getCategoryForWeb();
+        return $res;
     }
     public function list(){
         $data = $this->request;

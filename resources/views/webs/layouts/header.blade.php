@@ -1,3 +1,6 @@
+<?php
+    $categories = \App\Http\Controllers\Admin\CategoryController::getCategoryForWeb();
+?>
 <div class="top-header">
     <div class="container">
         <div style="color: white;">
@@ -34,27 +37,29 @@
                     <span>DANH MỤC SẢN PHẨM</span>
                 </a>
                 <ul>
-                    <li>
-                        <a href="#">
+                    @foreach($categories as $item)
+                        <li>
+                            <a href="#">
                             <span class="icon-wrap">
-                                <i class="lv1-icon fa fa-tablet"></i>
+                                <i class="lv1-icon {{$item->icon}}"></i>
                             </span>
-                            <span>Điện Thoại - Máy Tính Bảng</span>
-                        </a>
-                        <div class="nav-sub">
-                            <ul>
-                                <li>
-                                    {{--<i class="fa fa-arrow-circle-down"></i>--}}
-                                    <div class="nav-sub-lvl-2">
+                                <span>{{$item->category_name}}</span>
+                            </a>
+                            <div class="nav-sub">
+                                <ul>
+                                    <li>
+                                        {{--<i class="fa fa-arrow-circle-down"></i>--}}
+                                        <div class="nav-sub-lvl-2">
                                         <span>
                                             abc
                                         </span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endforeach
+                    {{--<li>
                         <a>
                             <span class="icon-wrap">
                                 <i class="lv1-icon fa fa-tablet"></i>
@@ -64,7 +69,7 @@
                         <div class="nav-sub">
                             <ul>
                                 <li>
-                                    {{--<i class="fa fa-arrow-circle-down"></i>--}}
+                                    --}}{{--<i class="fa fa-arrow-circle-down"></i>--}}{{--
                                     <div class="nav-sub-lvl-2">
                                         <span style="height: auto;display: inline-block;width:150px;word-wrap:break-word;">
                                             aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbb
@@ -73,7 +78,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
+                    </li>--}}
                 </ul>
             </nav>
             <div class="main-nav-item">
