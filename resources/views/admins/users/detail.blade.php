@@ -1,36 +1,36 @@
 <form method="post" action="{{route('admin.user.save')}}" autocomplete="off" id="frm_userDetail" enctype="multipart/form-data">
     {{ csrf_field() }}
     <input type="hidden" id="user_id" name="id" value="{{isset($data->id)?$data->id:''}}">
-    <div class="col-lg-12">
+    <div class="row">
         <div class="col-md-3">
             <img id="image" src="{{!empty($data->image)?$data->image:url('/').'/image/avatar.jpeg'}}" alt="your image" height="180" width="200" style="margin-bottom: 10px;"/>
             <input type='file' id="imgInp" name="image" value="{{!empty($data->image)?$data->image:url('/').'/image/avatar.jpeg'}}"/>
         </div>
         <div class="col-md-9">
-            <div class="form-group col-md-12">
-                <label class="col-sm-6"> Username</label>
-                <input class="col-sm-6" id="txt_username" name="username" value="{{isset($data->username)?$data->username:''}}" >
+            <div class="row">
+                <label class="col-xs-6"> Username</label>
+                <input class="col-xs-6" id="txt_username" name="username" value="{{isset($data->username)?$data->username:''}}" >
             </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">First name</label>
-                <input class="col-sm-6" id="txt_firtName" name="first_name" value="{{isset($data->first_name)?$data->first_name:''}}">
+            <div class="row">
+                <label class="col-xs-6">First name</label>
+                <input class="col-xs-6" id="txt_firtName" name="first_name" value="{{isset($data->first_name)?$data->first_name:''}}">
             </div>
 
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Last name</label>
-                <input class="col-sm-6" id="txt_lastName" name="last_name" value="{{isset($data->last_name)?$data->last_name:''}}">
+            <div class="row">
+                <label class="col-xs-6">Last name</label>
+                <input class="col-xs-6" id="txt_lastName" name="last_name" value="{{isset($data->last_name)?$data->last_name:''}}">
             </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Email</label>
-                <input class="col-sm-6" id="txt_email" name="email" value="{{isset($data->email)?$data->email:''}}">
+            <div class="row">
+                <label class="col-xs-6">Email</label>
+                <input class="col-xs-6" id="txt_email" name="email" value="{{isset($data->email)?$data->email:''}}">
             </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Password</label>
-                <input class="col-sm-6" type="password" id="txt_password" name="password" value="">
+            <div class="row">
+                <label class="col-xs-6">Password</label>
+                <input class="col-xs-6" type="password" id="txt_password" name="password" value="">
             </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Role</label>
-                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+            <div class="row">
+                <label class="col-xs-6">Role</label>
+                <div class="col-xs-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
                     <select class="form-control" id="cbo_role" name="role_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                         <option value="0" selected="selected">Select a Permission</option>
                         @foreach($roles as $role)

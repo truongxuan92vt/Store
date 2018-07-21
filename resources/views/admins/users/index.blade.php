@@ -8,23 +8,23 @@
 @section('content')
     <div id="frm_searchUser">
         <div class="col-md-6">
-            <div class="form-group col-md-12">
-                <label class="col-sm-6"> Username</label>
-                <input class="col-sm-6" id="txt_usernameSearch" value="">
+            <div class="row">
+                <label class="col-xs-6"> Username</label>
+                <input class="col-xs-6" id="txt_usernameSearch" value="">
             </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">First name</label>
-                <input class="col-sm-6" id="txt_firtNameSearch" value="">
+            <div class="row">
+                <label class="col-xs-6">First name</label>
+                <input class="col-xs-6" id="txt_firtNameSearch" value="">
             </div>
         </div>
         <div class="col-md-6">
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Last name</label>
-                <input class="col-sm-6" id="txt_lastNameSearch" value="">
+            <div class="row">
+                <label class="col-xs-6">Last name</label>
+                <input class="col-xs-6" id="txt_lastNameSearch" value="">
             </div>
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Email</label>
-                <input class="col-sm-6" id="txt_emailSearch" value="">
+            <div class="row">
+                <label class="col-xs-6">Email</label>
+                <input class="col-xs-6" id="txt_emailSearch" value="">
             </div>
         </div>
     </div>
