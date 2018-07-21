@@ -18,8 +18,20 @@ class CategoryController extends BaseController {
         return view('admins.categories.index',['statusList'=>Helpers::convertCombo(STATUS_SYS)]);
     }
     public static function getCategoryForWeb(){
-        $res = CategoryRepository::getCategoryForWeb();
+        $catogories = CategoryRepository::getCategoryForWeb();
+        $res = self::recursiveCategory($catogories);
         return $res;
+    }
+    public static function recursiveCategory($data,$parent_id=0){
+        $temp_array = array();
+        foreach ($data as $k=>$v) {
+            if ($v['parent_id'] == $parent_id) {
+                $v['childs'] = self::recursiveCategory($data, $v['id']);
+                $temp_array[] = $v;
+                unset($data[$k]);
+            }
+        }
+        return $temp_array;
     }
     public function list(){
         $data = $this->request;

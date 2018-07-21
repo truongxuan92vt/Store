@@ -1,21 +1,19 @@
 <form>
     {{ csrf_field() }}
     <input type="hidden" id="role_id" name="id" value="{{isset($data->id)?$data->id:''}}">
-    <div class="col-lg-12">
-        <div class="form-group col-md-12">
-            <label class="col-sm-6">Role name</label>
-            <input class="col-sm-6" type="text" id="txt_roleName" name="role_name" value="{{isset($data->role_name)?$data->role_name:''}}">
-        </div>
-        <div class="form-group col-md-12">
-            <label class="col-sm-6">Role</label>
-            <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                <select class="form-control" id="cbo_status" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                    <option value="0" selected="">Select a Status</option>
-                    @foreach($statusList as $item)
-                        <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
-                    @endforeach
-                </select>
-            </div>
+    <div class="row">
+        <label class="col-xs-6">Role name</label>
+        <input class="col-xs-6" type="text" id="txt_roleName" name="role_name" value="{{isset($data->role_name)?$data->role_name:''}}">
+    </div>
+    <div class="row">
+        <label class="col-xs-6">Role</label>
+        <div class="col-xs-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+            <select class="form-control" id="cbo_status" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                <option value="0" selected="">Select a Status</option>
+                @foreach($statusList as $item)
+                    <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                @endforeach
+            </select>
         </div>
     </div>
     <div style="text-align: center">

@@ -1,25 +1,23 @@
 <form autocomplete="off">
     <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
-    <div class="col-lg-12">
-        <div class="form-group col-md-12">
-            <label class="col-sm-6">Category name</label>
-            <input class="col-sm-6" type="text" id="txt_categoryName_detail" name="category_name" value="{{isset($data->category_name)?$data->category_name:''}}">
+    <div class="row">
+        <label class="col-xs-6">Category name</label>
+        <input class="col-xs-6" type="text" id="txt_categoryName_detail" name="category_name" value="{{isset($data->category_name)?$data->category_name:''}}">
+    </div>
+    <div class="row">
+        <label class="col-xs-6">Status</label>
+        <div class="col-xs-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+            <select class="form-control" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                <option value="0" selected="">Select a Status</option>
+                @foreach($statusList as $item)
+                    <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                @endforeach
+            </select>
         </div>
-        <div class="form-group col-md-12">
-            <label class="col-sm-6">Status</label>
-            <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                <select class="form-control" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                    <option value="0" selected="">Select a Status</option>
-                    @foreach($statusList as $item)
-                        <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="form-group col-md-12">
-            <label class="col-sm-6">Description</label>
-            <textarea class="col-sm-6" type="text" id="txt_note_detail" name="note">{{isset($data->note)?$data->note:''}}</textarea>
-        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-6">Description</label>
+        <textarea class="col-xs-6" type="text" id="txt_note_detail" name="note">{{isset($data->note)?$data->note:''}}</textarea>
     </div>
     <div style="text-align: center">
         <button id='btn_save' type="button" class="btn btn-success btn-sm" >Save</button>

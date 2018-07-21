@@ -69,47 +69,39 @@
             <br>
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-12">
-                        <label class="col-sm-2">Name</label>
-                        <input class="col-sm-10" type="text" id="txt_itemName_detail" name="item_name" value="{{isset($data->item_name)?$data->item_name:''}}">
+                    <label class="col-xs-2">Name</label>
+                    <input class="col-xs-10" type="text" id="txt_itemName_detail" name="item_name" value="{{isset($data->item_name)?$data->item_name:''}}">
+                </div>
+                <div class="row">
+                    <label class="col-xs-2">Category</label>
+                    <div class="col-xs-4" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+                        <select class="form-control" id="cbo_category_detail" name="category_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                            <option value="" selected="">Select a category</option>
+                            @foreach($category as $item)
+                                <option value="{{$item['id']}}" @if(isset($data->category_id) && $item['id']==$data->category_id) selected="selected" @endif>{{$item['category_name']}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <label class="col-xs-2">Status</label>
+                    <div class="col-xs-4" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+                        <select class="form-control" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                            {{--<option value="0" selected="">Select a Status</option>--}}
+                            @foreach($statusList as $item)
+                                <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        <label class="col-sm-2">Category</label>
-                        <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                            <select class="form-control" id="cbo_category_detail" name="category_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                <option value="" selected="">Select a category</option>
-                                @foreach($category as $item)
-                                    <option value="{{$item['id']}}" @if(isset($data->category_id) && $item['id']==$data->category_id) selected="selected" @endif>{{$item['category_name']}} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <label class="col-sm-2">Status</label>
-                        <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                            <select class="form-control" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                {{--<option value="0" selected="">Select a Status</option>--}}
-                                @foreach($statusList as $item)
-                                    <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                    <label class="col-xs-2">Note</label>
+                    <textarea class="col-xs-10" type="text" id="txt_note_detail" name="note" rows="3" cols="50">{{isset($data->note)?$data->note:''}}</textarea>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        <label class="col-sm-2">Note</label>
-                        <textarea class="col-sm-10" type="text" id="txt_note_detail" name="note" rows="3" cols="50">{{isset($data->note)?$data->note:''}}</textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="col-sm-12">Description</label>
-                    </div>
+                    <label class="col-xs-12">Description</label>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
                         <textarea type="text" id="txt_des_detail" name="des">{{isset($data->des)?$data->des:''}}</textarea>
                     </div>
                 </div>

@@ -41,22 +41,26 @@
                         <li>
                             <a href="#">
                             <span class="icon-wrap">
-                                <i class="lv1-icon {{$item->icon}}"></i>
+                                <i class="lv1-icon {{$item['icon']||''}}"></i>
                             </span>
-                                <span>{{$item->category_name}}</span>
+                                <span>{{$item['category_name']}}</span>
                             </a>
-                            <div class="nav-sub">
-                                <ul>
-                                    <li>
-                                        {{--<i class="fa fa-arrow-circle-down"></i>--}}
-                                        <div class="nav-sub-lvl-2">
-                                        <span>
-                                            abc
-                                        </span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                            @if(count($item['childs'])>0)
+                                <div class="nav-sub">
+                                    <ul>
+                                        @foreach($item['childs'] as $sub)
+                                            <li>
+                                                {{--<i class="fa fa-arrow-circle-down"></i>--}}
+                                                <div class="nav-sub-lvl-2">
+                                                    <span>
+                                                        {{$sub['category_name']}}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                         </li>
                     @endforeach
                     {{--<li>

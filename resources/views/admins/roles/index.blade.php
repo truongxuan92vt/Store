@@ -7,32 +7,26 @@
 @section('parent3', 'Role')
 @section('content')
     <div id="frm_searchUser">
-        <div class="col-md-6">
-            <div class="form-group col-md-12">
-                <label class="col-sm-6"> Role Name</label>
-                <input class="col-sm-6" id="txt_roleNameSearch" value="">
-            </div>
-            {{--<div class="form-group col-md-12">--}}
-                {{--<label class="col-sm-6">First name</label>--}}
-                {{--<input class="col-sm-6" id="txt_firtNameSearch" value="">--}}
-            {{--</div>--}}
-        </div>
-        <div class="col-md-6">
-            <div class="form-group col-md-12">
-                <label class="col-sm-6">Role</label>
-                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                    <select class="form-control" id="cbo_statusSearch" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                        <option value="" selected="">Select a status</option>
-                        @foreach($statusList as $item)
-                            <option value="{{$item['value']}}">{{$item['text']}} </option>
-                        @endforeach
-                    </select>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-xs-6"> Role Name</label>
+                    <input class="col-xs-6" id="txt_roleNameSearch" value="">
                 </div>
             </div>
-            {{--<div class="form-group col-md-12">--}}
-                {{--<label class="col-sm-6">Email</label>--}}
-                {{--<input class="col-sm-6" id="txt_emailSearch" value="">--}}
-            {{--</div>--}}
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-xs-6">Role</label>
+                    <div class="col-xs-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+                        <select class="form-control" id="cbo_statusSearch" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                            <option value="" selected="">Select a status</option>
+                            @foreach($statusList as $item)
+                                <option value="{{$item['value']}}">{{$item['text']}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div style="text-align: center;">

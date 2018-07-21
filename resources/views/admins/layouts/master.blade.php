@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <link rel="icon" href="{{url('/')}}/image/favicon.jfif">
-        <title>Store | @yield('title')</title>
+        <title>Jiva Sport | @yield('title')</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.7 -->
@@ -61,6 +61,11 @@
         <script src="{{module_path()}}/toastr/toastr.js"></script>
         <!-- End Toastr -->
     </head>
+    <style>
+        .row{
+            margin-bottom: 5px;
+        }
+    </style>
     <body class="hold-transition skin-blue sidebar-mini fixed">
         <div id="loader-wrapper">
             <div id="loader"></div>

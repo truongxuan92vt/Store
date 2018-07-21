@@ -9,15 +9,27 @@
     <div id="frm_search">
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group col-md-12">
-                    <label class="col-sm-6">Item Name</label>
-                    <input class="col-sm-6" id="txt_itemName_search" value="">
+                <div class="row">
+                    <label class="col-xs-6">Item Name</label>
+                    <input class="col-xs-6" id="txt_itemName_search" value="">
+                </div>
+
+                <div class="row">
+                    <label class="col-xs-6">Category</label>
+                    <div class="col-xs-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+                        <select class="form-control" id="cbo_category_search" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                            <option value="" selected="">Select a category</option>
+                            @foreach($category as $item)
+                                <option value="{{$item['id']}}">{{$item['category_name']}} </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group col-md-12">
-                    <label class="col-sm-6">Status</label>
-                    <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
+                <div class="row">
+                    <label class="col-xs-6">Status</label>
+                    <div class="col-xs-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
                         <select class="form-control" id="cbo_status_search" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                             <option value="" selected="">Select a status</option>
                             @foreach($statusList as $item)
@@ -29,19 +41,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <div class="form-group col-md-12">
-                    <label class="col-sm-6">Category</label>
-                    <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                        <select class="form-control" id="cbo_category_search" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                            <option value="" selected="">Select a category</option>
-                            @foreach($category as $item)
-                                <option value="{{$item['id']}}">{{$item['category_name']}} </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
     <div style="text-align: center;">
@@ -50,7 +50,7 @@
     </div>
     <br>
     <div style="background-color: white">
-        <table id="example" class="table table-striped table-bordered dt-responsive" style="width:100%"></table>
+        <table id="item_grid" class="table table-striped table-bordered dt-responsive" style="width:100%"></table>
     </div>
     <script>
         $('#btn_create').on('click',function(){
@@ -68,7 +68,11 @@
             // loadpopup('item/detail?id='+id,'<b>Detail</b>','60%',false);
         }
         $(document).ready(function() {
-            categoryTbl = $('#example').DataTable({
+            categoryTbl = $('#item_grid').DataTable({
+                scrollY:        true,
+                scrollX:        true,
+                scrollCollapse: true,
+                fixedColumns: true,
                 "searching": false,
                 "dom": "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i> <'col-sm-2'l><'col-sm-5'p>>",
                 "ajax": {
