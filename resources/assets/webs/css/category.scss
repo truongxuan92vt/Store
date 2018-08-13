@@ -1,0 +1,49 @@
+.product{
+  position: relative;
+  .product-box{
+    height: 350px;
+    width: 250px;
+    background-color: rgba(117, 190, 218, 0.05);
+    display: block;
+    padding: 25px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    &>a{
+      color: black;
+      text-decoration-line: none;
+    }
+    img{
+      height: 180px;
+      width: 200px;
+      &:hover{
+        transform: scale(1.25);
+      }
+    }
+    .product-info{
+      margin-top: 10px;
+      .product-color{
+        display: inline;
+      }
+      .product-star {
+        //color: red;
+      }
+      .product-price{
+        font-size: 20px;
+        color: red;
+        font-family: bold;
+      }
+      .product-old-price{
+        text-decoration: line-through double red;
+        //-webkit-text-decoration-color: red;
+        //text-decoration-color: red;
+        //-webkit-text-decoration-line: line-through;
+        //text-decoration-line: line-through;
+      }
+      .product-percent{
+        color: red;
+        float: right;
+        padding: 5px;
+      }
+    }
+  }
+}

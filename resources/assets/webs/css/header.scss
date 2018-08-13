@@ -1,0 +1,95 @@
+.top-header{
+    background-color: black;
+    color: white;
+    position: relative;
+    height: 60px;
+    .left-side{
+        float: left;
+    }
+    .right-side{
+        float: right;
+    }
+    .top-header-item{
+        line-height: 60px;
+        position: relative;
+        display: inline-block;
+        margin-right: 20px;
+        .cp-icon{
+            font-size: 25px;
+            font-family: bold;
+            width: 200px;
+            a{
+                color: white;
+            }
+        }
+
+        .search-container{
+            position: relative;
+            line-height: 1px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: white;
+            color: black;
+            input{
+                height: 25px;
+                width: 300px;
+                border: none;
+                margin: 0;
+                border-right: 1px solid;
+                border-bottom-left-radius: 5px;
+                border-top-left-radius: 5px;
+                padding: 5px;
+            }
+            span{
+                cursor: pointer;
+                margin-right: 5px;
+            }
+        }
+        &>ul{
+            position: relative;
+            padding: 0px;
+            li{
+                display: inline-block;
+                position: relative;
+                margin-right: 20px;
+                a{
+                    color: white;
+                    font-size: 20px;
+                    //text-decoration-line: none;
+                    cursor: pointer;
+                    font-family: bold;
+                    span{
+                        font-family: bold;
+                    }
+                }
+                .nav-arrow{
+                    fill: #dfdfdf;
+                    position: absolute;
+                    top: 49px;
+                    right: 25%;
+                    width: 20px;
+                    height: 10px;
+                }
+            }
+        }
+    }
+}
+.sub-nav{
+    background-color: #dfdfdf;
+    position: relative;
+    width: 100%;
+    font-size: 16px;
+    ul{
+        position: relative;
+        top: 5px;
+        //padding: 10px;
+        li{
+            padding: 10px;
+            display: inline-block;
+            a{
+                color: black;
+                cursor: pointer;
+            }
+        }
+    }
+}
