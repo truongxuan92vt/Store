@@ -115,10 +115,13 @@
             }
         });
         $('#btn_create').on('click',function(){
-            loadpopup('user/detail','<b>New</b>','80%',false);
+            document.location.href="{!! route('admin.user.detail'); !!}";
+            // loadpopup('user/detail','<b>New</b>','80%',false);
         });
         function openUserDetail(id) {
-            loadpopup('user/detail?id='+id,'<b>Detail</b>','80%',false);
+            url = "{{route('admin.user.detail')}}"+'?id='+id;
+            document.location.href=url;
+            // loadpopup('user/detail?id='+id,'<b>Detail</b>','80%',false);
         }
         function searchUser(){
 
@@ -163,7 +166,7 @@
                         if(row['email'] != null && row['email']!=''){
                             email = row['email'];
                         }
-                        image = '{{url('/')}}/image/avatar.jpeg';
+                        image = '{{url('/')}}/image/no_image.jpg';
                         if(row['image'] != null && row['image']!=''){
                             image = row['image'];
                         }

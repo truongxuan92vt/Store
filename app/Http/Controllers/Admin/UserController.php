@@ -51,7 +51,13 @@ class UserController extends BaseController {
         if($this->request->hasFile('image')){
             $file = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_USER,$userName."_");
         }
+        //Check Exist user name
+        $isUser = $this->repos->searchUser(['userName'=>$userName]);
+//        dd($this->request->all());
         if(empty($user_id)){
+            if(count($isUser)>0){
+                return $this->respondForward(['status'=>false,'message'=>"User existed."]);
+            }
             $pass = $this->request->get('password')??'12345';
             $dataIns = [
                 'username'=>$userName,
@@ -65,13 +71,18 @@ class UserController extends BaseController {
             if($res && !empty($this->request->get('role_id'))){
                 $this->userRoleRepos->create(['user_id'=>$res->id,'role_id'=>$this->request->get('role_id')]);
             }
+            $result = ['status'=>true,'message'=>"User created.",'data'=>$res];
         }
         else{
             $dataUpdate = [
+                'username'=>$userName,
                 'first_name'=>$this->request->get('first_name'),
                 'last_name'=>$this->request->get('last_name'),
                 'email'=>$this->request->get('email')
             ];
+            if(count($isUser)>2){
+                return $this->respondForward(['status'=>false,'message'=>"User ".$userName." existed."]);
+            }
             if(!empty($file['url'])){
                 $dataUpdate['image']=$file['url'];
             }
@@ -89,8 +100,9 @@ class UserController extends BaseController {
                     $role->update();
                 }
             }
+            $result = ['status'=>true,'message'=>"User Updated.",'data'=>$res];
         }
-        return Redirect::back()->with('message','Operation Successful !');
+        return $this->respondForward($result);
     }
     public function setSession(){
         $limit = $this->request->get('limit');

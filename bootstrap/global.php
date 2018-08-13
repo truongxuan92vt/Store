@@ -13,4 +13,17 @@ if (! function_exists('module_path')) {
     }
 }
 
+if (! function_exists('plugin_path')) {
+    /**
+     * Get the path to the public folder.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function plugin_path($path = '')
+    {
+        return URL::to('/plugin/').$path;
+    }
+}
+
 ?>

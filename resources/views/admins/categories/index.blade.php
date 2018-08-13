@@ -49,21 +49,24 @@
 
     <script>
         $('#btn_create').on('click',function(){
-            loadpopup('category/detail','<b>New</b>','60%',false);
+            document.location.href="{!! route('admin.category.detail'); !!}";
         });
         function searchCategory(){
             categoryTbl.ajax.reload( null, false );
         }
         function openCategoryDetail(id) {
-            loadpopup('category/detail?id='+id,'<b>Detail</b>','60%',false);
+            url = "{{route('admin.category.detail')}}"+'?id='+id;
+            document.location.href=url;
         }
         $(document).ready(function() {
             categoryTbl = $('#category_grid').DataTable({
                 scrollY:        true,
                 scrollX:        true,
                 scrollCollapse: true,
-                fixedColumns: true,
-                "searching": false,
+                // fixedColumns: true,
+                // "searching": false,
+                "ordering": false,
+                "autoWidth": false,
                 "dom": "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i> <'col-sm-2'l><'col-sm-5'p>>",
                 "ajax": {
                     "url": "{{route('admin.category.list')}}",
@@ -72,7 +75,6 @@
                     "dataType":'json',
                     "dataSrc":function(res){
                         if(res.status){
-                            console.log(res.data);
                             return res.data;
                         }
                     },
@@ -105,35 +107,74 @@
                             }
                         }
                     },
-                    // {
-                    //     name: "Status 2",
-                    //     data: "status",
-                    //     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    //         if (oData.status == 'EN') {
-                    //             $html = '<label class="switch">\n' +
-                    //                 '  <input type="checkbox" checked>\n' +
-                    //                 '  <span class="slider round"></span>\n' +
-                    //                 '</label>';
-                    //             $(nTd).html('<input type="checkbox" checked data-toggle="toggle">');
-                    //         }
-                    //         else{
-                    //             $(nTd).html('<input type="checkbox" data-toggle="toggle">');
-                    //         }
-                    //     }
-                    // },
+                    /*{
+                        name: "Status 2",
+                        data: "status",
+                        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            if (oData.status == 'EN') {
+                                $html = '<label class="switch">\n' +
+                                    '  <input type="checkbox" checked>\n' +
+                                    '  <span class="slider round"></span>\n' +
+                                    '</label>';
+                                $(nTd).html('<input type="checkbox" checked data-toggle="toggle">');
+                            }
+                            else{
+                                $(nTd).html('<input type="checkbox" data-toggle="toggle">');
+                            }
+                        }
+                    },*/
                     {title:"Status",data:'status_name'},
+                    {title:"Parent",data:'parent_name'},
+                    {title: "Icon",
+                        data: "icon",
+                        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            if(oData.icon) {
+                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.category_name+"</a>");
+                                $(nTd).html('<i class="fa '+oData.icon+'"</i>');
+                      }
+                        }
+                    },
+                    {title: "Thunbnail",
+                        data: "thunbnail",
+                        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            if(oData.thunbnail) {
+                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.category_name+"</a>");
+                                $(nTd).html('<img src="'+oData.thunbnail+'" style="height:30px; width: 30px;"/>');
+                            }
+                        }
+                    },
+                    {title:"Priority",data:'priority'},
                     {title:"Description",data:'note'},
-                    {title:"Created at",data:'created_at'},
-                    {title:"Created by",data:'created_by'},
+                   /* {title:"Created at",data:'created_at'},
+                    {title:"Created by",data:'created_by'},*/
                     {title:"Updated at",data:'updated_at'},
                     {title:"Updated by",data:'updated_by'}
                 ],
                 "fnCreatedRow": function (row, data, index) {
                     $('td', row).eq(0).html(index + 1);
                 },
+                'columnDefs': [
+                    { "width": "5%", "targets": 0,"className": "text-center"},
+                    { "width": "12%", "targets": 1,},
+                    { "width": "8%", "targets": 2,"className": "text-center"},
+                    { "targets": 4,"className": "text-center","width": "4%"},
+                    { "targets": 5,"className": "text-center","width": "10%"},
+                    { "targets": 6,"className": "text-center","width": "6%"},
+                    { "targets": 9,"className": "text-center","width": "10%"},
+                ],
                 select: true,
                 // "order": [[1, 'asc']]
             });
         });
     </script>
+    <style>
+        table{
+            margin: 0 auto;
+            width: 100%;
+            clear: both;
+            border-collapse: collapse;
+            table-layout: fixed; // ***********add this
+            word-wrap:break-word; // ***********and this
+        }
+    </style>
 @endsection

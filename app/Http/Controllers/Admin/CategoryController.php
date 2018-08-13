@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Repositories\CategoryRepository;
 use App\Libraries\Helpers;
+use App\Models\CategoryBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,21 +48,106 @@ class CategoryController extends BaseController {
         return view('admins.categories.detail',['data'=>$detail,'statusList'=>Helpers::convertCombo(STATUS_SYS)]);
     }
     public function save(){
+        $res = ['message'=>'Category Name can not null','data'=>[],'status'=>false];
         $id = $this->request->id??null;
         $name = $this->request->get('category_name');
         $status = $this->request->get('status');
         $note = $this->request->get('note');
-        $dataIns = ['category_name'=>$name,'status'=>$status,'note'=>$note];
+        $parentId = $this->request->get('parent_id');
+        $icon = $this->request->get('icon');
+        $priority = $this->request->get('priority');
+        $imageRemoves = $this->request->get('image_remove');
+        $thunbnail = null;
+//        dd($this->request->all());
+        if($this->request->hasFile('thunbnail')){
+            $thunbnail = Helpers::uploadImage($this->request->file('thunbnail'),PATH_IMAGE_CATEGORY,$id.'_');
+        }
+        $dataIns = [
+            'category_name'=>$name,
+            'status'=>$status,
+            'note'=>$note,
+            'parent_id'=>$parentId,
+            'icon'=>$icon,
+            'priority'=>$priority
+        ];
+        if(!empty($thunbnail) && $thunbnail['status'] && !empty($thunbnail['url'])){
+            $dataIns['thunbnail']=$thunbnail['url'];
+        }
+        if(empty($name)){
+            return $this->respondForward(['message'=>'Category Name can not null','data'=>[],'status'=>false]);
+        }
         if(!empty($id)){
             $category = $this->repos->find($id);
             if($category){
                 $category->update($dataIns);
             }
-            return $this->respondForward(['message'=>'Category was updated successful','data'=>null,'status'=>true]);
+            $res =['message'=>'Category was updated successful','data'=>$category,'status'=>true];
+
         }
         else{
-            $this->repos->create($dataIns);
-            return $this->respondForward(['message'=>'Category was created successful','data'=>null,'status'=>true]);
+            $category = $this->repos->create($dataIns);
+            $res = ['message'=>'Category was created successful','data'=>$category,'status'=>true];
         }
+        if($category){
+            $urlFiles = [];
+            $id = $category->id;
+            if($this->request->hasFile('banners')){
+                $files = $this->request->file('banners');
+                $i = 0;
+                foreach ($files as $file){
+                    $i++;
+                    $url = Helpers::uploadImage($file,PATH_IMAGE_CATEGORY,$id.'_'.$i.'_');
+                    if($url['status']){
+                        $urlFiles[]=$url['url'];
+                    }
+                }
+            }
+            if(!empty($imageRemoves)){
+                $imageRemoves = explode(',',$imageRemoves);
+//                \File::Delete($imageRemoves);
+                foreach ($imageRemoves as $img){
+                    try{
+                        unlink('../public'.$img);
+                    }
+                    catch (\Exception $e){
+//                        echo $e->getMessage();
+                    }
+//                    \Storage::Delete('../public'.$img);
+                    CategoryBanner::where('category_id',$id)->where('url',$img)->delete();
+                }
+            }
+            foreach ($urlFiles as $url){
+                CategoryBanner::create([
+                    'category_id'=>$id,
+                    'url'=>$url,
+                    'status'=>ENABLE
+                ]);
+            }
+        }
+        return $this->respondForward($res);
+    }
+    public function getOption(){
+        $data = $this->request->all();
+        $catogories = $this->repos->getCategoryOption($data);
+        $res = self::recursiveCategoryOption($catogories);
+        $res[]=['id'=>0,'text'=>"No parent",'parent_id'=>0];
+        $arr = [];
+        foreach ($res as $item){
+            $arr[$item['id']]=$item;
+        }
+        sort ($arr);
+        $res = array_values($arr);
+        return response()->json($res);
+    }
+    public function recursiveCategoryOption($data,$parent_id=0){
+        $temp_array = array();
+        foreach ($data as $k=>$v) {
+            if ($v['parent_id'] == $parent_id) {
+                $v['children'] = self::recursiveCategory($data, $v['id']);
+                $temp_array[] = $v;
+                unset($data[$k]);
+            }
+        }
+        return $temp_array;
     }
 }

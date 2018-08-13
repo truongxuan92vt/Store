@@ -2,6 +2,7 @@
 namespace App\Http\Repositories;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class CategoryRepository extends BaseRepository
 {
@@ -13,8 +14,20 @@ class CategoryRepository extends BaseRepository
     {
         return Category::class;
     }
+    public function getCategoryOption($data){
+        $query = Category::where('status',ENABLE)->select([
+            'id',
+            'category_name as text',
+            'parent_id'
+        ]);
+        if(!empty($data['except_id'])){
+            $query->where('id','<>',$data['except_id']);
+        }
+        $res = $query->get()->toArray();
+        return  $res;
+    }
     public static function getCategoryForWeb(){
-        $result = Category::get();
+        $result = Category::where('status',ENABLE)->orderBy('priority')->get()->toArray();
         return  $result;
     }
     public function getList($data){
@@ -28,7 +41,15 @@ class CategoryRepository extends BaseRepository
         if(!empty($data->category_name)){
             $res = $res->where('category_name','like','%'.$data->category_name.'%');
         }
-        $res = $res->get();
+        $res = $res->select([
+                'categories.*',
+                DB::raw('pr.category_name as parent_name')
+            ])
+            ->leftJoin('categories as pr','pr.id','categories.parent_id')
+            ->orderBy('priority','ASC')
+            ->orderBy('parent_id','ASC')
+            ->orderBy('category_name','ASC')
+            ->get();
         return $res;
     }
     static public function getOption($data=null){

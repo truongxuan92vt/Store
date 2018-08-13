@@ -9,7 +9,6 @@
         <label class="col-xs-6">Role</label>
         <div class="col-xs-6" style="padding-left: 0px; padding-right: 0px; height: 30px;">
             <select class="form-control" id="cbo_status" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                <option value="0" selected="">Select a Status</option>
                 @foreach($statusList as $item)
                     <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
                 @endforeach

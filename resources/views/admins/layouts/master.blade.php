@@ -18,7 +18,6 @@
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="{{URL::to('/')}}/AdminLTE/dist/css/skins/_all-skins.min.css">
 
-        <link rel="stylesheet" href="{{URL::to('/')}}/css/common.css">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -42,19 +41,15 @@
         <!-- AdminLTE App -->
         <script src="{{URL::to('/')}}/AdminLTE/dist/js/adminlte.min.js"></script>
 
-        <script type="text/javascript" src="{{ URL::asset('js/util.js') }}"></script>
-
         <link rel="stylesheet" href="{{URL::to('/')}}/plugin/loader/main.css">
         <link rel="stylesheet" type="text/css" href="{{module_path()}}/datatables.net-bs/css/dataTables.bootstrap.min.css"/>
-        {{--<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/plugin/dataTables/datatables.css"/>--}}
 
         <script type="text/javascript" src="{{module_path()}}/datatables.net/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="{{module_path()}}/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript" src="{{URL::to('/')}}/plugin/notify/notify.js"></script>
 
-        <!-- Boostrap Notify -->
-        {{--<script type="text/javascript" src="{{module_path()}}/bootstrap-notify/bootstrap-notify.js"></script>--}}
-        <!-- End Bootstrap Notify -->
+        <link rel="stylesheet" href="{{asset('assets/app.css')}}">
+        <script type="text/javascript" src="{{asset('assets/app.js') }}"></script>
 
         <!-- Toastr Notify-->
         <link href="{{module_path()}}/toastr/build/toastr.css" rel="stylesheet"/>
@@ -158,7 +153,7 @@
             <!-- /.modal -->
 
             <!-- Bootstrap-notify -->
-            <div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">
+            {{--<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">
                 <button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>
                 <span data-notify="icon"></span>
                 <span data-notify="title">{1}</span>
@@ -167,7 +162,7 @@
                     <div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                 </div>
                 <a href="{3}" target="{4}" data-notify="url"></a>
-            </div>
+            </div>--}}
         </div>
     </body>
     <script>
