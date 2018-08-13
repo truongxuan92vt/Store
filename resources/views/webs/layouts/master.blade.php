@@ -12,7 +12,7 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
         <!-- CSS -->
-        <link rel="stylesheet" href="{{asset('webs/css/app.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/webs/app.css')}}">
         <!-- Bootstrap 3.3.7 -->
         <link rel="stylesheet" href="{{module_path()}}/bootstrap/dist/css/bootstrap.min.css">
         <!-- Font Awesome -->
@@ -20,7 +20,7 @@
         <!-- End CSS -->
 
         <!-- JS -->
-        <script src="{{ asset('webs/js/app.js') }}"></script>
+        <script src="{{ asset('assets/webs/app.js') }}"></script>
         <!-- jQuery 3 -->
         <script src="{{module_path()}}/jquery/dist/jquery.js"></script>
         <!-- Bootstrap 3.3.7 -->
@@ -32,12 +32,11 @@
         <script src="{{module_path()}}/toastr/toastr.js"></script>
         <!-- End Toastr -->
     </header>
-
     <body>
         <!-- Header -->
-        <header>
+        <div class="header">
             @include('webs.layouts.header')
-        </header>
+        </div>
         <!-- End Header -->
         <div class="wrapper">
             <div class="container">
