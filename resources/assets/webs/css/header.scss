@@ -2,6 +2,7 @@
     background-color: #1d71ab;
     height: 28px;
     font-size: 14px;
+    position: relative;
     .top-header-item{
         display: inline;
         margin: 5px 30px 10px 0px;
@@ -13,9 +14,11 @@
     /*height: 120px;*/
     background-color: #189eff;
     opacity: 0.9;
+    position: relative;
     .top-nav{
         width: 100%;
         margin: 10px 0px;
+        position: relative;
         .cp-icon{
             color: white;
             font-size: 24px;
@@ -50,6 +53,7 @@
     .main-nav{
         height: 30px;
         position: relative;
+        z-index: 9999 !important;
         .main-nav-wrap{
             cursor: pointer;
             position:relative;
@@ -70,6 +74,7 @@
                 }
             }
             &>ul{
+                z-index: 9999;
                 padding: 0;
                 width: 300px;
 
@@ -89,7 +94,7 @@
                         background: #189eff;
                         border-color: #189eff;
                         color: #fff;
-                        z-index: 2;
+                        //z-index: 2;
                         &:not(.no-sub){
                             &:before,&:after{
                                 right: -35px;

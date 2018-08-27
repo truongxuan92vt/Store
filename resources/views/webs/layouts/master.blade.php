@@ -34,11 +34,11 @@
     </header>
     <body>
         <!-- Header -->
-        <div class="header">
+        <div class="header" style="position: relative; z-index: 10">
             @include('webs.layouts.header')
         </div>
         <!-- End Header -->
-        <div class="wrapper">
+        <div class="wrapper" style="z-index: 1;position: relative">
             <div class="container">
                 @yield('content')
             </div>

@@ -45,7 +45,7 @@
     <script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/ckeditor.js"></script>
     <script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/adapters/jquery.js"></script>
     <script type="text/javascript" src="{{asset('assets/uploadMultiFile/uploadMultiFile.js')}}"></script>
-    <script type="text/javascript" src="{{asset('assets/uploadMultiFile/uploadMultiFile.css')}}"></script>
+    <link rel="stylesheet" href="{{asset('assets/uploadMultiFile/uploadMultiFile.css')}}"></link>
     <form autocomplete="off" id="frm_product" name="frm_product">
         <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
         <?php $image = isset($data->image)?$data->image:''?>
