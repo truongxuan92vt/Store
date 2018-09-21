@@ -41,7 +41,7 @@ class ProductController extends BaseController {
         $categoryId = $this->request->get('category_id');
         $status = $this->request->get('status');
         $note = $this->request->get('note');
-        $desc = $this->request->get('descc');
+        $desc = $this->request->get('desc');
         $imageRemoves = $this->request->get('image_remove');
 
         if($this->request->hasFile('image')){

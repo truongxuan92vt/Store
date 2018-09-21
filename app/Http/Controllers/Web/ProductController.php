@@ -26,5 +26,6 @@ class ProductController extends BaseController {
         $category = $this->categoryRepo->find(1);
 //        $detail = $this->repos->getProductDetail();
         return view('webs.products.detail',['category'=>$category]);
+
     }
 }
