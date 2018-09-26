@@ -43,7 +43,7 @@
             @foreach($products as $pro)
                 <div class="col-xs-3">
                     <div class="product-box">
-                        <a href="{{route('web.product.detail')}}">
+                        <a href="{{route('web.product.detail',['id'=>$pro->id])}}">
                             <div>
                                 <img src="{{$pro['image']}}">
                             </div>

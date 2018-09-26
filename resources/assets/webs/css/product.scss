@@ -1,7 +1,103 @@
 .product-container{
+  width: 100%;
   .product-summary{
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+    background: white;
     .product-image{
-
+      display: inline-block;
+      vertical-align:top;
+      width: 28%;
+      margin: 10px;
+      .product-gallery{
+        width: 100%;
+        .gallery-preview{
+          img{
+            height: 300px;
+            width: 100%;
+          }
+        }
+        .gallery-slick-horizontal{
+          margin-top: 10px;
+          width: 100%;
+          //display: inline-block;
+          .slick-list{
+            display: inline-block;
+            .slick-track{
+              display: inline-block;
+              opacity: 1;
+              //width: 1087.5px;
+              transform: translate3d(0px, 0px, 0px);
+              div{
+                display: inline;
+                img{
+                  height: 30px;
+                  width: 30px;
+                }
+              }
+            }
+          }
+          .slick-next{
+            float: right;
+            line-height: 30px;
+            width: 15px;
+            cursor: pointer;
+          }
+          .slick-prev{
+            float:left;
+            line-height: 30px;
+            width: 20px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .product-cart{
+      display: inline-block;
+      vertical-align:top;
+      margin: 10px;
+      width: 65%;
+      //width: calc(100% - 350px);
+      .product-info{
+        vertical-align:top;
+        display: inline-block;
+        width: 64%;
+        background: aliceblue;
+        .product-name{
+          border-bottom: 1px solid red;
+          padding: 5px;
+        }
+      }
+      .product-delivery{
+        vertical-align:top;
+        display: inline-block;
+        width: 35%;
+        background: beige;
+        div{
+          display: inline;
+        }
+      }
+    }
+  }
+  .product-content{
+    background-color: white;
+    width: 100%;
+    .product-detail{
+      h4{
+        padding: 15px;
+        //padding-left: 24px;
+        //padding-right: 24px;
+        height: 52px;
+        //line-height: 52px;
+        background: #fafafa;
+      }
+      .product-desc{
+        margin: 10px;
+        img{
+          max-width: 100%;
+        }
+      }
     }
   }
 }

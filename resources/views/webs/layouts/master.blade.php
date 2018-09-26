@@ -38,7 +38,7 @@
             @include('webs.layouts.header')
         </div>
         <!-- End Header -->
-        <div class="wrapper" style="z-index: 1;position: relative">
+        <div class="wrapper" style="z-index: 1;position: relative;background-color: #eff0f5;">
             <div class="container">
                 @yield('content')
             </div>

@@ -24,8 +24,10 @@ class ProductController extends BaseController {
     public function detail(){
         $id = $this->request->get('id');
         $category = $this->categoryRepo->find(1);
+        $product = $this->repos->find($id);
+//        dd(json_encode($product));
 //        $detail = $this->repos->getProductDetail();
-        return view('webs.products.detail',['category'=>$category]);
+        return view('webs.products.detail',['category'=>$category,'product'=>$product]);
 
     }
 }
