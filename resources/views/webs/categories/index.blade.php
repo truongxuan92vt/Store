@@ -3,7 +3,7 @@
 @section('controller', 'Dashboard')
 @section('action', 'Controller pannel')
 @section('content')
-<div style="height: 1200px" style="position: relative;">
+<div style="min-height: 1200px; position: relative; background-color: white;">
     {{--{{count($category->banners)}}--}}
     @if(isset($category) && count($category->banners))
         <div id="myCarousel" class="carousel slide" data-ride="carousel" >
@@ -39,39 +39,33 @@
         </div>
     @endif
     <div class="product">
-        <div class="row">
-            @foreach($products as $pro)
-                <div class="col-xs-3">
-                    <div class="product-box">
-                        <a href="{{route('web.product.detail',['id'=>$pro->id])}}">
-                            <div>
-                                <img src="{{$pro['image']}}">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-color">
-
-                                </div>
-                                <div class="product-name">
-                                    <span>{{$pro['product_name']}}</span>
-                                </div>
-                                <div class="product-star">
-                                    <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
-                                    <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
-                                    <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
-                                    <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;
-                                    <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;
-                                </div>
-                                <div class="price">
-                                    <span class="product-price">290,000Đ</span>
-                                    <span class="product-old-price">350,000Đ</span>
-                                    <span class="product-percent">-{{round((350000-290000)/350000*100)}}%</span>
-                                </div>
-                            </div>
-                        </a>
+        @foreach($products as $pro)
+            <div class="product-box">
+                <a href="{{route('web.product.detail',['id'=>$pro->id])}}">
+                    <div>
+                        <img src="{{$pro['image']}}">
                     </div>
-                </div>
-            @endforeach
-        </div>
+                    <div class="product-info">
+                        <div class="product-color"></div>
+                        <div class="product-name">
+                            <span>{{$pro['product_name']}}</span>
+                        </div>
+                        <div class="product-star">
+                            <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
+                            <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
+                            <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
+                            <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;
+                            <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;
+                        </div>
+                        <div class="price">
+                            <span class="product-price">290,000Đ</span>
+                            <span class="product-old-price">350,000Đ</span>
+                            <span class="product-percent">-{{round((350000-290000)/350000*100)}}%</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        @endforeach
     </div>
 
 </div>

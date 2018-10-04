@@ -16,18 +16,26 @@
 <div class="header-nav">
     <div class="container">
         <div class="top-nav">
-            <div class="cp-icon"><label style="margin-right: 30px;">TX STORE</label></div>
-            <div class="frm-search" style="width: 65%">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2" style="cursor: pointer"><i class="fa fa-search" aria-hidden="true"></i> Search</span>
+            <div class="cp-icon"><label style="margin-right: 30px;"><a href="/">STORE</a></label></div>
+            <div class="frm-search" style="width: 75%">
+                <div class="input-group margin-bottom-sm">
+                    <input class="form-control" type="text" placeholder="Search">
+                    <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
                 </div>
+                {{--<div class="input-group">--}}
+                    {{--<input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">--}}
+                    {{--<span class="input-group-addon" id="basic-addon2" style="cursor: pointer"><i class="fa fa-search" aria-hidden="true"></i> Search</span>--}}
+                {{--</div>--}}
             </div>
             <div class="shopping-cart">
-                <div style="margin-top: 5px; margin-bottom: 2px;margin-left: 15px; margin-right: 15px;">
+                <div>
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <span id="cart_num_item">100</span>
+                </div>
+                {{--<div style="margin-top: 5px; margin-bottom: 2px;margin-left: 15px; margin-right: 15px;">
                     <span><i class="fa fa-shopping-cart" aria-hidden="true"></i>  Giỏ hàng</span>
                     <input id="cart_num_item" value="1000" type="button">
-                </div>
+                </div>--}}
             </div>
         </div>
         <div class="main-nav">
@@ -113,7 +121,10 @@
     </div>
 </div>
 <script>
-    $('.main-nav-wrap>ul>li>.nav-sub').width((window.innerWidth)/2);
+    width = document.getElementsByClassName("container")[0].clientWidth;
+    console.log(width);
+    {{--$('.main-nav-wrap>ul>li>.nav-sub').width((window.innerWidth)/2 + 50);--}}
+    $('.main-nav-wrap>ul>li>.nav-sub').width(width-370);
     $('.main-nav-wrap>ul>li>a').hover( function() {
         $('.main-nav-wrap>ul>li>a').removeClass('active');
         $(this).addClass('active');
