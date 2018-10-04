@@ -172,14 +172,25 @@
         margin-right: -5px;
         height: 400px;
         padding: 10px;
-        .product-name{
+        .product-header{
           border-bottom: 1px solid #eff0f5;
-          padding: 0px 5px;
-          font-weight: bold;
+          padding-bottom: 5px;
+          .product-name{
+            padding: 0px 5px;
+            font-weight: bold;
+          }
+          .product-star{
+            margin-bottom: 5px;
+            font-size: 10px;
+            .checked {
+              color: orange;
+            }
+          }
         }
+
         .product-price{
-          border-bottom: 1px solid #eff0f5;
-          padding: 0px 5px;
+          //border-bottom: 1px solid #eff0f5;
+          padding: 15px 5px;
           .current-price{
             font-size: 30px;
             color: red;
@@ -192,14 +203,24 @@
           }
         }
         .product-quantity{
-          border-bottom: 1px solid #eff0f5;
-          padding: 0px 5px;
+          //border-bottom: 1px solid #eff0f5;
+          padding: 20px 5px;
           font-weight: bold;
+          .input-group{
+            width: 150px;
+            //margin: 40px auto;
+          }
         }
         .product-add-to-cart{
-          border-bottom: 1px solid #eff0f5;
+          //border-bottom: 1px solid #eff0f5;
           padding: 0px 5px;
           font-weight: bold;
+
+          button{
+            display: inline-block;
+            width: 45%;
+            height: 40px;
+          }
         }
       }
       .product-delivery{

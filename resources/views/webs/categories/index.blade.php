@@ -51,11 +51,14 @@
                             <span>{{$pro['product_name']}}</span>
                         </div>
                         <div class="product-star">
-                            <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
+                            <div class="rating">
+                                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                            </div>
+                            {{--<i class="fa fa-star" aria-hidden="true"></i>&nbsp;
                             <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
                             <i class="fa fa-star" aria-hidden="true"></i>&nbsp;
                             <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;
-                            <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;
+                            <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;--}}
                         </div>
                         <div class="price">
                             <span class="product-price">290,000Đ</span>
