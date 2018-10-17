@@ -1,8 +1,8 @@
 .product-container{
   width: 100%;
   .menu-title{
-    height: 40px;
-    line-height: 40px;
+    height: 25px;
+    line-height: 25px;
     background-color: #ebf7f9;
     padding: 0px;
     margin-bottom: -10px;
@@ -14,10 +14,10 @@
       .menu-title-item{
         //display: inline-block;
         float: left;
-        margin: 0 8px 0 16px;
+        margin: 0 8px 0 12px;
         a{
           background: #ddd;
-          padding: 12px 16px;
+          padding: 4px 5px;
           //float: left;
           text-decoration: none;
           color: #444;
@@ -29,9 +29,9 @@
           &::before{
             content: "";
             position: absolute;
-            top: 50%;
+            top: 22px;
             margin-top: -24px;
-            border-width: 24px 0 24px 16px;
+            border-width: 15px 0 11px 16px;
             border-style: solid;
             border-color: #ddd #ddd #ddd transparent;
             left: -16px;
@@ -39,10 +39,10 @@
           &::after{
             content: "";
             position: absolute;
-            top: 50%;
+            top: 22px;
             margin-top: -24px;
-            border-top: 24px solid transparent;
-            border-bottom: 24px solid transparent;
+            border-top: 15px solid transparent;
+            border-bottom: 11px solid transparent;
             border-left: 16px solid #ddd;
             right: -16px;
           }

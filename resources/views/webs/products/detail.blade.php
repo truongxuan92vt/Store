@@ -3,6 +3,9 @@
 @section('controller', 'Dashboard')
 @section('action', 'Controller pannel')
 @section('content')
+    <script src="{{module_path()}}/slick-carousel/slick/slick.js"></script>
+    <link rel="stylesheet" href="{{module_path()}}/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="{{module_path()}}/slick-carousel/slick/slick-theme.css">
 <div class="product-container">
     <div class="menu-title">
         <ul>
@@ -73,7 +76,7 @@
                                 <span class="glyphicon glyphicon-minus"></span>
                             </button>
                         </span>
-                        <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                        <input id="txt_quantityCart" type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
                                 <span class="glyphicon glyphicon-plus"></span>
@@ -83,7 +86,7 @@
                 </div>
                 <div class="product-add-to-cart">
                     <button type="button" class="btn btn-warning">MUA NGAY</button>
-                    <button type="button" class="btn btn-danger" style="background: #f57224;margin-left: 10px">THÊM VÀO GIỎ HÀNG</button>
+                    <button id="btn_addToCart" type="button" class="btn btn-danger" style="background: #f57224;margin-left: 10px">THÊM VÀO GIỎ HÀNG</button>
                 </div>
             </div>
             <div class="product-delivery">
@@ -131,6 +134,8 @@
     </div>
 </div>
 <script>
+    $(document).ready(function(){
+    });
     $('.btn-number').click(function(e){
         e.preventDefault();
 
@@ -201,5 +206,46 @@
             e.preventDefault();
         }
     });
+    $("#btn_addToCart").click(function(){
+        pro = {
+            "id":"{{$product->id}}",
+            "name":"{{$product->product_name}}",
+            "image":"{{$product->image??""}}"
+        }
+        pro.quantity = parseInt($("#txt_quantityCart").val());
+        pro.price = parseFloat({{ $product->price??125685 }});
+        pro.amount = parseFloat(pro.price*pro.quantity);
+        productCart = localStorage.getItem("productCart")?JSON.parse(localStorage.getItem("productCart")):[];
+        isExist = false;
+        if(productCart!=null){
+            productCart.forEach(function(e,i) {
+                if(e!=null){
+                    if(e.id == pro.id){
+                        e.quantity += pro.quantity;
+                        e.amount = e.price*e.quantity;
+                        isExist = true;
+                    }
+                }
+                else{
+                    delete productCart[null];
+                }
+            })
+        }
+        if(!isExist){
+            productCart.push(pro);
+        }
+        res = [];
+        for(i = 0; i<productCart.length;i++){
+            if(productCart[i]!=null){
+                res.push(productCart[i]);
+            }
+        }
+        // localStorage.clear();
+        localStorage.removeItem('productCart');
+        if(res.length>0){
+            localStorage.setItem('productCart',JSON.stringify(res));
+        }
+        generateShortCart();
+    })
 </script>
 @endsection
