@@ -132,7 +132,7 @@
             <div class="row">
                 <label class="col-xs-4">Category name</label>
                 <div class="col-xs-8">
-                    <input style="width: 100%" type="text" id="txt_categoryName_detail" name="category_name" value="{{isset($data->category_name)?$data->category_name:''}}">
+                    <input style="width: 100%" type="text" id="txt_categoryName_detail" name="name" value="{{isset($data->name)?$data->name:''}}">
                 </div>
             </div>
             <div class="row">
@@ -151,7 +151,7 @@
             <div class="row">
                 <label class="col-xs-4">Description</label>
                 <div class="col-xs-8">
-                    <textarea style="width: 100%" type="text" id="txt_note_detail" name="note">{{isset($data->note)?$data->note:''}}</textarea>
+                    <textarea style="width: 100%" type="text" id="txt_desc_detail" name="desc">{{isset($data->desc)?$data->desc:''}}</textarea>
                 </div>
             </div>
         </div>
@@ -233,7 +233,7 @@
     $('#btn_save').click(function(){
         /*var data = {
             id  : $('#txt_id').val(),
-            category_name : $('#txt_categoryName_detail').val(),
+            name : $('#txt_categoryName_detail').val(),
             note : $('#txt_note_detail').val(),
             status : $('#cbo_status_detail').val(),
             parent_id : $('#parent_id').val(),

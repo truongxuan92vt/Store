@@ -51,8 +51,8 @@
             @foreach($data as $item)
             <tr>
                 <td style="text-align: center">{{$i}}</td>
-                <td><a href="#" onclick="openRoleDetail('{{$item->id}}')">{{$item->role_name}}</a></td>
-                <td>{{$item->cm_name}}</td>
+                <td><a href="#" onclick="openRoleDetail('{{$item->id}}')">{{$item->name}}</a></td>
+                <td>{{$item->status_name}}</td>
                 <td>{{$item->created_by}}</td>
                 <td>{{$item->created_at}}</td>
                 <td>{{$item->updated_by}}</td>
@@ -99,9 +99,9 @@
                     for(i=0; i<data['data'].length;i++){
                         row = data['data'][i];
                         num = i+1;
-                        role_name = ''
-                        if(row['role_name'] != null && row['role_name']!=''){
-                            role_name = row['role_name'];
+                        name = ''
+                        if(row['name'] != null && row['name']!=''){
+                            name = row['name'];
                         }
                         created_by = ''
                         if(row['created_by'] != null && row['created_by']!=''){
@@ -113,8 +113,8 @@
                         }
                         newRowContent = "<tr>" +
                                 "<td style='text-align: center'>"+num+"</td>" +
-                                "<td><a href='#' onclick='openRoleDetail("+row['id']+")'>"+row['role_name']+"</td>" +
-                                "<td>"+row['cm_name']+"</td>" +
+                                "<td><a href='#' onclick='openRoleDetail("+row['id']+")'>"+row['name']+"</td>" +
+                                "<td>"+row['status_name']+"</td>" +
                                 "<td>"+created_by+"</td>" +
                                 "<td>"+row['created_at']+"</td>" +
                                 "<td>"+updated_by+"</td>" +

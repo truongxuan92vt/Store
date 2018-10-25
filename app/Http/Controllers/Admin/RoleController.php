@@ -34,11 +34,11 @@ class RoleController extends BaseController
         $id = $this->request->get('id');
         $roleName = $this->request->get('roleName');
         $status = $this->request->get('status');
-        $dataIns = ['id'=>$id,'role_name'=>$roleName,'status'=>$status];
+        $dataIns = ['id'=>$id,'name'=>$roleName,'status'=>$status];
         if(!empty($id)){
             $role = $this->repos->find($id);
             if($role){
-                $role->role_name = $roleName;
+                $role->name = $roleName;
                 $role->status = $status;
                 $role->update();
             }

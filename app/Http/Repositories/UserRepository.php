@@ -28,8 +28,8 @@ class UserRepository extends BaseRepository{
             'users.created_at',
             'users.updated_by',
             'users.updated_at',
-            'roles.role_name',
-            'roles.role_name',
+            'roles.name',
+            'roles.name',
             'user_roles.role_id'
         );
         $res = $this->model
@@ -59,7 +59,7 @@ class UserRepository extends BaseRepository{
     }
     public function detail($user_id){
         $res = $this->model
-            ->select('users.*','roles.role_name', 'user_roles.role_id')
+            ->select('users.*','roles.name', 'user_roles.role_id')
             ->leftJoin('user_roles','users.id','user_roles.user_id')
             ->leftJoin('roles','user_roles.role_id','roles.id')
             ->where('users.id',$user_id)

@@ -116,31 +116,31 @@ $router->group([
 ], function($router){
     $router->get('',[
         'as'    =>  'admin.category.index',
-        'uses'  =>  'CategoryController@index'
+        'uses'  =>  'ProductCategoryController@index'
     ]);
     $router->get('list',[
         'as'    =>  'admin.category.list',
-        'uses'    =>  'CategoryController@list',
+        'uses'    =>  'ProductCategoryController@list',
     ]);
     $router->get('/search',[
         'as'    =>'admin.category.search',
-        'uses'  =>'CategoryController@search'
+        'uses'  =>'ProductCategoryController@search'
     ]);
     $router->get('detail',[
         'as'     =>  'admin.category.detail',
-        'uses'   =>  'CategoryController@detail'
+        'uses'   =>  'ProductCategoryController@detail'
     ]);
     $router->post('save',[
         'as'     =>  'admin.category.save',
-        'uses'   =>  'CategoryController@save'
+        'uses'   =>  'ProductCategoryController@save'
     ]);
     $router->get('list-web',[
         'as'     =>  'admin.category.web',
-        'uses'   =>  'CategoryController@getCategoryForWeb'
+        'uses'   =>  'ProductCategoryController@getCategoryForWeb'
     ]);
     $router->get('option',[
         'as'    =>  'admin.category.option',
-        'uses'  =>  'CategoryController@getOption'
+        'uses'  =>  'ProductCategoryController@getOption'
     ]);
 });
 

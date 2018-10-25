@@ -20,7 +20,7 @@
                         <select class="form-control" id="cbo_category_search" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                             <option value="" selected="">Select a category</option>
                             @foreach($category as $item)
-                                <option value="{{$item['id']}}">{{$item['category_name']}} </option>
+                                <option value="{{$item['id']}}">{{$item['name']}} </option>
                             @endforeach
                         </select>
                     </div>
@@ -88,7 +88,7 @@
                     },
                     "data": function ( d ) {
                         return {
-                            product_name : $('#txt_productName_search').val(),
+                            name : $('#txt_productName_search').val(),
                             status : $('#cbo_status_search').val(),
                             category : $('#cbo_category_search').val(),
                         };
@@ -97,18 +97,18 @@
                 columns: [
                     {title:"No",data: null,},
                     {title: "Name",
-                        data: "product_name",
+                        data: "name",
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                            if(oData.product_name) {
-                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.category_name+"</a>");
-                                $(nTd).html('<a href="#" onclick="openDetail('+oData.id+')">'+oData.product_name+'</a>');
+                            if(oData.name) {
+                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.name+"</a>");
+                                $(nTd).html('<a href="#" onclick="openDetail('+oData.id+')">'+oData.name+'</a>');
                             }
                         }
                     },
                     // {title:"Status",data:'status_name'},
-                    {title:"Note",data:'note'},
-                    {title:"Created at",data:'created_at'},
-                    {title:"Created by",data:'created_by'},
+                    // {title:"Note",data:'note'},
+                    // {title:"Created at",data:'created_at'},
+                    // {title:"Created by",data:'created_by'},
                     {title:"Updated at",data:'updated_at'},
                     {title:"Updated by",data:'updated_by'}
                 ],

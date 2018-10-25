@@ -3,17 +3,13 @@
 namespace App\Models;
 
 
-class Category extends BaseModel
+class ProductCategoryBanner extends BaseModel
 {
-    protected $table = 'categories';
+    protected $table = 'product_category_banners';
 
     protected $guarded = [];
-
-    public function banners(){
-        return $this->hasMany(CategoryBanner::class,'category_id');
-    }
    /* protected $fillable = [
-        'category_name',
+        'name',
         'parent_id',
         'note',
         'created_at',

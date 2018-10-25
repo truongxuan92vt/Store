@@ -79,7 +79,7 @@ class FunctionController extends BaseController
 
     function getDataFullMenu()
     {
-        $functions = DB::table('functions')->select('id', 'icon', 'function_name as text', 'parent_id', 'status')
+        $functions = DB::table('functions')->select('id', 'icon', 'name as text', 'parent_id', 'status')
             ->get();
         $functions = json_decode(json_encode($functions), true);
         $menu = $this->subFunction($functions);

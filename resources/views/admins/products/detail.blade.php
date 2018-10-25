@@ -70,15 +70,15 @@
             <div class="col-md-9">
                 <div class="row">
                     <label class="col-xs-2">Name</label>
-                    <input class="col-xs-10" type="text" id="txt_productName_detail" name="product_name" value="{{isset($data->product_name)?$data->product_name:''}}">
+                    <input class="col-xs-10" type="text" id="txt_productName_detail" name="name" value="{{isset($data->name)?$data->name:''}}">
                 </div>
                 <div class="row">
                     <label class="col-xs-2">Category</label>
                     <div class="col-xs-4" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                        <select class="form-control" id="cbo_category_detail" name="category_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                        <select class="form-control" id="cbo_category_detail" name="product_category_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                             <option value="" selected="">Select a category</option>
                             @foreach($category as $item)
-                                <option value="{{$item['id']}}" @if(isset($data->category_id) && $item['id']==$data->category_id) selected="selected" @endif>{{$item['category_name']}} </option>
+                                <option value="{{$item['id']}}" @if(isset($data->product_category_id) && $item['id']==$data->product_category_id) selected="selected" @endif>{{$item['name']}} </option>
                             @endforeach
                         </select>
                     </div>
@@ -93,8 +93,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-xs-2">Note</label>
-                    <textarea class="col-xs-10" type="text" id="txt_note_detail" name="note" rows="3" cols="50">{{isset($data->note)?$data->note:''}}</textarea>
+                    <label class="col-xs-2">Short Desc</label>
+                    <textarea class="col-xs-10" type="text" id="txt_short_desc_detail" name="short_desc" rows="3" cols="50">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
                 </div>
                 <div class="row">
                     <label class="col-xs-12">Description</label>
@@ -102,7 +102,7 @@
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <textarea type="text" id="txt_desc_detail" name="desc">{{isset($data->desc)?$data->desc:''}}</textarea>
+                        <textarea type="text" id="txt_long_desc_detail" name="long_desc">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
                     </div>
                 </div>
             </div>
@@ -171,7 +171,7 @@
             .catch( error => {
                 console.error( error );
             } );*/
-        $( '#txt_desc_detail' ).ckeditor( function( textarea ) {},
+        $( '#txt_long_desc_detail' ).ckeditor( function( textarea ) {},
         {
             filebrowserBrowseUrl: '/plugin/ckfinder/ckfinder.html',
             filebrowserImageBrowseUrl: '/plugin/ckfinder/ckfinder.html?Type=Images',
@@ -189,11 +189,11 @@
         $('#btn_save').click(function(){
             var data = {
                 id  : $('#txt_id').val(),
-                product_name : $('#txt_productName_detail').val(),
-                category_id : $('#cbo_category_detail').val(),
+                name : $('#txt_productName_detail').val(),
+                product_category_id : $('#cbo_category_detail').val(),
                 status : $('#cbo_status_detail').val(),
-                desc : $('#txt_desc_detail').val(),
-                note : $('#txt_note_detail').val(),
+                long_desc : $('#txt_long_desc_detail').val(),
+                short_desc : $('#txt_short_desc_detail').val(),
             };
             // data = document.forms["frm_item"];
             // console.log($('#frm_item').serialize());
@@ -202,7 +202,7 @@
             var frm_product = document.getElementById('frm_product');
             var form_data = new FormData(frm_product);
             form_data.append('image',document.getElementById('image').files);
-            form_data.append('desc',$('#txt_desc_detail').val());
+            form_data.append('long_desc',$('#txt_long_desc_detail').val());
             form_data.append('image_remove',imageRemoves);
            /* var ins = document.getElementById('files').files.length;
             for (var x = 0; x < ins; x++) {
@@ -224,10 +224,11 @@
                     // console.log(res);
                     if(res['status']){
                         backToIndex();
-                        toastr.success(res['message']);
+                        toastr.success(message);
                     }
                     else{
-                        toastr.error(res['message']);
+                        message = res['message'].replace(/\\n/g, "<br />");
+                        toastr.error(message);
                     }
                 },
                 error: function (res) {

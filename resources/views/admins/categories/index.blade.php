@@ -33,7 +33,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <label class="col-xs-6">Description</label>
-                    <input class="col-xs-6" id="txt_note_search" value="">
+                    <input class="col-xs-6" id="txt_desc_search" value="">
                 </div>
             </div>
         </div>
@@ -86,9 +86,9 @@
                     // },
                     "data": function ( d ) {
                         return {
-                            category_name : $('#txt_categoryName_search').val(),
+                            name : $('#txt_categoryName_search').val(),
                             status : $('#cbo_status_search').val(),
-                            note : $('#txt_note_search').val(),
+                            desc : $('#txt_desc_search').val(),
                         };
                     },
                 },
@@ -99,11 +99,11 @@
                     //     }
                     // },
                     {title: "Name",
-                        data: "category_name",
+                        data: "name",
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                            if(oData.category_name) {
-                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.category_name+"</a>");
-                                $(nTd).html('<a href="#" onclick="openCategoryDetail('+oData.id+')">'+oData.category_name+'</a>');
+                            if(oData.name) {
+                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.name+"</a>");
+                                $(nTd).html('<a href="#" onclick="openCategoryDetail('+oData.id+')">'+oData.name+'</a>');
                             }
                         }
                     },
@@ -129,7 +129,7 @@
                         data: "icon",
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                             if(oData.icon) {
-                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.category_name+"</a>");
+                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.name+"</a>");
                                 $(nTd).html('<i class="fa '+oData.icon+'"</i>');
                       }
                         }
@@ -138,13 +138,13 @@
                         data: "thunbnail",
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                             if(oData.thunbnail) {
-                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.category_name+"</a>");
+                                // $(nTd).html("<a href='/admin/category?"+oData.id+"'>"+oData.name+"</a>");
                                 $(nTd).html('<img src="'+oData.thunbnail+'" style="height:30px; width: 30px;"/>');
                             }
                         }
                     },
                     {title:"Priority",data:'priority'},
-                    {title:"Description",data:'note'},
+                    {title:"Description",data:'desc'},
                    /* {title:"Created at",data:'created_at'},
                     {title:"Created by",data:'created_by'},*/
                     {title:"Updated at",data:'updated_at'},

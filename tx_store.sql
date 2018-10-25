@@ -23,8 +23,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `code_details`;
 CREATE TABLE `code_details`  (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cm_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `cm_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `created_at` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `updated_at` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
@@ -83,7 +83,7 @@ INSERT INTO `function_roles` VALUES (18, 2, 7, 'EN', NULL, '2018-03-23 09:25:58'
 DROP TABLE IF EXISTS `functions`;
 CREATE TABLE `functions`  (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `function_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT 0,
   `controller` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
@@ -117,7 +117,7 @@ INSERT INTO `functions` VALUES (11, 'E3', 8, NULL, NULL, 'fa fa-circle-o', 'EN',
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `status` char(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'EN',
   `created_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `created_at` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,

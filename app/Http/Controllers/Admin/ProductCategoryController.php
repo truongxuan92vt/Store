@@ -2,16 +2,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Repositories\CategoryRepository;
+use App\Http\Repositories\ProductCategoryRepository;
 use App\Libraries\Helpers;
-use App\Models\CategoryBanner;
+use App\Models\ProductCategoryBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryController extends BaseController {
-    public function __construct(Request $_request,CategoryRepository $_repos)
+class ProductCategoryController extends BaseController {
+    public function __construct(Request $_request,ProductCategoryRepository $_repos)
     {
         parent::__construct($_request,$_repos);
     }
@@ -19,7 +19,7 @@ class CategoryController extends BaseController {
         return view('admins.categories.index',['statusList'=>Helpers::convertCombo(STATUS_SYS)]);
     }
     public static function getCategoryForWeb(){
-        $catogories = CategoryRepository::getCategoryForWeb();
+        $catogories = ProductCategoryRepository::getCategoryForWeb();
         $res = self::recursiveCategory($catogories);
         return $res;
     }
@@ -50,9 +50,9 @@ class CategoryController extends BaseController {
     public function save(){
         $res = ['message'=>'Category Name can not null','data'=>[],'status'=>false];
         $id = $this->request->id??null;
-        $name = $this->request->get('category_name');
+        $name = $this->request->get('name');
         $status = $this->request->get('status');
-        $note = $this->request->get('note');
+        $desc = $this->request->get('desc');
         $parentId = $this->request->get('parent_id');
         $icon = $this->request->get('icon');
         $priority = $this->request->get('priority');
@@ -63,9 +63,9 @@ class CategoryController extends BaseController {
             $thunbnail = Helpers::uploadImage($this->request->file('thunbnail'),PATH_IMAGE_CATEGORY,$id.'_');
         }
         $dataIns = [
-            'category_name'=>$name,
+            'name'=>$name,
             'status'=>$status,
-            'note'=>$note,
+            'desc'=>$desc,
             'parent_id'=>$parentId,
             'icon'=>$icon,
             'priority'=>$priority
@@ -113,12 +113,12 @@ class CategoryController extends BaseController {
 //                        echo $e->getMessage();
                     }
 //                    \Storage::Delete('../public'.$img);
-                    CategoryBanner::where('category_id',$id)->where('url',$img)->delete();
+                    ProductCategoryBanner::where('product_category_id',$id)->where('url',$img)->delete();
                 }
             }
             foreach ($urlFiles as $url){
-                CategoryBanner::create([
-                    'category_id'=>$id,
+                ProductCategoryBanner::create([
+                    'product_category_id'=>$id,
                     'url'=>$url,
                     'status'=>ENABLE
                 ]);

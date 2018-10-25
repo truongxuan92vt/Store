@@ -6,17 +6,42 @@
     <script src="{{module_path()}}/slick-carousel/slick/slick.js"></script>
     <link rel="stylesheet" href="{{module_path()}}/slick-carousel/slick/slick.css">
     <link rel="stylesheet" href="{{module_path()}}/slick-carousel/slick/slick-theme.css">
+
 <div class="product-container">
     <div class="menu-title">
         <ul>
             <li class="menu-title-item"><a href="/">Trang chủ</a></li>
             <li class="menu-title-item"><a href="#">Điện thoại máy tính bảng</a></li>
-            <li class="menu-title-item"><a href="#">{{$product->product_name}}</a></li>
+            <li class="menu-title-item"><a href="#">{{$product->name}}</a></li>
         </ul>
     </div>
     <div class="product-summary">
         <div class="product-image">
-            <div class="product-gallery">
+            <div class="slider-for">
+                <div class="gallery-preview">
+                    <img src="{{$product->image??""}}">
+                </div>
+                @if(count($product->images))
+                    @foreach($product->images as $item)
+                        <div>
+                            <img src="{{$item->url}}">
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+            <div class="slider-nav">
+                <div class="slider-nav-item">
+                    <img src="{{$product->image??""}}">
+                </div>
+                @if(count($product->images))
+                    @foreach($product->images as $item)
+                        <div class="slider-nav-item">
+                            <img src="{{$item->url}}">
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+            {{--<div class="product-gallery">
                 <div class="gallery-preview">
                     <img src="{{$product->image??""}}">
                 </div>
@@ -39,13 +64,13 @@
                         <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </div>
                 </div>
-            </div>
+            </div>--}}
         </div>
         <div class="product-cart">
             <div class="product-info">
                 <div class="product-header">
                     <div class="product-name">
-                        <p>{{$product->product_name}}</p>
+                        <p>{{$product->name}}</p>
                     </div>
                     <div class="product-star">
                         <span class="fa fa-star checked"></span>
@@ -126,16 +151,36 @@
     </div>
     <div class="product-content">
         <div class="product-detail">
-            <h4><b>Mô tả {{$product->product_name}}</b></h4>
+            <h4><b>Mô tả {{$product->name}}</b></h4>
             <div class="product-desc">
-                {!! $product->desc !!}
+                {!! $product->desc->long_desc !!}
             </div>
         </div>
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-    });
+
+    $(function(){
+        $('.slider-for').slick({
+            // lazyLoad: 'ondemand',
+            // fade: true,
+            // infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.slider-nav',
+            autoplay:true
+        });
+        $('.slider-nav').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            asNavFor: '.slider-for',
+            dots: false,
+            centerMode: true,
+            focusOnSelect: true,
+        });
+    })
     $('.btn-number').click(function(e){
         e.preventDefault();
 
@@ -209,7 +254,7 @@
     $("#btn_addToCart").click(function(){
         pro = {
             "id":"{{$product->id}}",
-            "name":"{{$product->product_name}}",
+            "name":"{{$product->name}}",
             "image":"{{$product->image??""}}"
         }
         pro.quantity = parseInt($("#txt_quantityCart").val());

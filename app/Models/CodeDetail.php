@@ -7,7 +7,10 @@ class CodeDetail extends BaseModel
     protected $table = 'code_details';
 
     protected $fillable = [
-        'cm_code',
-        'cm_name'
+        'code',
+        'name',
+        'group_code',
+        'group_name',
+        'status'
     ];
 }

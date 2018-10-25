@@ -3,7 +3,7 @@
     <input type="hidden" id="role_id" name="id" value="{{isset($data->id)?$data->id:''}}">
     <div class="row">
         <label class="col-xs-6">Role name</label>
-        <input class="col-xs-6" type="text" id="txt_roleName" name="role_name" value="{{isset($data->role_name)?$data->role_name:''}}">
+        <input class="col-xs-6" type="text" id="txt_roleName" name="name" value="{{isset($data->name)?$data->name:''}}">
     </div>
     <div class="row">
         <label class="col-xs-6">Role</label>

@@ -16,17 +16,17 @@ class RoleRepository extends BaseRepository
     }
     public function getList(){
         $data = $this->model
-            ->select(Role::getTableName().'.*',CodeDetail::getTableName().'.cm_name')
-            ->leftJoin(CodeDetail::getTableName(),CodeDetail::getTableName().'.cm_code',Role::getTableName().'.status')
+            ->select(Role::getTableName().'.*',CodeDetail::getTableName().'.name as status_name')
+            ->leftJoin(CodeDetail::getTableName(),CodeDetail::getTableName().'.code',Role::getTableName().'.status')
             ->get();
         return $data;
     }
     public function searchRole($data){
         $query = $this->model
-            ->select(Role::getTableName().'.*',CodeDetail::getTableName().'.cm_name')
-            ->leftJoin(CodeDetail::getTableName(),CodeDetail::getTableName().'.cm_code',Role::getTableName().'.status');
+            ->select(Role::getTableName().'.*',CodeDetail::getTableName().'.name as status_name')
+            ->leftJoin(CodeDetail::getTableName(),CodeDetail::getTableName().'.code',Role::getTableName().'.status');
         if(isset($data['roleName']) && !empty($data['roleName'])){
-            $query->where(Role::getTableName().'.role_name','like','%'.$data['roleName'].'%');
+            $query->where(Role::getTableName().'.name','like','%'.$data['roleName'].'%');
         }
         if(isset($data['status']) && !empty($data['status'])){
             $query->where(Role::getTableName().'.status',$data['status']);

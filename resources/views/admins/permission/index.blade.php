@@ -15,7 +15,7 @@
                     <select class="form-control" id="cbo_role">
                         <option value="0" selected="selected">Select a Permission</option>
                         @foreach($roles as $role)
-                            <option value="{{$role->id}}">{{$role->role_name}}</option>
+                            <option value="{{$role->id}}">{{$role->name}}</option>
                         @endforeach
                     </select>
                 </div>

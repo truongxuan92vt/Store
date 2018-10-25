@@ -48,7 +48,7 @@
                     <div class="product-info">
                         <div class="product-color"></div>
                         <div class="product-name">
-                            <span>{{$pro['product_name']}}</span>
+                            <span>{{$pro['name']}}</span>
                         </div>
                         <div class="product-star">
                             <div class="rating">

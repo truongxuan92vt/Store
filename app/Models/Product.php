@@ -14,15 +14,18 @@ class Product extends BaseModel
     public function images(){
         return $this->hasMany(ProductImage::class,'product_id');
     }
-
-    public static function boot(){
-        static::retrieved(function ($model) {
-            $server = config('app.server_upload');
-//            if(empty($server)){
-//                $server = URL::to('/');
-//            }
-            if(!empty($model->image))
-                $model->image = $server.$model->image;
-        });
+    public function desc(){
+        return $this->hasOne(ProductDesc::class,'product_id');
     }
+
+//    public static function boot(){
+//        static::retrieved(function ($model) {
+//            $server = config('app.server_upload');
+////            if(empty($server)){
+////                $server = URL::to('/');
+////            }
+//            if(!empty($model->image))
+//                $model->image = $server.$model->image;
+//        });
+//    }
 }

@@ -48,7 +48,7 @@
                 @if(count($item['subs'])>0)
                     <li class="treeview" id="m_{{$item['id']}}">
                         <a href="#">
-                            <i class="{{$item['icon']}}"></i> <span>{{$item['function_name']}}</span>
+                            <i class="{{$item['icon']}}"></i> <span>{{$item['name']}}</span>
                             <span class="pull-right-container">
                               <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -58,7 +58,7 @@
                                 @if(count($subL1['subs'])>0)
                                 <li class="treeview" id="m_{{$subL1['id']}}">
                                     <a href="#">
-                                        <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['function_name']}}</span>
+                                        <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['name']}}</span>
                                         <span class="pull-right-container">
                                           <i class="fa fa-angle-left pull-right"></i>
                                         </span>
@@ -68,7 +68,7 @@
                                             @if(count($subL2['subs'])>0)
                                                 <li class="treeview" id="m_{{$subL2['id']}}">
                                                     <a href="#">
-                                                        <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['function_name']}}</span>
+                                                        <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['name']}}</span>
                                                         <span class="pull-right-container">
                                                           <i class="fa fa-angle-left pull-right"></i>
                                                         </span>
@@ -77,7 +77,7 @@
                                                         @foreach($subL2['subs'] as $subL3)
                                                             <li id="m_{{$subL3['id']}}">
                                                                 <a href="{{$subL3['url']}}">
-                                                                    <i class="{{$subL3['icon']}}"></i> <span>{{$subL3['function_name']}}</span>
+                                                                    <i class="{{$subL3['icon']}}"></i> <span>{{$subL3['name']}}</span>
                                                                 </a>
                                                             </li>
                                                         @endforeach
@@ -86,7 +86,7 @@
                                             @else
                                                 <li id="m_{{$subL2['id']}}">
                                                     <a href="{{$subL2['url']}}">
-                                                        <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['function_name']}}</span>
+                                                        <i class="{{$subL2['icon']}}"></i> <span>{{$subL2['name']}}</span>
                                                     </a>
                                                 </li>
                                             @endif
@@ -96,7 +96,7 @@
                                 @else
                                     <li id="m_{{$subL1['id']}}">
                                         <a href="{{$subL1['url']}}">
-                                            <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['function_name']}}</span>
+                                            <i class="{{$subL1['icon']}}"></i> <span>{{$subL1['name']}}</span>
                                         </a>
                                     </li>
                                 @endif
@@ -106,7 +106,7 @@
                 @else
                     <li id="m_{{$item['id']}}">
                         <a href="{{$item['url']}}">
-                            <i class="{{$item['icon']}}"></i> <span>{{$item['function_name']}}</span>
+                            <i class="{{$item['icon']}}"></i> <span>{{$item['name']}}</span>
                         </a>
                     </li>
                 @endif

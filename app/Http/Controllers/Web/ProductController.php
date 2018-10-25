@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Repositories\CategoryRepository;
+use App\Http\Repositories\ProductCategoryRepository;
 use App\Http\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +15,7 @@ class ProductController extends BaseController {
     public function __construct(
         Request $_request,
         ProductRepository $_repos,
-        CategoryRepository $_categoryRepo
+        ProductCategoryRepository $_categoryRepo
     ){
         parent::__construct($_request);
         $this->repos = $_repos;

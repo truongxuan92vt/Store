@@ -59,7 +59,7 @@
                 <td>{{$user->first_name}}</td>
                 <td>{{$user->last_name}}</td>
                 <td>{{$user->email}}</td>
-                <td>{{$user->role_name}}</td>
+                <td>{{$user->name}}</td>
                 <td>{{$user->created_by}}</td>
                 <td>{{$user->created_at}}</td>
                 <td>{{$user->updated_by}}</td>

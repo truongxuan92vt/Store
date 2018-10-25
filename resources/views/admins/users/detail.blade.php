@@ -44,7 +44,7 @@
                     <select class="form-control" id="cbo_role" name="role_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                         <option value="0" selected="selected">Select a Permission</option>
                         @foreach($roles as $role)
-                            <option value="{{$role->id}}" @if(isset($data->role_id) && $role->id==$data->role_id) selected="selected" @endif>{{$role->role_name}} </option>
+                            <option value="{{$role->id}}" @if(isset($data->role_id) && $role->id==$data->role_id) selected="selected" @endif>{{$role->name}} </option>
                         @endforeach
                     </select>
                 </div>

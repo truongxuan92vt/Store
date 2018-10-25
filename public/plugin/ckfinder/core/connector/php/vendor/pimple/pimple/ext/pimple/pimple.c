@@ -90,7 +90,7 @@ static zend_internal_function pimple_closure_invoker_function;
 			zend_fcall_info_argn(&fci TSRMLS_CC, 1, &object); \
 			fci.size           = sizeof(fci); \
 			fci.object_ptr     = retval->fcc.object_ptr; \
-			fci.function_name  = retval->value; \
+			fci.name  = retval->value; \
 			fci.no_separation  = 1; \
 			fci.retval_ptr_ptr = &retval_ptr_ptr; \
 \
@@ -983,7 +983,7 @@ PHP_METHOD(PimpleClosure, invoker)
 
 	pcobj = zend_object_store_get_object(getThis() TSRMLS_CC);
 
-	fci.function_name = pcobj->factory;
+	fci.name = pcobj->factory;
 	args[0] = &arg;
 	zend_fcall_info_argp(&fci TSRMLS_CC, 1, args);
 	fci.retval_ptr_ptr = &retval;
@@ -998,7 +998,7 @@ PHP_METHOD(PimpleClosure, invoker)
 	memset(&fci, 0, sizeof(fci));
 	fci.size = sizeof(fci);
 
-	fci.function_name = pcobj->callable;
+	fci.name = pcobj->callable;
 	args[0] = &retval;
 	args[1] = &arg;
 	zend_fcall_info_argp(&fci TSRMLS_CC, 2, args);
@@ -1069,7 +1069,7 @@ PHP_MINIT_FUNCTION(pimple)
 	pimple_object_handlers                     = std_object_handlers;
 	pimple_closure_object_handlers.get_closure = pimple_closure_get_closure;
 
-	pimple_closure_invoker_function.function_name     = "Pimple closure internal invoker";
+	pimple_closure_invoker_function.name     = "Pimple closure internal invoker";
 	pimple_closure_invoker_function.fn_flags         |= ZEND_ACC_CLOSURE;
 	pimple_closure_invoker_function.handler           = ZEND_MN(PimpleClosure_invoker);
 	pimple_closure_invoker_function.num_args          = 1;

@@ -1,5 +1,5 @@
 <?php
-    $categories = \App\Http\Controllers\Admin\CategoryController::getCategoryForWeb();
+    $categories = \App\Http\Controllers\Admin\ProductCategoryController::getCategoryForWeb();
 ?>
 <div class="top-header">
     <div class="container">
@@ -61,11 +61,11 @@
                 <ul>
                     @foreach($categories as $item)
                         <li>
-                            <a href="{{route('web.category.index',['category_id'=>$item['id'],'name'=>$item['category_name']])}}">
+                            <a href="{{route('web.category.index',['product_category_id'=>$item['id'],'name'=>$item['name']])}}">
                             <span class="icon-wrap">
                                 <i class="lv1-icon {{$item['icon']||''}}"></i>
                             </span>
-                                <span>{{$item['category_name']}}</span>
+                                <span>{{$item['name']}}</span>
                             </a>
                             @if(count($item['childs'])>0)
                                 <div class="nav-sub">
@@ -73,10 +73,10 @@
                                         @foreach($item['childs'] as $sub)
                                             <li>
                                                 {{--<i class="fa fa-arrow-circle-down"></i>--}}
-                                                <a href="{{route('web.category.index',['category_id'=>$sub['id'],'name'=>$sub['category_name']])}}">
+                                                <a href="{{route('web.category.index',['product_category_id'=>$sub['id'],'name'=>$sub['name']])}}">
                                                     <div class="nav-sub-lvl-2">
                                                     <span>
-                                                        {{$sub['category_name']}}
+                                                        {{$sub['name']}}
                                                     </span>
                                                     </div>
                                                 </a>
