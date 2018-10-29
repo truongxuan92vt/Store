@@ -48,8 +48,8 @@
         <script type="text/javascript" src="{{module_path()}}/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript" src="{{URL::to('/')}}/plugin/notify/notify.js"></script>
 
-        <link rel="stylesheet" href="{{asset('assets/app.css')}}">
-        <script type="text/javascript" src="{{asset('assets/app.js') }}"></script>
+        <link rel="stylesheet" href="{{asset('assets/admins/app.css')}}">
+        <script type="text/javascript" src="{{asset('assets/admins/app.js') }}"></script>
 
         <!-- Toastr Notify-->
         <link href="{{module_path()}}/toastr/build/toastr.css" rel="stylesheet"/>
@@ -78,15 +78,17 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        @yield('controller')
-                        <small>@yield('action')</small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="/"><i class="fa fa-dashboard"></i> @yield('parent')</a></li>
-                        <li class="active">@yield('parent2')</li>
-                        <li class="active">@yield('parent3')</li>
-                    </ol>
+                    <div class="header-breadcrumb">
+                        <ol class="breadcrumb-master">
+                            <li><a href="/"><i class="fa fa-dashboard"></i> @yield('parent')</a></li>
+                            <li class="active">@yield('parent2')</li>
+                            <li class="active">@yield('parent3')</li>
+                            <li class="active">@yield('action')</li>
+                        </ol>
+                    </div>
+                    <div class="header-btn">
+                        @yield('header-button')
+                    </div>
                 </section>
                 <!-- Main content -->
                 <section class="content">

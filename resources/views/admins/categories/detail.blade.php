@@ -5,6 +5,12 @@
 @section('parent', 'Home')
 @section('parent2', 'Master Data')
 @section('parent3', 'Category')
+@section('header-button')
+<div style="text-align: center">
+    <input id='btn_save' type="button" class="btn btn-success btn-sm" value="Save">
+    <input id='btn_cancel' type="button" class="btn btn-default btn-sm" data-dismiss="modal" aria-hidden="true" value="Cancel">
+</div>
+@endsection
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{plugin_path('/easyui/themes/bootstrap/easyui.css')}}">
 <script type="text/javascript" src="{{plugin_path('/easyui/jquery.easyui.min.js')}}"></script>
@@ -183,11 +189,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div style="text-align: center">
-        <button id='btn_save' type="button" class="btn btn-success btn-sm" >Save</button>
-        <button id='btn_cancel' type="button" class="btn btn-default btn-sm" data-dismiss="modal" aria-hidden="true">Cancel</button>
     </div>
     <div class="row" id="multiImage">
             <span class="btn btn-success fileinput-button" style="width: 100%">

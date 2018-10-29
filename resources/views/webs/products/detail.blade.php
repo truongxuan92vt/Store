@@ -153,7 +153,7 @@
         <div class="product-detail">
             <h4><b>Mô tả {{$product->name}}</b></h4>
             <div class="product-desc">
-                {!! $product->desc->long_desc !!}
+                {!! $product->desc->long_desc??"" !!}
             </div>
         </div>
     </div>
