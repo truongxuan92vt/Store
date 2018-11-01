@@ -2,7 +2,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Repositories\ColorRepository;
 use App\Http\Repositories\ProductCategoryRepository;
+use App\Http\Repositories\SizeRepository;
 use App\Libraries\Helpers;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -27,7 +29,15 @@ class ProductController extends BaseController {
         $id = $this->request->id??null;
         $category = ProductCategoryRepository::getOption();
         $product = $this->repos->find($id);
-        return view('admins.products.detail',['data'=>$product,'category'=>$category,'statusList'=>Helpers::convertCombo(STATUS_SYS)]);
+        $colors = ColorRepository::option();
+        $sizes = SizeRepository::option();
+        return view('admins.products.detail',[
+            'data'=>$product,
+            'category'=>$category,
+            'colors'=>$colors,
+            'sizes'=>$sizes,
+            'statusList'=>Helpers::convertCombo(STATUS_SYS)]
+        );
     }
     public function list(){
         $data = $this->request;
@@ -38,12 +48,13 @@ class ProductController extends BaseController {
         $res = ['message'=>'Product was updated successful','data'=>[],'status'=>true];
         $id = $this->request->id??null;
         $name = $this->request->get('name');
-        $categoryId = $this->request->get('product_category_id');
+        $categoryId = $this->request->get('category_id');
         $status = $this->request->get('status');
         $shortDesc = $this->request->get('short_desc');
         $longDesc = $this->request->get('long_desc');
-        $imageRemoves = $this->request->get('image_remove');
-
+        $imgDel = $this->request->get('imgDel');
+        $files = $this->request->t_pro_image;
+        unset($files['--row--']);
         if($this->request->hasFile('image')){
             $image = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_ITEM,$id.'_');
         }
@@ -72,17 +83,17 @@ class ProductController extends BaseController {
             return $this->respondForward(['message'=>$validate,'data'=>null,'status'=>false]);
         }
 
-        $files = [];
-        if($this->request->hasFile('files')){
-            $files = $this->request->file('files');
-        }
+//        $files = [];
+//        if($this->request->hasFile('files')){
+//            $files = $this->request->file('files');
+//        }
         if(!empty($id)){
             $dataUpdate = [
                 "product"=>$product,
                 'desc'=>$desc,
                 'price'=>$price
             ];
-            $res = $this->repos->updateProduct($id,$dataUpdate,$files,$imageRemoves);
+            $res = $this->repos->updateProduct($id,$dataUpdate,$files,$imgDel);
         }
         else{
             $dataIns = [

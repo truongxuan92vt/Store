@@ -12,7 +12,7 @@ class Product extends BaseModel
     protected $guarded = [];
 
     public function images(){
-        return $this->hasMany(ProductImage::class,'product_id');
+        return $this->hasMany(ProductImage::class,'product_id')->orderBy('priority');
     }
     public function desc(){
         return $this->hasOne(ProductDesc::class,'product_id');

@@ -15,5 +15,8 @@
         "browser-sync-webpack-plugin": "^2.2.2",
         "cross-env": "^5.1",
         "laravel-mix": "^1.0"
+    },
+    "dependencies": {
+
     }
 }

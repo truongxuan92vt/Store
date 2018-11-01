@@ -90,7 +90,7 @@ class ProductRepository extends BaseRepository
             return ['message'=>'Product was created Unsuccessful','data'=>['error'=>$e->getMessage()],'status'=>false];
         }
     }
-    public function updateProduct($id,$data,$files,$imageRemoves){
+    public function updateProduct($id,$data,$files,$imgDel){
         try{
             DB::beginTransaction();
             $pro = Product::where('id',$id)->first();
@@ -100,7 +100,7 @@ class ProductRepository extends BaseRepository
                     if($data['desc']){
                         ProductDesc::where('product_id',$id)->update($data['desc']);
                     }
-                    self::uploadProductImage($pro->id, $files,$imageRemoves);
+                    self::uploadProductImage($pro->id, $files,$imgDel);
                     DB::commit();
                     return ['message'=>'Product was updated Successful','data'=>$pro,'status'=>true];
                 }
@@ -119,34 +119,47 @@ class ProductRepository extends BaseRepository
             return ['message'=>'Product was updated Unsuccessful','data'=>['error'=>$e->getMessage()],'status'=>false];
         }
     }
-    public function uploadProductImage($id,$files,$imageRemoves=""){
+    public function uploadProductImage($id,$files,$imgDel=[]){
         $urlFiles = [];
         if($files){
-            $i = 0;
-            foreach ($files as $file){
-                $i++;
-                $url = Helpers::uploadImage($file,PATH_IMAGE_ITEM,$id.'_'.$i.'_');
-                if($url['status']){
-                    $urlFiles[]=$url['url'];
+            foreach ($files as $k=>$v){
+                if(!empty($v['id']) && empty($v['file'])){
+                    ProductImage::where('product_id',$id)->where('id',$v['id'])->update([
+                        'priority'=>$v['priority']??null,
+                        'size_id'=>$v['size_id']??null,
+                        'color_id'=>$v['color_id']??null
+                    ]);
+                }
+                if(!empty($v['file'])){
+                    $url = Helpers::uploadImage($v['file'],PATH_IMAGE_ITEM,$id.'_'.$k.'_');
+                    if($url['status']){
+                        if(!empty($v['id']))
+                            ProductImage::where('product_id',$id)->where('id',$v['id'])->delete();
+                        $urlFiles[]=[
+                            'product_id'=>$id,
+                            'url'=>$url['url'],
+                            'status'=>ENABLE,
+                            'priority'=>$v['priority']??0
+                        ];
+                    }
                 }
             }
         }
-        if(!empty($imageRemoves)){
-            $imageRemoves = explode(',',$imageRemoves);
-            foreach ($imageRemoves as $img){
+        if(!empty($imgDel)){
+            $imgDel = explode(',',$imgDel);
+            foreach ($imgDel as $v){
+                $image = ProductImage::where('product_id',$id)->where('id',$v)->first();
                 try{
-                    unlink('../public'.$img);
+                    if($image){
+                        ProductImage::where('product_id',$id)->where('id',$v)->delete();
+                        unlink('../public'.$image['url']);
+                    }
                 }
                 catch (\Exception $e){}
-                ProductImage::where('product_id',$id)->where('url',$img)->delete();
             }
         }
-        foreach ($urlFiles as $url){
-            ProductImage::create([
-                'product_id'=>$id,
-                'url'=>$url,
-                'status'=>ENABLE
-            ]);
+        if(count($urlFiles)>0){
+            ProductImage::insert($urlFiles);
         }
     }
 }

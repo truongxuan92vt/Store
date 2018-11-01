@@ -2,7 +2,7 @@
   background-color: white;
   height: 100%;
   .tab-content{
-    padding: 5px;
+    padding: 10px;
   }
   .row{
     margin: 0px !important;
@@ -29,6 +29,31 @@
     .pro-combo{
       padding-left: 5px !important;
     }
+  }
+  table{
+    border: 1px solid #ddd;
+    input[type='text']{
+      padding: 3px 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+    }
+    th{
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    td{
+      padding: 5px;
+      border: 1px solid #ddd;
+      input[type="button"]{
+        padding: 3px 5px;
+        font-size: 10px;
+      }
+      select{
+        border: 1px solid #ddd;
+        width: 100%;
+      }
+    }
+
   }
   #frm_uploadFile{
     width: 200px;

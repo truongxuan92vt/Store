@@ -166,5 +166,17 @@ $router->group([
     ]);
 });
 
-
+$router->group([
+    'prefix'        =>  'master',
+    'middleware'    =>  ['auth.admin'],
+], function($router){
+    /*$router->get('color',[
+        'as'    =>  'admin.master.color',
+        'uses'  =>  'ColorController@getOption'
+    ]);*/
+    $router->get('size',[
+        'as'    =>  'admin.master.size',
+        'uses'  =>  'SizeController@getOption'
+    ]);
+});
 

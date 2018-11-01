@@ -15,17 +15,19 @@
     <script type="text/javascript" src="{{plugin_path('/easyui/jquery.easyui.min.js')}}"></script>
     <script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/ckeditor.js"></script>
     <script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/adapters/jquery.js"></script>
-    <div class="product-container">
+    <link href="{{module_path()}}/select2/dist/css/select2.css" rel="stylesheet"/>
+    <script src="{{module_path()}}/select2/dist/js/select2.js"></script>
+    <form class="product-container" id="frm_product" name="frm_product" autocomplete="off">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#pro-general">General</a></li>
-            <li><a data-toggle="tab" href="#pro-price">Price</a></li>
-            <li><a data-toggle="tab" href="#pro-image">Images</a></li>
             <li><a data-toggle="tab" href="#pro-sku">Sku</a></li>
+            <li><a data-toggle="tab" href="#pro-image">Images</a></li>
+            <li><a data-toggle="tab" href="#pro-price">Price</a></li>
         </ul>
         <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
         <?php $image = isset($data->image)?$data->image:''?>
         <div class="tab-content">
-            <div id="pro-general" class="tab-pane fade in active">
+            <div id="pro-general" class="tab-pane fade in">
                 <div class="row">
                     <div class="col-md-3">
                         <div id="frm_uploadFile" style="width: 100%;">
@@ -38,13 +40,13 @@
                         <div class="row">
                             <label class="col-md-2">Product name</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_name_detail" value="{{isset($data->name)?$data->name:''}}">
+                                <input class="pro-input" type="text" id="txt_name_detail" name="name" value="{{isset($data->name)?$data->name:''}}">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">Product Code</label>
                             <div class="col-md-10">
-                                <input  class="pro-input" type="text" id="txt_code_detail" value="{{isset($data->code)?$data->code:''}}">
+                                <input  class="pro-input" type="text" id="txt_code_detail" name="code" value="{{isset($data->code)?$data->code:''}}">
                             </div>
                         </div>
                         <div class="row">
@@ -52,7 +54,7 @@
                             <div class="col-md-10">
                                 <div class="row" style="padding: 0px !important;">
                                     <div class="col-md-5">
-                                        <input id="cbo_category_detail" class="pro-input" value="{{isset($data->product_category_id)?$data->product_category_id:''}}" style="width: 100%">
+                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->product_category_id)?$data->product_category_id:''}}" style="width: 100%">
                                     </div>
                                     {{--<label class="col-md-2">Category</label>
                                     <div class="col-md-5 pro-combo" style="padding-left: 0px; padding-right: 0px; height: 30px;">
@@ -65,7 +67,7 @@
                                     </div>--}}
                                     <label class="col-md-2" style="text-align: center">Status</label>
                                     <div class="col-md-5 pro-combo" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                                        <select class="pro-input" id="cbo_status_detail" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <select class="pro-input" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                             {{--<option value="0" selected="">Select a Status</option>--}}
                                             @foreach($statusList as $item)
                                                 <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
@@ -78,19 +80,19 @@
                         <div class="row">
                             <label class="col-md-2">Meta title</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_title_detail" value="{{isset($data->title)?$data->title:''}}">
+                                <input class="pro-input" type="text" id="txt_title_detail" name="title" value="{{isset($data->title)?$data->title:''}}">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">Tags</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_tag_detail" value="{{isset($data->tag)?$data->tag:''}}">
+                                <input class="pro-input" type="text" id="txt_tag_detail" name="tag" value="{{isset($data->tag)?$data->tag:''}}">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">URL SEO</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_url_seo_detail" value="{{isset($data->url_seo)?$data->url_seo:''}}">
+                                <input class="pro-input" type="text" id="txt_url_seo_detail" name="url_seo" value="{{isset($data->url_seo)?$data->url_seo:''}}">
                             </div>
                         </div>
                     </div>
@@ -99,26 +101,219 @@
                 <div class="row">
                     <label class="col-md-2">Short description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" id="txt_short_desc_detail" aria-label="Short description">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
+                        <textarea class="pro-input" id="txt_short_desc_detail" name="short_desc" aria-label="Short description">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-md-2">Full description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" id="txt_long_desc_detail">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
+                        <textarea class="pro-input" name="long_desc" id="txt_long_desc_detail">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
                     </div>
                 </div>
-
             </div>
-            <div id="pro-image" class="tab-pane fade">
-
+            <div id="pro-image" class="tab-pane fade in">
+                <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
+                    <table id="t_pro_image" width="100%">
+                        <colgroup>
+                            <col style="width: 25%">
+                            <col style="width: 10%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 15%">
+                            <col style="width: 10%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>File</th>
+                                <th>Size</th>
+                                <th>Color</th>
+                                <th>Priority</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="r_clone" class="r_clone" data-no-add="0" style="display: none">
+                                <input type="hidden" name="t_pro_image[--row--][id]" value="" />
+                                <td class="t_pro_image_picture" style="text-align: center">
+                                    <img id="img_pro" src="{{URL::to("/image/no_image.png")}}" alt="your image" style="max-width: 200px"/>
+                                </td>
+                                <td class="t_pro_image_file">
+                                    <input type='file' name="t_pro_image[--row--][file]" onchange="TABLE_PRO.readURL(this)" />
+                                </td>
+                                <td class="t_pro_image_color">
+                                    <select name="t_pro_image[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <option value="" selected="">No color</option>
+                                        @foreach($statusList as $item)
+                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td class="t_pro_image_size">
+                                    <select name="t_pro_image[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <option value="" selected="">No size</option>
+                                        @foreach($statusList as $item)
+                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td class="t_pro_image_priority">
+                                    <input type="text" name="t_pro_image[--row--][priority]" value="0"/>
+                                </td>
+                                <td class="t_pro_image_none">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                </td>
+                            </tr>
+                            @if(isset($data->images) && count($data->images)>0)
+                                @foreach($data->images as $k=>$v)
+                                    <tr id="t_pro_image_row_{{$k}}" class="t_pro_image_row">
+                                        <input type="hidden" name="t_pro_image[{{$k}}][id]" value="{{$v->id}}" />
+                                        <td class="t_pro_image_picture" style="text-align: center">
+                                            <img id="img_pro" src="{{$v->url}}" alt="your image" style="max-width: 200px"/>
+                                        </td>
+                                        <td class="t_pro_image_file">
+                                            <input type='file' name="t_pro_image[{{$k}}][file]" onchange="TABLE_PRO.readURL(this)" />
+                                        </td>
+                                        <td class="t_pro_image_color">
+                                            <select name="t_pro_image[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                                <option value="" selected="">No color</option>
+                                                @foreach($statusList as $item)
+                                                    <option value="{{$item['value']}}" @if(isset($v->color_id) && $item['value']==$v->color_id) selected="selected" @endif>{{$item['text']}} </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="t_pro_image_size">
+                                            <select name="t_pro_image[{{$k}}][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                                <option value="" selected="">No size</option>
+                                                @foreach($statusList as $item)
+                                                    <option value="{{$item['value']}}" @if(isset($v->size_id) && $item['value']==$v->size_id) selected="selected" @endif>{{$item['text']}} </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="t_pro_image_priority">
+                                            <input type="text" name="t_pro_image[{{$k}}][priority]" value="{{$v->priority}}"/>
+                                        </td>
+                                        <td class="t_pro_image_none">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6" style="text-align: center">
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_image")'>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div id="pro-sku" class="tab-pane fade in active">
+                <div class="row">
+                    <label class="col-md-1">Color</label>
+                    <div class="col-md-11">
+                        <select id="colors" name="colors[]" multiple="multiple" style="width: 100%">
+                            @foreach($colors as $item)
+                                <option value="{{$item->id}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item->name}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-1">Size</label>
+                    <div class="col-md-11">
+                        <select id="sizes" name="sizes[]" multiple="multiple" style="width: 100%">
+                            {{--@foreach($sizes as $item)--}}
+                                {{--<option value="{{$item->id}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item->name}} </option>--}}
+                            {{--@endforeach--}}
+                        </select>
+                    </div>
+                </div>
+                <h4>List SKU:</h4>
+                <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
+                    <table id="t_pro_sku" width="100%">
+                        <colgroup>
+                            <col style="width: 5%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 15%">
+                            <col style="width: 10%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Color</th>
+                                <th>Size</th>
+                                <th>Sku</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="r_clone" class="r_clone" data-no-add="0" style="display: none">
+                                <input type="hidden" name="t_pro_sku[--row--][id]" value="" />
+                                <td style="text-align: center;"><span>--row--</span></td>
+                                <td class="t_pro_sku_color">
+                                    <select name="t_pro_sku[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <option value="" selected="">No color</option>
+                                        @foreach($statusList as $item)
+                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td class="t_pro_sku_size">
+                                    <select name="t_pro_sku[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <option value="" selected="">No size</option>
+                                        @foreach($statusList as $item)
+                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td class="t_pro_sku_sku">
+                                    <input type="text" name="t_pro_sku[--row--][sku]" value=""/>
+                                </td>
+                                <td class="t_pro_sku_none">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="text-align: center">
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_sku")'>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
             <div id="pro-price" class="tab-pane fade">
 
             </div>
         </div>
-    </div>
+    </form>
     <script>
+        $(function(){
+            $('#sizes').select2({
+                ajax: {
+                    url: "{{route('admin.master.size')}}",
+                    dataType: 'json',
+                    processResults: function (data) {
+                        // Tranforms the top-level key of the response object from 'items' to 'results'
+                        return {
+                            results: data
+                        };
+                    }
+                    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                },
+                placeholder: 'Select option',
+            });
+            $('#colors').select2({
+                placeholder: 'Select option'
+            });
+        })
         $('#cbo_category_detail').combotree({
             url: "{{route('admin.category.option')}}",
             method:'GET',
@@ -144,8 +339,41 @@
                 filebrowserWindowWidth : '1000',
                 filebrowserWindowHeight : '700'
         });
+        function backToIndex(){
+            document.location.href="{{route('admin.product.index')}}";
+        }
+        $('#btn_cancel').click(function(){
+            backToIndex();
+        });
         $('#btn_save').on('click',function(){
-            alert(123);
+            var frm_product = document.getElementById('frm_product');
+            var form_data = new FormData(frm_product);
+            form_data.append('long_desc',$('#txt_long_desc_detail').val());
+            form_data.append('imgDel',TABLE_PRO.imgDel);
+            $.ajax({
+                url:"{{route('admin.product.save')}}",
+                // dataType: 'text', // what to expect back from the PHP script
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                type: 'post',
+                success: function (res) {
+                    // console.log(res);
+                    if(res['status']){
+                        backToIndex();
+                        toastr.success(message);
+                    }
+                    else{
+                        message = res['message'].replace(/\\n/g, "<br />");
+                        toastr.error(message);
+                    }
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+            console.log(form_data);
         });
     </script>
 @endsection
