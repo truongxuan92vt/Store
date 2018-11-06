@@ -170,13 +170,21 @@ $router->group([
     'prefix'        =>  'master',
     'middleware'    =>  ['auth.admin'],
 ], function($router){
-    /*$router->get('color',[
+    $router->get('color',[
         'as'    =>  'admin.master.color',
         'uses'  =>  'ColorController@getOption'
-    ]);*/
+    ]);
+    $router->get('color-by-id',[
+        'as'    =>  'admin.master.color-by-id',
+        'uses'  =>  'ColorController@getOptionById'
+    ]);
     $router->get('size',[
         'as'    =>  'admin.master.size',
         'uses'  =>  'SizeController@getOption'
+    ]);
+    $router->get('size-by-id',[
+        'as'    =>  'admin.master.size-by-id',
+        'uses'  =>  'SizeController@getOptionById'
     ]);
 });
 

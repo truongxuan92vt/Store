@@ -54,6 +54,8 @@ class ProductController extends BaseController {
         $longDesc = $this->request->get('long_desc');
         $imgDel = $this->request->get('imgDel');
         $files = $this->request->t_pro_image;
+        $sizes = $this->request->get('sizes');
+        $colors = $this->request->get('colors');
         unset($files['--row--']);
         if($this->request->hasFile('image')){
             $image = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_ITEM,$id.'_');
@@ -87,21 +89,18 @@ class ProductController extends BaseController {
 //        if($this->request->hasFile('files')){
 //            $files = $this->request->file('files');
 //        }
+        $data = [
+            "product"=>$product,
+            'desc'=>$desc,
+            'prices'=>$price,
+            'sizes'=>$sizes,
+            'colors'=>$colors
+        ];
         if(!empty($id)){
-            $dataUpdate = [
-                "product"=>$product,
-                'desc'=>$desc,
-                'price'=>$price
-            ];
-            $res = $this->repos->updateProduct($id,$dataUpdate,$files,$imgDel);
+            $res = $this->repos->updateProduct($id,$data,$files,$imgDel);
         }
         else{
-            $dataIns = [
-                "product"=>$product,
-                'desc'=>$desc,
-                'price'=>$price
-            ];
-            $res = $this->repos->createProduct($dataIns,$files);
+            $res = $this->repos->createProduct($data,$files);
         }
         return $this->respondForward($res);
     }

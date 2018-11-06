@@ -27,7 +27,7 @@
         <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
         <?php $image = isset($data->image)?$data->image:''?>
         <div class="tab-content">
-            <div id="pro-general" class="tab-pane fade in">
+            <div id="pro-general" class="tab-pane fade in active">
                 <div class="row">
                     <div class="col-md-3">
                         <div id="frm_uploadFile" style="width: 100%;">
@@ -111,7 +111,7 @@
                     </div>
                 </div>
             </div>
-            <div id="pro-image" class="tab-pane fade in">
+            <div id="pro-image" class="tab-pane fade">
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_image" width="100%">
                         <colgroup>
@@ -126,8 +126,8 @@
                             <tr>
                                 <th>Image</th>
                                 <th>File</th>
-                                <th>Size</th>
                                 <th>Color</th>
+                                <th>Size</th>
                                 <th>Priority</th>
                                 <th></th>
                             </tr>
@@ -144,16 +144,16 @@
                                 <td class="t_pro_image_color">
                                     <select name="t_pro_image[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                         <option value="" selected="">No color</option>
-                                        @foreach($statusList as $item)
-                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @foreach($data->colors as $item)
+                                            <option value="{{$item->color->id??""}}">{{$item->color->name??""}}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td class="t_pro_image_size">
                                     <select name="t_pro_image[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                         <option value="" selected="">No size</option>
-                                        @foreach($statusList as $item)
-                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @foreach($data->sizes as $item)
+                                            <option value="{{$item->size->id??""}}">{{$item->fullName()??""}}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -175,18 +175,22 @@
                                             <input type='file' name="t_pro_image[{{$k}}][file]" onchange="TABLE_PRO.readURL(this)" />
                                         </td>
                                         <td class="t_pro_image_color">
-                                            <select name="t_pro_image[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                            <select class="t-cbo-color" name="t_pro_image[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                                 <option value="" selected="">No color</option>
-                                                @foreach($statusList as $item)
-                                                    <option value="{{$item['value']}}" @if(isset($v->color_id) && $item['value']==$v->color_id) selected="selected" @endif>{{$item['text']}} </option>
+                                                @foreach($data->colors as $item)
+                                                    @if(!empty($item->color))
+                                                        <option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td class="t_pro_image_size">
-                                            <select name="t_pro_image[{{$k}}][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                            <select class="t-cbo-size" name="t_pro_image[{{$k}}][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                                 <option value="" selected="">No size</option>
-                                                @foreach($statusList as $item)
-                                                    <option value="{{$item['value']}}" @if(isset($v->size_id) && $item['value']==$v->size_id) selected="selected" @endif>{{$item['text']}} </option>
+                                                @foreach($data->sizes as $item)
+                                                    @if(!empty($item->size))
+                                                        <option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                         </td>
@@ -210,13 +214,19 @@
                     </table>
                 </div>
             </div>
-            <div id="pro-sku" class="tab-pane fade in active">
+            <div id="pro-sku" class="tab-pane fade">
                 <div class="row">
                     <label class="col-md-1">Color</label>
                     <div class="col-md-11">
-                        <select id="colors" name="colors[]" multiple="multiple" style="width: 100%">
+                        <select id="colors" name="colors[]" multiple style="width: 100%">
                             @foreach($colors as $item)
-                                <option value="{{$item->id}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item->name}} </option>
+                                {{$isSelected = ''}}
+                                @foreach($data->colors as $color)
+                                    @if($color->color_id == $item->id)
+                                        {{$isSelected = 'selected'}}
+                                    @endif
+                                @endforeach
+                                <option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>
                             @endforeach
                         </select>
                     </div>
@@ -224,10 +234,16 @@
                 <div class="row">
                     <label class="col-md-1">Size</label>
                     <div class="col-md-11">
-                        <select id="sizes" name="sizes[]" multiple="multiple" style="width: 100%">
-                            {{--@foreach($sizes as $item)--}}
-                                {{--<option value="{{$item->id}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item->name}} </option>--}}
-                            {{--@endforeach--}}
+                        <select id="sizes" name="sizes[]" multiple style="width: 100%">
+                            @foreach($sizes as $item)
+                                {{$isSelected = ''}}
+                                @foreach($data->sizes as $size)
+                                    @if($size->size_id == $item->id)
+                                        {{$isSelected = 'selected'}}
+                                    @endif
+                                @endforeach
+                                <option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -256,18 +272,18 @@
                                 <input type="hidden" name="t_pro_sku[--row--][id]" value="" />
                                 <td style="text-align: center;"><span>--row--</span></td>
                                 <td class="t_pro_sku_color">
-                                    <select name="t_pro_sku[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                    <select class="t-cbo-color" name="t_pro_sku[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                         <option value="" selected="">No color</option>
-                                        @foreach($statusList as $item)
-                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @foreach($data->colors as $item)
+                                            <option value="{{$item->color->id??""}}">{{$item->color->name??""}}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td class="t_pro_sku_size">
-                                    <select name="t_pro_sku[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                    <select class="t-cbo-size" name="t_pro_sku[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                         <option value="" selected="">No size</option>
-                                        @foreach($statusList as $item)
-                                            <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
+                                        @foreach($data->sizes as $item)
+                                            <option value="{{$item->size->id??""}}">{{$item->fullName()??""}}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -295,19 +311,50 @@
         </div>
     </form>
     <script>
+        $('#colors').on('change',function (e) {
+            $('.t-cbo-color').empty();
+            var html = '<option value="" selected="">No size</option>';
+            $.ajax({
+                url:"{{route('admin.master.color-by-id')}}",
+                // dataType: 'text', // what to expect back from the PHP script
+                data: {"ids":$(this).val()},
+                type: 'GET',
+                dataType:"json",
+                success: function (res) {
+                    console.log(res);
+                    res.forEach(function(e){
+                        html += '<option value="'+e.id+'">'+e.text+'</option>';
+                    });
+                    $(html).show().appendTo(".t-cbo-color");
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        });
+        $('#sizes').on('change',function (e) {
+            $('.t-cbo-size').empty();
+            var html = '<option value="" selected="">No color</option>';
+            $.ajax({
+                url:"{{route('admin.master.size-by-id')}}",
+                // dataType: 'text', // what to expect back from the PHP script
+                data: {"ids":$(this).val()},
+                type: 'GET',
+                dataType:"json",
+                success: function (res) {
+                    res.forEach(function(e){
+                        html += '<option value="'+e.id+'">'+e.text+'</option>';
+                    });
+                    $('.t-cbo-size').empty();
+                    $(html).show().appendTo(".t-cbo-size");
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        })
         $(function(){
             $('#sizes').select2({
-                ajax: {
-                    url: "{{route('admin.master.size')}}",
-                    dataType: 'json',
-                    processResults: function (data) {
-                        // Tranforms the top-level key of the response object from 'items' to 'results'
-                        return {
-                            results: data
-                        };
-                    }
-                    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-                },
                 placeholder: 'Select option',
             });
             $('#colors').select2({

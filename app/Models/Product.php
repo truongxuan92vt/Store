@@ -10,7 +10,12 @@ class Product extends BaseModel
     protected $table = 'products';
 
     protected $guarded = [];
-
+    public function sizes(){
+        return $this->hasMany(ProductSize::class,'product_id');
+    }
+    public function colors(){
+        return $this->hasMany(ProductColor::class,'product_id');
+    }
     public function images(){
         return $this->hasMany(ProductImage::class,'product_id')->orderBy('priority');
     }

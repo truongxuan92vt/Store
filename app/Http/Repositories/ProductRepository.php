@@ -4,8 +4,10 @@ namespace App\Http\Repositories;
 use App\Libraries\Helpers;
 use App\Models\ProductCategory;
 use App\Models\Product;
+use App\Models\ProductColor;
 use App\Models\ProductDesc;
 use App\Models\ProductImage;
+use App\Models\ProductSize;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends BaseRepository
@@ -74,6 +76,20 @@ class ProductRepository extends BaseRepository
                         $data['desc']['product_id'] = $pro->id;
                         ProductDesc::create($data['desc']);
                     }
+                    if(isset($data['sizes'])){
+                        $sizeIns = [];
+                        foreach ($data['sizes'] as $id){
+                            $sizeIns[]=["product_id"=>$pro->id,"size_id"=>$id];
+                        }
+                        ProductSize::insert($sizeIns);
+                    }
+                    if(isset($data['colors'])){
+                        $colorIns = [];
+                        foreach ($data['colors'] as $id){
+                            $colorIns[]=["product_id"=>$pro->id,"color_id"=>$id];
+                        }
+                        ProductColor::insert($colorIns);
+                    }
                     if($files){
                         self::uploadProductImage($pro->id, $files);
                     }
@@ -99,6 +115,22 @@ class ProductRepository extends BaseRepository
                     Product::where('id',$id)->update($data['product']);
                     if($data['desc']){
                         ProductDesc::where('product_id',$id)->update($data['desc']);
+                    }
+                    if(isset($data['sizes'])){
+                        $sizeIns = [];
+                        ProductSize::where('product_id',$id)->delete();
+                        foreach ($data['sizes'] as $sizeId){
+                            $sizeIns[]=["product_id"=>$id,"size_id"=>$sizeId];
+                        }
+                        ProductSize::insert($sizeIns);
+                    }
+                    if(isset($data['colors'])){
+                        $colorIns = [];
+                        ProductColor::where('product_id',$id)->delete();
+                        foreach ($data['colors'] as $colorId){
+                            $colorIns[]=["product_id"=>$id,"color_id"=>$colorId];
+                        }
+                        ProductColor::insert($colorIns);
                     }
                     self::uploadProductImage($pro->id, $files,$imgDel);
                     DB::commit();
