@@ -2,6 +2,7 @@ TABLE_PRO = {
     imgDel:[],
     priceDel:[],
     skuDel:[],
+    attrDel:[],
     addCol: function(tID){
         var bElement = "#"+tID;
         var dataNoAdd = $(bElement+" .r_clone").attr("data-no-add");
@@ -14,10 +15,17 @@ TABLE_PRO = {
     delCol: function(e){
         var tr =$(e).closest("tr");
         var id = tr.find('input[type="hidden"]').val();
+        var tblName = $(e).closest("table").attr('id');
         if(id){
-            TABLE_PRO.imgDel.push(id);
+            if(tblName=="t_pro_image")
+                this.imgDel.push(id);
+            if(tblName=="t_pro_price")
+                this.priceDel.push(id);
+            if(tblName=="t_pro_sku")
+                this.skuDel.push(id);
+            if(tblName=="t_pro_attr")
+                this.attrDel.push(id);
         }
-        console.log(TABLE_PRO.imgDel);
         tr.remove();
     },
     readURL: function(e) {

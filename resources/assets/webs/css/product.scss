@@ -235,15 +235,20 @@
             color: red;
           }
           .old-price{
-            >span{
-              font-size: 14px;
+            margin-top: 5px;
+            .decrease-price{
+              font-size: 12px;
+              text-decoration: red line-through solid;
             }
-
+            .percent-decrease-price{
+              margin-left: 5px;
+              color: red;
+            }
           }
         }
         .product-quantity{
           //border-bottom: 1px solid #eff0f5;
-          padding: 20px 5px;
+          padding: 10px 5px;
           font-weight: bold;
           .input-group{
             width: 150px;

@@ -87,11 +87,36 @@
 
                 <div class="product-price">
                     <div class="current-price">
-                        549.000 đ
+                        @if(isset($product->prices) && count($product->prices)>0)
+                            @foreach($product->prices as $item)
+                                {{number_format($item->price)}}đ
+                                @break
+                            @endforeach
+                        @else
+                            0đ
+                        @endif
                     </div>
                     <div class="old-price">
-                        <span>950.000 đ</span>
-                        <span class="percent-descrea-price">-40%</span>
+                        <span class="decrease-price">
+                            @if(isset($product->prices))
+                                @foreach($product->prices as $item)
+                                    @if($item->normal_price>0)
+                                        {{number_format($item->normal_price)}}đ
+                                        @break
+                                    @endif
+                                @endforeach
+                            @endif
+                        </span>
+                        <span class="percent-decrease-price">
+                            @if(isset($product->prices))
+                                @foreach($product->prices as $item)
+                                    @if($item->normal_price>0 && ($item->price/$item->normal_price)>0)
+                                        -{{(1-round($item->price/$item->normal_price,2))*100}}%
+                                        @break
+                                    @endif
+                                @endforeach
+                            @endif
+                        </span>
                     </div>
                 </div>
                 <div class="product-quantity">
@@ -258,7 +283,13 @@
             "image":"{{$product->image??""}}"
         }
         pro.quantity = parseInt($("#txt_quantityCart").val());
-        pro.price = parseFloat({{ $product->price??125685 }});
+        var price = 0;
+        var listPrice = '<?php echo(isset($product->prices)?json_encode($product->prices):"");?>'
+        listPrice = JSON.parse(listPrice);
+        for(i = 0; i<listPrice.length; i++){
+            price = listPrice[i].price
+        }
+        pro.price = parseFloat(price);
         pro.amount = parseFloat(pro.price*pro.quantity);
         productCart = localStorage.getItem("productCart")?JSON.parse(localStorage.getItem("productCart")):[];
         isExist = false;

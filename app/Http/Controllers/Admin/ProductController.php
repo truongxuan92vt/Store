@@ -14,7 +14,8 @@ use App\Http\Repositories\ProductRepository;
 class ProductController extends BaseController {
     public function __construct(Request $_request,ProductRepository $_repos)
     {
-        parent::__construct($_request,$_repos);
+        parent::__construct($_request);
+        $this->repos = $_repos;
     }
     protected $rules=[
         'name'=>'required',
@@ -46,6 +47,7 @@ class ProductController extends BaseController {
     }
     public function save(){
         $res = ['message'=>'Product was updated successful','data'=>[],'status'=>true];
+        $req = $this->request->all();
         $id = $this->request->id??null;
         $name = $this->request->get('name');
         $categoryId = $this->request->get('category_id');
@@ -53,10 +55,29 @@ class ProductController extends BaseController {
         $shortDesc = $this->request->get('short_desc');
         $longDesc = $this->request->get('long_desc');
         $imgDel = $this->request->get('imgDel');
+        $priceDel = $this->request->get('priceDel');
+        $skuDel = $this->request->get('skuDel');
+        $attrDel = $this->request->get('attrDel');
         $files = $this->request->t_pro_image;
         $sizes = $this->request->get('sizes');
         $colors = $this->request->get('colors');
+        $skus = $this->request->t_pro_sku??null;
+        $infor = $this->request->t_pro_infor??null;
+        $prices = $this->request->t_pro_price??null;
+        $attrs = $this->request->t_pro_attr??null;
         unset($files['--row--']);
+        if($skus!=null){
+            unset($skus['--row--']);
+        }
+        if($infor!=null){
+            unset($infor['--row--']);
+        }
+        if($prices!=null){
+            unset($prices['--row--']);
+        }
+        if($attrs!=null){
+            unset($attrs['--row--']);
+        }
         if($this->request->hasFile('image')){
             $image = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_ITEM,$id.'_');
         }
@@ -67,6 +88,12 @@ class ProductController extends BaseController {
             'name'=>$name,
             'product_category_id'=>$categoryId,
             'status'=>$status,
+            'code'=>$this->request->code??null,
+            'title'=>$this->request->title??null,
+            'tag'=>$this->request->tag??null,
+            'url_seo'=>$this->request->url_seo??null,
+            'priority'=>$this->request->priority??null,
+            'manufacturer_id'=>$this->request->manufacturer_id??null,
         ];
         if(!empty($image) && $image['status'] && !empty($image['url'])){
             $product['image']=$image['url'];
@@ -94,10 +121,20 @@ class ProductController extends BaseController {
             'desc'=>$desc,
             'prices'=>$price,
             'sizes'=>$sizes,
-            'colors'=>$colors
+            'colors'=>$colors,
+            'skus'=>$skus,
+            'infor'=>$infor,
+            'prices'=>$prices,
+            'attrs'=>$attrs
+        ];
+        $dataDel=[
+            'images'=>explode(',',$imgDel),
+            'skus'=>explode(',',$skuDel),
+            'prices'=>explode(',',$priceDel),
+            'attrs'=>explode(',',$attrDel)
         ];
         if(!empty($id)){
-            $res = $this->repos->updateProduct($id,$data,$files,$imgDel);
+            $res = $this->repos->updateProduct($id,$data,$files,$dataDel);
         }
         else{
             $res = $this->repos->createProduct($data,$files);

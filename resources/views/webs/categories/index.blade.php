@@ -61,9 +61,19 @@
                             <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;--}}
                         </div>
                         <div class="price">
-                            <span class="product-price">290,000Đ</span>
-                            <span class="product-old-price">350,000Đ</span>
-                            <span class="product-percent">-{{round((350000-290000)/350000*100)}}%</span>
+                            <span class="product-price">
+                                {{number_format($pro['price']??0)}}đ
+                            </span>
+                            <span class="product-old-price">
+                                @if($pro['normal_price']>0)
+                                    {{number_format($pro['normal_price']??0)}}đ
+                                @endif
+                            </span>
+                            <span class="product-percent">
+                                @if($pro['price']>0 && $pro['normal_price']>0)
+                                    {{(1-round($pro['price']/$pro['normal_price'],2))*100}}%
+                                @endif
+                            </span>
                         </div>
                     </div>
                 </a>

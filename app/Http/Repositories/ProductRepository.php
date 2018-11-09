@@ -2,12 +2,15 @@
 namespace App\Http\Repositories;
 
 use App\Libraries\Helpers;
+use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
 use App\Models\Product;
 use App\Models\ProductColor;
 use App\Models\ProductDesc;
 use App\Models\ProductImage;
+use App\Models\ProductPrice;
 use App\Models\ProductSize;
+use App\Models\ProductSKU;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends BaseRepository
@@ -21,7 +24,7 @@ class ProductRepository extends BaseRepository
         return Product::class;
     }
     public function getList($data = null){
-    	$res = $this->model->get();
+    	$res = $this->model->orderBy("updated_at","DESC")->orderBy("priority","ASC")->get();
     	return $res;
     }
     public function getChildCategory(&$res,$data,$id=0){
@@ -60,10 +63,17 @@ class ProductRepository extends BaseRepository
     public function getProductByCategory($categoryId){
         $categoryList = $this->getAllChildOfCategory($categoryId);
         $query = $this->model->select([
-               '*'
+               'products.*'
             ])
-            ->whereIn('product_category_id',$categoryList);
+            ->whereIn('products.product_category_id',$categoryList);
         $res = $query->get();
+        if(!empty($res)){
+            for($i=0; $i<count($res); $i++){
+                $price = ProductPrice::where('product_id',$res[$i]->id)->orderBy('price')->first();
+                $res[$i]->price = $price->price??0;
+                $res[$i]->normal_price = $price->normal_price??0;
+            }
+        }
         return $res;
     }
     public function createProduct($data,$files){
@@ -90,6 +100,64 @@ class ProductRepository extends BaseRepository
                         }
                         ProductColor::insert($colorIns);
                     }
+                    if(isset($data['skus'])){
+                        $skus = [];
+                        foreach ($data['skus'] as $sku){
+                            $isExist = false;
+                            foreach ($skus as $v){
+                                if($v['color_id'] == $sku['color_id'] && $v['size_id'] == $sku['size_id']){
+                                    $isExist = true;
+                                    break;
+                                }
+                            }
+                            if(!$isExist){
+                                $skus[]=[
+                                    "product_id"=>$pro->id,
+                                    "color_id"=>empty($sku['color_id'])?0:$sku['color_id'],
+                                    "size_id"=>empty($sku['size_id'])?0:$sku['size_id'],
+                                    "sku"=>$sku['sku']
+                                ];
+                            }
+                        }
+                        ProductSKU::insert($skus);
+                    }
+                    if(isset($data['prices'])){
+                        $prices = [];
+                        foreach ($data['prices'] as $item){
+                            $isExist = false;
+                            foreach ($prices as $v){
+                                if($v['color_id'] == $item['color_id'] && $v['size_id'] == $item['size_id']){
+                                    $isExist = true;
+                                    break;
+                                }
+                            }
+                            if(!$isExist){
+                                $prices[]=[
+                                    "product_id"=>$pro->id,
+                                    "color_id"=>empty($item['color_id'])?0:$item['color_id'],
+                                    "size_id"=>empty($item['size_id'])?0:$item['size_id'],
+                                    "qty_from"=>$item['qty_form']??0,
+                                    "qty_to"=>$item['qty_to']??0,
+                                    "customer_group_id"=>$item['customer_group_id']??1,
+                                    "import_price"=>$item['import_price'],
+                                    "normal_price"=>$item['normal_price'],
+                                    "price"=>$item['price']
+                                ];
+                            }
+                        }
+                        ProductPrice::insert($prices);
+                    }
+                    if(isset($data['attrs'])){
+                        $attrs = [];
+                        foreach ($data['attrs'] as $item){
+                            $attrs[]=[
+                                "product_id"=>$pro->id,
+                                "name"=>$item['name']??"",
+                                "desc"=>$item['desc']??"",
+                            ];
+                        }
+                        ProductAttribute::insert($attrs);
+                    }
                     if($files){
                         self::uploadProductImage($pro->id, $files);
                     }
@@ -103,10 +171,10 @@ class ProductRepository extends BaseRepository
         }
         catch (\Exception $e){
             DB::rollBack();
-            return ['message'=>'Product was created Unsuccessful','data'=>['error'=>$e->getMessage()],'status'=>false];
+            return ['message'=>'Product was created Unsuccessful','data'=>['error'=>$e->getMessage()." File ".$e->getFile()." line ".$e->getLine()],'status'=>false];
         }
     }
-    public function updateProduct($id,$data,$files,$imgDel){
+    public function updateProduct($id,$data,$files,$dataDel){
         try{
             DB::beginTransaction();
             $pro = Product::where('id',$id)->first();
@@ -132,7 +200,148 @@ class ProductRepository extends BaseRepository
                         }
                         ProductColor::insert($colorIns);
                     }
-                    self::uploadProductImage($pro->id, $files,$imgDel);
+                    if(!empty($dataDel["skus"])){
+                        ProductSKU::where('product_id',$id)->whereIn('id',$dataDel["skus"])->delete();
+                    }
+                    if(!empty($dataDel["prices"])){
+                        ProductPrice::where('product_id',$id)->whereIn('id',$dataDel["prices"])->delete();
+                    }
+                    if(!empty($dataDel["attrs"])){
+                        ProductAttribute::where('product_id',$id)->whereIn('id',$dataDel["attrs"])->delete();
+                    }
+                    if(!empty($data['skus'])){
+                        $skus = [];
+                        foreach ($data['skus'] as $sku){
+                            $colorId = empty($sku['color_id']) ? 0 : $sku['color_id'];
+                            $sizeId = empty($sku['size_id']) ? 0 : $sku['size_id'];
+                            if($sku['id']){
+                                $isExist = ProductSKU::where('product_id',$id)
+                                    ->where('size_id',$sizeId)
+                                    ->where('color_id',$colorId)
+                                    ->count()>0;
+                                if(!$isExist){
+                                    ProductSKU::where('product_id',$id)->where('id',$sku['id'])->update([
+                                        "color_id"=>$colorId,
+                                        "size_id"=>$sizeId,
+                                        "sku"=>$sku['sku']
+                                    ]);
+                                }
+                            }
+                            else{
+                                $isExist = false;
+                                foreach ($skus as $v){
+                                    if($v['color_id'] == $sku['color_id'] && $v['size_id'] == $sku['size_id']){
+                                        $isExist = true;
+                                        break;
+                                    }
+                                }
+                                if(!$isExist){
+                                    $isExist = ProductSKU::where('product_id',$id)
+                                        ->where('size_id',$sizeId)
+                                        ->where('color_id',$colorId)
+                                        ->count()>0;
+                                    if(!$isExist){
+                                        $skus[]=[
+                                            "product_id"=>$pro->id,
+                                            "color_id"=>$colorId,
+                                            "size_id"=>$sizeId,
+                                            "sku"=>$sku['sku']
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                        ProductSKU::insert($skus);
+                    }
+                    if(!empty($data['prices'])){
+                        $prices = [];
+                        foreach ($data['prices'] as $item){
+                            $colorId = empty($item['color_id']) ? 0 : $item['color_id'];
+                            $sizeId = empty($item['size_id']) ? 0 : $item['size_id'];
+                            $qtyFrom = empty($item['qty_form']) ? 0 : $item['qty_form'];
+                            $qtyTo = empty($item['qty_to']) ? 0 : $item['qty_to'];
+                            $customerGroupId = empty($item['customer_group_id']) ? 1 : $item['customer_group_id'];
+                            if($item['id']){
+                                $isExist = ProductPrice::where('product_id',$id)
+                                    ->where('color_id',$colorId)
+                                    ->where('size_id',$sizeId)
+                                    ->where('qty_from',$qtyFrom)
+                                    ->where('qty_to',$qtyTo)
+                                    ->where('customer_group_id',$customerGroupId)
+                                    ->count()>1;
+                                if($isExist){
+                                    DB::rollBack();
+                                    return ['message'=>'Price was Existed in DB (Price '.$item['price'].')','data'=>[],'status'=>false];
+                                }
+                                else{
+                                    ProductPrice::where('product_id',$id)->where('id',$item['id'])->update([
+                                        "color_id" => $colorId,
+                                        "size_id" => $sizeId,
+                                        "qty_from" => $qtyFrom,
+                                        "qty_to" => $qtyTo,
+                                        "customer_group_id" => $customerGroupId,
+                                        "import_price" => $item['import_price'],
+                                        "normal_price" => $item['normal_price'],
+                                        "price" => $item['price']
+                                    ]);
+                                }
+                            }
+                            else {
+                                $isExist = false;
+                                foreach ($prices as $v) {
+                                    if ($v['color_id'] == $item['color_id']
+                                        && $v['size_id'] == $item['size_id']
+                                    ) {
+                                        $isExist = true;
+                                        break;
+                                    }
+                                }
+                                if(!$isExist){
+                                    $isExist = ProductPrice::where('product_id',$id)
+                                        ->where('color_id',$colorId)
+                                        ->where('size_id',$sizeId)
+                                        ->where('qty_from',$qtyFrom)
+                                        ->where('qty_to',$qtyTo)
+                                        ->where('customer_group_id',$customerGroupId)
+                                        ->count()>0;
+                                    if (!$isExist) {
+                                        $prices[] = [
+                                            "product_id" => $pro->id,
+                                            "color_id" => $colorId,
+                                            "size_id" => $sizeId,
+                                            "qty_from" => $qtyFrom,
+                                            "qty_to" => $qtyTo,
+                                            "customer_group_id" => $customerGroupId,
+                                            "import_price" => $item['import_price'],
+                                            "normal_price" => $item['normal_price'],
+                                            "price" => $item['price']
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                        ProductPrice::insert($prices);
+                    }
+                    if(!empty($data['attrs'])){
+                        $attrs = [];
+                        foreach ($data['attrs'] as $item){
+                            if($item['id']){
+                                ProductAttribute::where('product_id',$id)->where('id',$item['id'])->update([
+                                    "name" => $item['name'] ?? "",
+                                    "desc" => $item['desc'] ?? "",
+                                ]);
+                            }
+                            else {
+                                $attrs[] = [
+                                    "product_id" => $pro->id,
+                                    "name" => $item['name'] ?? "",
+                                    "desc" => $item['desc'] ?? "",
+                                ];
+                            }
+                        }
+                        ProductAttribute::insert($attrs);
+                    }
+                    self::uploadProductImage($pro->id, $files,$dataDel['images']??[]);
                     DB::commit();
                     return ['message'=>'Product was updated Successful','data'=>$pro,'status'=>true];
                 }
@@ -148,7 +357,7 @@ class ProductRepository extends BaseRepository
         }
         catch (\Exception $e){
             DB::rollBack();
-            return ['message'=>'Product was updated Unsuccessful','data'=>['error'=>$e->getMessage()],'status'=>false];
+            return ['message'=>'Product was updated Unsuccessful','data'=>['error'=>$e->getMessage()." File ".$e->getFile()." line ".$e->getLine()],'status'=>false];
         }
     }
     public function uploadProductImage($id,$files,$imgDel=[]){
@@ -178,7 +387,7 @@ class ProductRepository extends BaseRepository
             }
         }
         if(!empty($imgDel)){
-            $imgDel = explode(',',$imgDel);
+//            $imgDel = explode(',',$imgDel);
             foreach ($imgDel as $v){
                 $image = ProductImage::where('product_id',$id)->where('id',$v)->first();
                 try{
