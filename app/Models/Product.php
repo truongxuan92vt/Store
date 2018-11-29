@@ -34,6 +34,9 @@ class Product extends BaseModel
     public function attrs(){
         return $this->hasMany(ProductAttribute::class,'product_id');
     }
+    public function inventories(){
+        return $this->hasMany(Inventory::class,'product_id');
+    }
 //    public static function boot(){
 //        static::retrieved(function ($model) {
 //            $server = config('app.server_upload');

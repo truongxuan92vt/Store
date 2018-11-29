@@ -5,7 +5,7 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class TemplateControllerController extends BaseController {
+class TemplateController extends BaseController {
 
     protected $request,$repos;
 

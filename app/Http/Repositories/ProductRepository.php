@@ -115,7 +115,8 @@ class ProductRepository extends BaseRepository
                                     "product_id"=>$pro->id,
                                     "color_id"=>empty($sku['color_id'])?0:$sku['color_id'],
                                     "size_id"=>empty($sku['size_id'])?0:$sku['size_id'],
-                                    "sku"=>$sku['sku']
+                                    "sku"=>$sku['sku'],
+                                    "upc"=>$sku['upc']
                                 ];
                             }
                         }
@@ -182,7 +183,13 @@ class ProductRepository extends BaseRepository
                 if($data['product']){
                     Product::where('id',$id)->update($data['product']);
                     if($data['desc']){
-                        ProductDesc::where('product_id',$id)->update($data['desc']);
+                        if(ProductDesc::where('product_id',$id)->count()>0)
+                        {
+                            ProductDesc::where('product_id',$id)->update($data['desc']);
+                        }
+                        else{
+                            ProductDesc::create(array_merge($data['desc'],['product_id'=>$id]));
+                        }
                     }
                     if(isset($data['sizes'])){
                         $sizeIns = [];
@@ -218,12 +225,13 @@ class ProductRepository extends BaseRepository
                                 $isExist = ProductSKU::where('product_id',$id)
                                     ->where('size_id',$sizeId)
                                     ->where('color_id',$colorId)
-                                    ->count()>0;
+                                    ->count()>1;
                                 if(!$isExist){
                                     ProductSKU::where('product_id',$id)->where('id',$sku['id'])->update([
                                         "color_id"=>$colorId,
                                         "size_id"=>$sizeId,
-                                        "sku"=>$sku['sku']
+                                        "sku"=>$sku['sku'],
+                                        "upc"=>$sku['upc']
                                     ]);
                                 }
                             }
@@ -245,7 +253,8 @@ class ProductRepository extends BaseRepository
                                             "product_id"=>$pro->id,
                                             "color_id"=>$colorId,
                                             "size_id"=>$sizeId,
-                                            "sku"=>$sku['sku']
+                                            "sku"=>$sku['sku'],
+                                            "upc"=>$sku['upc']
                                         ];
                                     }
                                 }

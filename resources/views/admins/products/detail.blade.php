@@ -13,8 +13,11 @@
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{plugin_path('/easyui/themes/bootstrap/easyui.css')}}">
     <script type="text/javascript" src="{{plugin_path('/easyui/jquery.easyui.min.js')}}"></script>
-    <script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/ckeditor.js"></script>
-    <script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/adapters/jquery.js"></script>
+    {{--<script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/ckeditor.js"></script>--}}
+    {{--<script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/adapters/jquery.js"></script>--}}
+
+    <script type="text/javascript" src="{{URL::to('/')}}/node_modules/tinymce/tinymce.js"></script>
+
     <link href="{{module_path()}}/select2/dist/css/select2.css" rel="stylesheet"/>
     <script src="{{module_path()}}/select2/dist/js/select2.js"></script>
     <form class="product-container" id="frm_product" name="frm_product" autocomplete="off">
@@ -24,6 +27,7 @@
             <li><a data-toggle="tab" href="#pro-image">Images</a></li>
             <li><a data-toggle="tab" href="#pro-price">Price</a></li>
             <li><a data-toggle="tab" href="#pro-attr">Attribute</a></li>
+            <li><a data-toggle="tab" href="#pro-inv">Inventory</a></li>
         </ul>
         <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
         <?php $image = isset($data->image)?$data->image:''?>
@@ -57,15 +61,6 @@
                                     <div class="col-md-5">
                                         <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->product_category_id)?$data->product_category_id:''}}" style="width: 100%">
                                     </div>
-                                    {{--<label class="col-md-2">Category</label>
-                                    <div class="col-md-5 pro-combo" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                                        <select class="pro-input" id="cbo_category_detail" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                            <option value="" selected="">Select a category</option>
-                                            @foreach($category as $item)
-                                                <option value="{{$item['id']}}" @if(isset($data->product_category_id) && $item['id']==$data->product_category_id) selected="selected" @endif>{{$item['name']}} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>--}}
                                     <label class="col-md-2" style="text-align: center">Status</label>
                                     <div class="col-md-5" style="padding-left: 0px; padding-right: 0px; height: 30px;">
                                         <select class="pro-input" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
@@ -117,17 +112,16 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <label class="col-md-2">Short description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" id="txt_short_desc_detail" name="short_desc" aria-label="Short description">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
+                        <textarea class="pro-input" id="txt_short_desc_detail" name="short_desc">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-md-2">Full description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" name="long_desc" id="txt_long_desc_detail">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
+                        <textarea class="pro-input" id="txt_long_desc_detail" name="long_desc">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
                     </div>
                 </div>
             </div>
@@ -292,6 +286,7 @@
                                 <th>Color</th>
                                 <th>Size</th>
                                 <th>Sku</th>
+                                <th>Upc</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -321,6 +316,9 @@
                                 </td>
                                 <td class="t_pro_sku_sku">
                                     <input type="text" name="t_pro_sku[--row--][sku]" value=""/>
+                                </td>
+                                <td class="t_pro_sku_upc">
+                                    <input type="text" name="t_pro_sku[--row--][upc]" value=""/>
                                 </td>
                                 <td class="t_pro_sku_none">
                                     <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
@@ -354,6 +352,9 @@
                                         <td class="t_pro_sku_sku">
                                             <input type="text" name="t_pro_sku[{{$k}}][sku]" value="{{$v->sku}}"/>
                                         </td>
+                                        <td class="t_pro_sku_upc">
+                                            <input type="text" name="t_pro_sku[{{$k}}][upc]" value="{{$v->upc}}"/>
+                                        </td>
                                         <td class="t_pro_sku_none">
                                             <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
                                         </td>
@@ -363,7 +364,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5" style="text-align: center">
+                                <td colspan="6" style="text-align: center">
                                     <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_sku")'>
                                 </td>
                             </tr>
@@ -559,6 +560,11 @@
             </div>
         </div>
     </form>
+    <style>
+        div.mce-fullscreen {
+            z-index: 1050;
+        }
+    </style>
     <script>
         $('#colors').on('change',function (e) {
             $('.t-cbo-color').empty();
@@ -627,14 +633,50 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        $( '#txt_long_desc_detail' ).ckeditor( function( textarea ) {},{
-                filebrowserBrowseUrl: '/plugin/ckfinder/ckfinder.html',
-                filebrowserImageBrowseUrl: '/plugin/ckfinder/ckfinder.html?Type=Images',
-                filebrowserUploadUrl: '/plugin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-                filebrowserImageUploadUrl: '/plugin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-                filebrowserWindowWidth : '1000',
-                filebrowserWindowHeight : '700'
+        tinymce.init({
+            selector: '#txt_short_desc_detail',
+            height: 100,
+            plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help',
+            toolbar: 'codesample |  fontselect fontsizeselect bold italic strikethrough forecolor backcolor | link | hr alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+            baseURL:"{{URL::to('/')}}/node_modules/tinymce/",
+            maxCharacters : 250,
+            menubar: false,
+            // setup: function (editor) {
+            //     editor.on('change', function () {
+            //         alert(editor.getContent({format: 'raw'}));
+            //         // $(“txt_short_desc_detail”).text(editor.getContent());
+            //     });
+            // }
         });
+        tinymce.init({
+            selector: '#txt_long_desc_detail',
+            height: 500,
+            // theme: 'modern',
+            plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help',
+            // toolbar: 'formatselect |  fontselect fontsizeselect bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            toolbar: 'codesample |  fontselect fontsizeselect bold italic strikethrough forecolor backcolor | link | hr alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            // toolbar: 'codesample | bold italic sizeselect fontselect fontsizeselect | hr alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | insertfile undo redo | forecolor backcolor emoticons | code',
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+            image_advtab: true,
+            baseURL:"{{URL::to('/')}}/node_modules/tinymce/",
+            // templates: [
+            //     { title: 'Test template 1', content: 'Test 1' },
+            //     { title: 'Test template 2', content: 'Test 2' }
+            // ],
+            // content_css: [
+            //     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            //     '//www.tinymce.com/css/codepen.min.css'
+            // ]
+        });
+        // $( '#txt_long_desc_detail' ).ckeditor( function( textarea ) {},{
+        //         filebrowserBrowseUrl: '/plugin/ckfinder/ckfinder.html',
+        //         filebrowserImageBrowseUrl: '/plugin/ckfinder/ckfinder.html?Type=Images',
+        //         filebrowserUploadUrl: '/plugin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+        //         filebrowserImageUploadUrl: '/plugin/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+        //         filebrowserWindowWidth : '1000',
+        //         filebrowserWindowHeight : '700'
+        // });
         function backToIndex(){
             document.location.href="{{route('admin.product.index')}}";
         }
@@ -642,9 +684,12 @@
             backToIndex();
         });
         $('#btn_save').on('click',function(){
+            tinymce.triggerSave();
+            // alert($('#txt_short_desc_detail').val());
             var frm_product = document.getElementById('frm_product');
             var form_data = new FormData(frm_product);
-            form_data.append('long_desc',$('#txt_long_desc_detail').val());
+            // form_data.append('short_desc',$('#txt_short_desc_detail').val());
+            // form_data.append('long_desc',$('#txt_long_desc_detail').val());
             form_data.append('imgDel',TABLE_PRO.imgDel);
             form_data.append('priceDel',TABLE_PRO.priceDel);
             form_data.append('skuDel',TABLE_PRO.skuDel);
@@ -661,7 +706,7 @@
                     // console.log(res);
                     if(res['status']){
                         backToIndex();
-                        toastr.success(message);
+                        toastr.success(res['message']);
                     }
                     else{
                         message = res['message'].replace(/\\n/g, "<br />");
@@ -672,7 +717,7 @@
                     console.log(res);
                 }
             });
-            console.log(form_data);
+            // console.log(form_data);
         });
     </script>
 @endsection

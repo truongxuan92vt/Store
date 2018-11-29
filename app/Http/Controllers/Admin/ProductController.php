@@ -103,9 +103,7 @@ class ProductController extends BaseController {
             'short_desc'=>$shortDesc,
             'long_desc'=>$longDesc
         ];
-        $price = [
 
-        ];
         $validate = $this->validator($product,$this->rules);
 
         if(!empty(!empty($validate))){
@@ -119,7 +117,6 @@ class ProductController extends BaseController {
         $data = [
             "product"=>$product,
             'desc'=>$desc,
-            'prices'=>$price,
             'sizes'=>$sizes,
             'colors'=>$colors,
             'skus'=>$skus,
