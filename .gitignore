@@ -14,3 +14,4 @@ yarn-error.log
 /public/node_modules
 composer.log
 package-log.json
+.lock
