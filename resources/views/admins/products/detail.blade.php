@@ -571,7 +571,6 @@
             var html = '<option value="" selected="">No size</option>';
             $.ajax({
                 url:"{{route('admin.master.color-by-id')}}",
-                // dataType: 'text', // what to expect back from the PHP script
                 data: {"ids":$(this).val()},
                 type: 'GET',
                 dataType:"json",
@@ -592,7 +591,6 @@
             var html = '<option value="" selected="">No color</option>';
             $.ajax({
                 url:"{{route('admin.master.size-by-id')}}",
-                // dataType: 'text', // what to expect back from the PHP script
                 data: {"ids":$(this).val()},
                 type: 'GET',
                 dataType:"json",
