@@ -112,6 +112,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <label class="col-md-2">Short description</label>
                     <div class="col-md-10">
