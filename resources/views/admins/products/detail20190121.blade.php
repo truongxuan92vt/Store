@@ -32,7 +32,7 @@
         <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
         <?php $image = isset($data->image)?$data->image:''?>
         <div class="tab-content">
-            <div id="pro-general" class="tab-pane fade ">
+            <div id="pro-general" class="tab-pane fade in active">
                 <div class="row">
                     <div class="col-md-3">
                         <div id="frm_uploadFile" style="width: 100%;">
@@ -125,7 +125,7 @@
                     </div>
                 </div>
             </div>
-            <div id="pro-image" class="tab-pane fade ">
+            <div id="pro-image" class="tab-pane fade">
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_image" width="100%">
                         <colgroup>
@@ -232,58 +232,130 @@
                     </table>
                 </div>
             </div>
-            <div id="pro-sku" class="tab-pane fade in active">
-                <h4>List of Option:</h4>
+            <div id="pro-sku" class="tab-pane fade">
+                <div class="row">
+                    <label class="col-md-1">Color</label>
+                    <div class="col-md-11">
+                        <select id="colors" name="colors[]" multiple style="width: 100%">
+                            {{--@foreach($colors as $item)--}}
+                                {{--{{$isSelected = ''}}--}}
+                                {{--@if(isset($data->colors))--}}
+                                    {{--@foreach($data->colors as $color)--}}
+                                        {{--@if($color->color_id == $item->id)--}}
+                                            {{--{{$isSelected = 'selected'}}--}}
+                                        {{--@endif--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                                {{--<option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>--}}
+                            {{--@endforeach--}}
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-1">Size</label>
+                    <div class="col-md-11">
+                        <select id="sizes" name="sizes[]" multiple style="width: 100%">
+                            {{--@foreach($sizes as $item)--}}
+                                {{--{{$isSelected = ''}}--}}
+                                {{--@if(isset($data->sizes))--}}
+                                    {{--@foreach($data->sizes as $size)--}}
+                                        {{--@if($size->size_id == $item->id)--}}
+                                            {{--{{$isSelected = 'selected'}}--}}
+                                        {{--@endif--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                                {{--<option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>--}}
+                            {{--@endforeach--}}
+                        </select>
+                    </div>
+                </div>
+                <h4>List SKU:</h4>
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
-                    <table id="t_pro_option" width="100%">
+                    <table id="t_pro_sku" width="100%">
                         <colgroup>
                             <col style="width: 5%">
                             <col style="width: 20%">
-                            <col style="width: 65%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 15%">
                             <col style="width: 10%">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Option</th>
-                                <th>Option Value</th>
+                                <th>Color</th>
+                                <th>Size</th>
+                                <th>Sku</th>
+                                <th>Upc</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr id="r_clone" class="r_clone" data-no-add="0" style="display: none">
-                                <input type="hidden" name="t_pro_option[--row--][id]" value="" />
+                                <input type="hidden" name="t_pro_sku[--row--][id]" value="" />
                                 <td style="text-align: center;"><span>--row--</span></td>
-                                <td class="t_pro_option_id">
-                                    <select class="t-cbo-option" name="t_pro_option[--row--][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                        <option value="" selected="">No option</option>
+                                <td class="t_pro_sku_color">
+                                    <select class="t-cbo-color" name="t_pro_sku[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <option value="" selected="">No color</option>
+                                        @if(isset($data->colors))
+                                            @foreach($data->colors as $item)
+                                                <option value="{{$item->color->id??""}}">{{$item->color->name??""}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </td>
-                                <td class="t_pro_option_value">
-                                    <select class="t-cbo-option-value" name="t_pro_option_value[--row--][option_value_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                        <option value="" selected="">No option value</option>
+                                <td class="t_pro_sku_size">
+                                    <select class="t-cbo-size" name="t_pro_sku[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <option value="" selected="">No size</option>
+                                        @if(isset($data->sizes))
+                                            @foreach($data->sizes as $item)
+                                                <option value="{{$item->size->id??""}}">{{$item->fullName()??""}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </td>
-                                <td class="t_pro_option_none">
+                                <td class="t_pro_sku_sku">
+                                    <input type="text" name="t_pro_sku[--row--][sku]" value=""/>
+                                </td>
+                                <td class="t_pro_sku_upc">
+                                    <input type="text" name="t_pro_sku[--row--][upc]" value=""/>
+                                </td>
+                                <td class="t_pro_sku_none">
                                     <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
                                 </td>
                             </tr>
                             @if(isset($data->skus))
                                 @foreach($data->skus as $k=>$v)
-                                    <tr id="t_pro_option_row_{{$k}}" class="t_pro_option_row">
-                                        <input type="hidden" name="t_pro_option[{{$k}}][id]" value="{{$v->id}}" />
+                                    <tr id="t_pro_sku_row_{{$k}}" class="t_pro_sku_row">
+                                        <input type="hidden" name="t_pro_sku[{{$k}}][id]" value="{{$v->id}}" />
                                         <td style="text-align: center;"><span>{{$k+1}}</span></td>
-                                        <td class="t_pro_option_id">
-                                            <select class="t-cbo-option" name="t_pro_option[{{$k}}][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                                <option value="" selected="">No option</option>
+                                        <td class="t_pro_sku_color">
+                                            <select class="t-cbo-color" name="t_pro_sku[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                                <option value="" selected="">No color</option>
+                                                {{--@foreach($data->colors as $item)--}}
+                                                    {{--@if(!empty($item->color))--}}
+                                                        {{--<option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>--}}
+                                                    {{--@endif--}}
+                                                {{--@endforeach--}}
                                             </select>
                                         </td>
-                                        <td class="t_pro_option_value">
-                                            <select class="t-cbo-option-value" name="t_pro_option_value[{{$k}}][option_value_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                                <option value="" selected="">No option value</option>
+                                        <td class="t_pro_sku_size">
+                                            <select class="t-cbo-size" name="t_pro_sku[{{$k}}][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                                <option value="" selected="">No size</option>
+                                                {{--@foreach($data->sizes as $item)--}}
+                                                    {{--@if(!empty($item->size))--}}
+                                                        {{--<option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>--}}
+                                                    {{--@endif--}}
+                                                {{--@endforeach--}}
                                             </select>
                                         </td>
-                                        <td class="t_pro_option_none">
+                                        <td class="t_pro_sku_sku">
+                                            <input type="text" name="t_pro_sku[{{$k}}][sku]" value="{{$v->sku}}"/>
+                                        </td>
+                                        <td class="t_pro_sku_upc">
+                                            <input type="text" name="t_pro_sku[{{$k}}][upc]" value="{{$v->upc}}"/>
+                                        </td>
+                                        <td class="t_pro_sku_none">
                                             <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
                                         </td>
                                     </tr>
@@ -293,7 +365,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_option")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_sku")'>
                                 </td>
                             </tr>
                         </tfoot>

@@ -6,9 +6,10 @@ TABLE_PRO = {
     addCol: function(tID){
         var bElement = "#"+tID;
         var dataNoAdd = $(bElement+" .r_clone").attr("data-no-add");
-        $(bElement + " .r_clone").attr("data-no-add",dataNoAdd*1+1);
-        var htmlClone = "<tr id='"+tID+"_row_"+dataNoAdd+"' class='"+tID+"_row'>" +
-            $(bElement + " .r_clone").html().replace(new RegExp('--row--','g'),dataNoAdd*1) +
+        var nextNum = dataNoAdd*1+1;
+        $(bElement + " .r_clone").attr("data-no-add",nextNum);
+        var htmlClone = "<tr id='"+tID+"_row_"+nextNum+"' class='"+tID+"_row'>" +
+            $(bElement + " .r_clone").html().replace(new RegExp('--row--','g'),nextNum*1) +
             "</tr>";
         $(htmlClone).show().appendTo(bElement);
     },
