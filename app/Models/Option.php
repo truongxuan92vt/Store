@@ -5,9 +5,8 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\URL;
 
-class SizeStandard extends BaseModel
+class Option extends BaseModel
 {
-    protected $table = 'size_standards';
-
+    protected $table = 'options';
     protected $guarded = [];
 }

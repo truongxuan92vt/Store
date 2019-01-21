@@ -1,11 +1,10 @@
 <?php
 namespace App\Http\Repositories;
 
-use App\Models\Size;
-use App\Models\SizeStandard;
+use App\Models\Option;
 use Illuminate\Support\Facades\DB;
 
-class SizeRepository extends BaseRepository
+class OptionRepository extends BaseRepository
 {
     /**
      * get model
@@ -13,10 +12,10 @@ class SizeRepository extends BaseRepository
      */
     public function model()
     {
-        return Size::class;
+        return Option::class;
     }
-    public static function option($data = []){
-        $res = Size::select([
+    /*public static function option($data = []){
+        $res = OptionValue::select([
                 'sizes.id',
                 'sizes.code',
                 DB::raw('IF(size_standards.id is not null,CONCAT(size_standards.name,"-",size_standards.gender,"-",sizes.name),sizes.name) as text'),
@@ -35,7 +34,7 @@ class SizeRepository extends BaseRepository
         return $res;
     }
     public static function optionById($data = []){
-        $res = Size::select([
+        $res = OptionValue::select([
             'sizes.id',
             'sizes.code',
             DB::raw('IF(size_standards.id is not null,CONCAT(size_standards.name,"-",size_standards.gender,"-",sizes.name),sizes.name) as text'),
@@ -50,5 +49,5 @@ class SizeRepository extends BaseRepository
             ->whereIn('sizes.id',$data);
         $res = $res->get();
         return $res;
-    }
+    }*/
 }

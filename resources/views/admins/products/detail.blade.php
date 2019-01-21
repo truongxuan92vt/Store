@@ -156,7 +156,7 @@
                                     <input type='file' name="t_pro_image[--row--][file]" onchange="TABLE_PRO.readURL(this)" />
                                 </td>
                                 <td class="t_pro_image_color">
-                                    <select name="t_pro_image[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                    <select class="t-cbo-color" name="t_pro_image[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                         <option value="" selected="">No color</option>
                                         @if(isset($data->colors))
                                             @foreach($data->colors as $item)
@@ -166,7 +166,7 @@
                                     </select>
                                 </td>
                                 <td class="t_pro_image_size">
-                                    <select name="t_pro_image[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                    <select class="t-cbo-size" name="t_pro_image[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                         <option value="" selected="">No size</option>
                                         @if(isset($data->sizes))
                                             @foreach($data->sizes as $item)
@@ -195,21 +195,21 @@
                                         <td class="t_pro_image_color">
                                             <select class="t-cbo-color" name="t_pro_image[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                                 <option value="" selected="">No color</option>
-                                                @foreach($data->colors as $item)
-                                                    @if(!empty($item->color))
-                                                        <option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>
-                                                    @endif
-                                                @endforeach
+                                                {{--@foreach($data->colors as $item)--}}
+                                                    {{--@if(!empty($item->color))--}}
+                                                        {{--<option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>--}}
+                                                    {{--@endif--}}
+                                                {{--@endforeach--}}
                                             </select>
                                         </td>
                                         <td class="t_pro_image_size">
                                             <select class="t-cbo-size" name="t_pro_image[{{$k}}][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                                 <option value="" selected="">No size</option>
-                                                @foreach($data->sizes as $item)
-                                                    @if(!empty($item->size))
-                                                        <option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>
-                                                    @endif
-                                                @endforeach
+                                                {{--@foreach($data->sizes as $item)--}}
+                                                    {{--@if(!empty($item->size))--}}
+                                                        {{--<option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>--}}
+                                                    {{--@endif--}}
+                                                {{--@endforeach--}}
                                             </select>
                                         </td>
                                         <td class="t_pro_image_priority">
@@ -237,17 +237,17 @@
                     <label class="col-md-1">Color</label>
                     <div class="col-md-11">
                         <select id="colors" name="colors[]" multiple style="width: 100%">
-                            @foreach($colors as $item)
-                                {{$isSelected = ''}}
-                                @if(isset($data->colors))
-                                    @foreach($data->colors as $color)
-                                        @if($color->color_id == $item->id)
-                                            {{$isSelected = 'selected'}}
-                                        @endif
-                                    @endforeach
-                                @endif
-                                <option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>
-                            @endforeach
+                            {{--@foreach($colors as $item)--}}
+                                {{--{{$isSelected = ''}}--}}
+                                {{--@if(isset($data->colors))--}}
+                                    {{--@foreach($data->colors as $color)--}}
+                                        {{--@if($color->color_id == $item->id)--}}
+                                            {{--{{$isSelected = 'selected'}}--}}
+                                        {{--@endif--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                                {{--<option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>--}}
+                            {{--@endforeach--}}
                         </select>
                     </div>
                 </div>
@@ -255,17 +255,17 @@
                     <label class="col-md-1">Size</label>
                     <div class="col-md-11">
                         <select id="sizes" name="sizes[]" multiple style="width: 100%">
-                            @foreach($sizes as $item)
-                                {{$isSelected = ''}}
-                                @if(isset($data->sizes))
-                                    @foreach($data->sizes as $size)
-                                        @if($size->size_id == $item->id)
-                                            {{$isSelected = 'selected'}}
-                                        @endif
-                                    @endforeach
-                                @endif
-                                <option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>
-                            @endforeach
+                            {{--@foreach($sizes as $item)--}}
+                                {{--{{$isSelected = ''}}--}}
+                                {{--@if(isset($data->sizes))--}}
+                                    {{--@foreach($data->sizes as $size)--}}
+                                        {{--@if($size->size_id == $item->id)--}}
+                                            {{--{{$isSelected = 'selected'}}--}}
+                                        {{--@endif--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                                {{--<option value="{{$item->id}}" {{$isSelected}}>{{$item->text}} </option>--}}
+                            {{--@endforeach--}}
                         </select>
                     </div>
                 </div>
@@ -332,21 +332,21 @@
                                         <td class="t_pro_sku_color">
                                             <select class="t-cbo-color" name="t_pro_sku[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                                 <option value="" selected="">No color</option>
-                                                @foreach($data->colors as $item)
-                                                    @if(!empty($item->color))
-                                                        <option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>
-                                                    @endif
-                                                @endforeach
+                                                {{--@foreach($data->colors as $item)--}}
+                                                    {{--@if(!empty($item->color))--}}
+                                                        {{--<option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>--}}
+                                                    {{--@endif--}}
+                                                {{--@endforeach--}}
                                             </select>
                                         </td>
                                         <td class="t_pro_sku_size">
                                             <select class="t-cbo-size" name="t_pro_sku[{{$k}}][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                                 <option value="" selected="">No size</option>
-                                                @foreach($data->sizes as $item)
-                                                    @if(!empty($item->size))
-                                                        <option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>
-                                                    @endif
-                                                @endforeach
+                                                {{--@foreach($data->sizes as $item)--}}
+                                                    {{--@if(!empty($item->size))--}}
+                                                        {{--<option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>--}}
+                                                    {{--@endif--}}
+                                                {{--@endforeach--}}
                                             </select>
                                         </td>
                                         <td class="t_pro_sku_sku">
@@ -406,21 +406,21 @@
                             <td class="t_pro_price_color">
                                 <select class="t-cbo-color" name="t_pro_price[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                     <option value="" selected="">No color</option>
-                                    @if(isset($data->colors))
-                                        @foreach($data->colors as $item)
-                                            <option value="{{$item->color->id??""}}">{{$item->color->name??""}}</option>
-                                        @endforeach
-                                    @endif
+                                    {{--@if(isset($data->colors))--}}
+                                        {{--@foreach($data->colors as $item)--}}
+                                            {{--<option value="{{$item->color->id??""}}">{{$item->color->name??""}}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--@endif--}}
                                 </select>
                             </td>
                             <td class="t_pro_price_size">
                                 <select class="t-cbo-size" name="t_pro_price[--row--][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                     <option value="" selected="">No size</option>
-                                    @if(isset($data->sizes))
-                                        @foreach($data->sizes as $item)
-                                            <option value="{{$item->size->id??""}}">{{$item->fullName()??""}}</option>
-                                        @endforeach
-                                    @endif
+                                    {{--@if(isset($data->sizes))--}}
+                                        {{--@foreach($data->sizes as $item)--}}
+                                            {{--<option value="{{$item->size->id??""}}">{{$item->fullName()??""}}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--@endif--}}
                                 </select>
                             </td>
                             <td class="t_pro_price_qty_from">
@@ -450,21 +450,21 @@
                                     <td class="t_pro_price_color">
                                         <select class="t-cbo-color" name="t_pro_price[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                             <option value="" selected="">No color</option>
-                                            @foreach($data->colors as $item)
-                                                @if(!empty($item->color))
-                                                    <option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>
-                                                @endif
-                                            @endforeach
+                                            {{--@foreach($data->colors as $item)--}}
+                                                {{--@if(!empty($item->color))--}}
+                                                    {{--<option value="{{$item->color->id??''}}" @if(isset($item->color->id) && $item->color->id == $v->color_id) selected @endif>{{$item->color->name??''}}</option>--}}
+                                                {{--@endif--}}
+                                            {{--@endforeach--}}
                                         </select>
                                     </td>
                                     <td class="t_pro_price_size">
                                         <select class="t-cbo-size" name="t_pro_price[{{$k}}][size_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                             <option value="" selected="">No size</option>
-                                            @foreach($data->sizes as $item)
-                                                @if(!empty($item->size))
-                                                    <option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>
-                                                @endif
-                                            @endforeach
+                                            {{--@foreach($data->sizes as $item)--}}
+                                                {{--@if(!empty($item->size))--}}
+                                                    {{--<option value="{{$item->size->id??''}}" @if(isset($item->size->id) && $item->size->id == $v->size_id) selected @endif>{{$item->fullName()??''}}</option>--}}
+                                                {{--@endif--}}
+                                            {{--@endforeach--}}
                                         </select>
                                     </td>
                                     <td class="t_pro_price_qty_from">

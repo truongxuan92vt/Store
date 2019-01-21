@@ -5,9 +5,9 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\URL;
 
-class Color extends BaseModel
+class ProductOption extends BaseModel
 {
-    protected $table = 'colors';
+    protected $table = 'product_options';
 
     protected $guarded = [];
 }

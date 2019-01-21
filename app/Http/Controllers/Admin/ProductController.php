@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Repositories\ColorRepository;
 use App\Http\Repositories\ProductCategoryRepository;
-use App\Http\Repositories\SizeRepository;
+use App\Http\Repositories\OptionRepository;
 use App\Libraries\Helpers;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -30,13 +30,9 @@ class ProductController extends BaseController {
         $id = $this->request->id??null;
         $category = ProductCategoryRepository::getOption();
         $product = $this->repos->find($id);
-        $colors = ColorRepository::option();
-        $sizes = SizeRepository::option();
         return view('admins.products.detail',[
             'data'=>$product,
             'category'=>$category,
-            'colors'=>$colors,
-            'sizes'=>$sizes,
             'statusList'=>Helpers::convertCombo(STATUS_SYS)]
         );
     }
@@ -81,9 +77,6 @@ class ProductController extends BaseController {
         if($this->request->hasFile('image')){
             $image = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_ITEM,$id.'_');
         }
-//        for($i=0; $i<count($_FILES['files']['name']);$i++){
-//            dd($_FILES['files']['name'][$i]);
-//        }
         $product = [
             'name'=>$name,
             'product_category_id'=>$categoryId,
@@ -109,11 +102,6 @@ class ProductController extends BaseController {
         if(!empty(!empty($validate))){
             return $this->respondForward(['message'=>$validate,'data'=>null,'status'=>false]);
         }
-
-//        $files = [];
-//        if($this->request->hasFile('files')){
-//            $files = $this->request->file('files');
-//        }
         $data = [
             "product"=>$product,
             'desc'=>$desc,

@@ -16,7 +16,5 @@
         "cross-env": "^5.1",
         "laravel-mix": "^1.0"
     },
-    "dependencies": {
-
-    }
+    "dependencies": {}
 }
