@@ -3,17 +3,20 @@ TABLE_PRO = {
     priceDel:[],
     skuDel:[],
     attrDel:[],
-    addCol: function(tID){
-        var bElement = "#"+tID;
-        var dataNoAdd = $(bElement+" .r_clone").attr("data-no-add");
-        var nextNum = dataNoAdd*1+1;
-        $(bElement + " .r_clone").attr("data-no-add",nextNum);
-        var htmlClone = "<tr id='"+tID+"_row_"+nextNum+"' class='"+tID+"_row'>" +
-            $(bElement + " .r_clone").html().replace(new RegExp('--row--','g'),nextNum*1) +
-            "</tr>";
+    addRow: function addRow(tID,isSelect=false,selectName='') {
+        var bElement = "#" + tID;
+        var dataNoAdd = $(bElement + " .r_clone").attr("data-no-add");
+        var nextNum = dataNoAdd * 1 + 1;
+        $(bElement + " .r_clone").attr("data-no-add", nextNum);
+        var htmlClone = "<tr id='" + tID + "_row_" + nextNum + "' class='" + tID + "_row'>" + $(bElement + " .r_clone").html().replace(new RegExp('--row--', 'g'), nextNum * 1) + "</tr>";
         $(htmlClone).show().appendTo(bElement);
+        if(isSelect){
+            if(selectName.length>0){
+                $(selectName+nextNum).select2();
+            }
+        }
     },
-    delCol: function(e){
+    delRow: function(e){
         var tr =$(e).closest("tr");
         var id = tr.find('input[type="hidden"]').val();
         var tblName = $(e).closest("table").attr('id');

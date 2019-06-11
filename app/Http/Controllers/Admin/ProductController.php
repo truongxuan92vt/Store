@@ -3,8 +3,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Repositories\ColorRepository;
-use App\Http\Repositories\ProductCategoryRepository;
-use App\Http\Repositories\OptionRepository;
+use App\Http\Repositories\CategoryRepository;
+use App\Http\Repositories\VariantRepository;
 use App\Libraries\Helpers;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -19,17 +19,18 @@ class ProductController extends BaseController {
     }
     protected $rules=[
         'name'=>'required',
-        'product_category_id'=>'required',
+        'category_id'=>'required',
         'status'=>'required',
     ];
     public function index(){
-        $category = ProductCategoryRepository::getOption();
+        $category = CategoryRepository::getOption();
         return view('admins.products.index',['category'=>$category,'statusList'=>Helpers::convertCombo(STATUS_SYS)]);
     }
     public function detail(){
         $id = $this->request->id??null;
-        $category = ProductCategoryRepository::getOption();
-        $product = $this->repos->find($id);
+        $category = CategoryRepository::getOption();
+        $product = $this->repos->getProductDetail($id);
+        dd(json_encode($product));
         return view('admins.products.detail',[
             'data'=>$product,
             'category'=>$category,
@@ -55,18 +56,17 @@ class ProductController extends BaseController {
         $skuDel = $this->request->get('skuDel');
         $attrDel = $this->request->get('attrDel');
         $files = $this->request->t_pro_image;
-        $sizes = $this->request->get('sizes');
-        $colors = $this->request->get('colors');
         $skus = $this->request->t_pro_sku??null;
-        $infor = $this->request->t_pro_infor??null;
+        $info = $this->request->t_pro_infor??null;
         $prices = $this->request->t_pro_price??null;
         $attrs = $this->request->t_pro_attr??null;
+        $variants = $this->request->t_pro_variant??null;
         unset($files['--row--']);
         if($skus!=null){
             unset($skus['--row--']);
         }
-        if($infor!=null){
-            unset($infor['--row--']);
+        if($info!=null){
+            unset($info['--row--']);
         }
         if($prices!=null){
             unset($prices['--row--']);
@@ -79,7 +79,7 @@ class ProductController extends BaseController {
         }
         $product = [
             'name'=>$name,
-            'product_category_id'=>$categoryId,
+            'category_id'=>$categoryId,
             'status'=>$status,
             'code'=>$this->request->code??null,
             'title'=>$this->request->title??null,
@@ -103,20 +103,19 @@ class ProductController extends BaseController {
             return $this->respondForward(['message'=>$validate,'data'=>null,'status'=>false]);
         }
         $data = [
-            "product"=>$product,
-            'desc'=>$desc,
-            'sizes'=>$sizes,
-            'colors'=>$colors,
-            'skus'=>$skus,
-            'infor'=>$infor,
-            'prices'=>$prices,
-            'attrs'=>$attrs
+            "product"   =>$product,
+            'desc'      =>$desc,
+            'info'      =>$info,
+            'prices'    =>$prices,
+            'attrs'     =>$attrs,
+            'variants'  =>$variants
         ];
+        dd($data);
         $dataDel=[
-            'images'=>explode(',',$imgDel),
-            'skus'=>explode(',',$skuDel),
-            'prices'=>explode(',',$priceDel),
-            'attrs'=>explode(',',$attrDel)
+            'images'    =>explode(',',$imgDel),
+            'skus'      =>explode(',',$skuDel),
+            'prices'    =>explode(',',$priceDel),
+            'attrs'     =>explode(',',$attrDel)
         ];
         if(!empty($id)){
             $res = $this->repos->updateProduct($id,$data,$files,$dataDel);
@@ -125,5 +124,10 @@ class ProductController extends BaseController {
             $res = $this->repos->createProduct($data,$files);
         }
         return $this->respondForward($res);
+    }
+    public function getVariant(){
+        $data = $this->request;
+        $res = $this->repos->getVariant($data);
+        return $this->respondForward(['status'=>true,'data'=>$res,'message'=>'']);
     }
 }

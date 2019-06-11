@@ -61,7 +61,7 @@
                 <ul>
                     @foreach($categories as $item)
                         <li>
-                            <a href="{{route('web.category.index',['product_category_id'=>$item['id'],'name'=>$item['name']])}}">
+                            <a href="{{route('web.category.index',['category_id'=>$item['id'],'name'=>$item['name']])}}">
                             <span class="icon-wrap">
                                 <i class="lv1-icon {{$item['icon']||''}}"></i>
                             </span>
@@ -73,7 +73,7 @@
                                         @foreach($item['childs'] as $sub)
                                             <li>
                                                 {{--<i class="fa fa-arrow-circle-down"></i>--}}
-                                                <a href="{{route('web.category.index',['product_category_id'=>$sub['id'],'name'=>$sub['name']])}}">
+                                                <a href="{{route('web.category.index',['category_id'=>$sub['id'],'name'=>$sub['name']])}}">
                                                     <div class="nav-sub-lvl-2">
                                                     <span>
                                                         {{$sub['name']}}

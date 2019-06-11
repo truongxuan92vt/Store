@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Repositories;
 
-use App\Models\ProductCategory;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 
-class ProductCategoryRepository extends BaseRepository
+class CategoryRepository extends BaseRepository
 {
     /**
      * get model
@@ -12,10 +12,10 @@ class ProductCategoryRepository extends BaseRepository
      */
     public function model()
     {
-        return ProductCategory::class;
+        return Category::class;
     }
     public function getCategoryOption($data){
-        $query = ProductCategory::where('status',ENABLE)->select([
+        $query = Category::where('status',ENABLE)->select([
             'id',
             'name as text',
             'parent_id'
@@ -27,25 +27,25 @@ class ProductCategoryRepository extends BaseRepository
         return  $res;
     }
     public static function getCategoryForWeb(){
-        $result = ProductCategory::where('status',ENABLE)->orderBy('priority')->get()->toArray();
+        $result = Category::where('status',ENABLE)->orderBy('priority')->get()->toArray();
         return  $result;
     }
     public function getList($data){
         $res = $this->model;
         if(!empty($data->status)){
-            $res = $res->where('product_categories.status',$data->status);
+            $res = $res->where('categories.status',$data->status);
         }
         if(!empty($data->desc)){
-            $res = $res->where('product_categories.desc','like','%'.trim($data->desc).'%');
+            $res = $res->where('categories.desc','like','%'.trim($data->desc).'%');
         }
         if(!empty($data->name)){
-            $res = $res->where('product_categories.name','like','%'.trim($data->name).'%');
+            $res = $res->where('categories.name','like','%'.trim($data->name).'%');
         }
         $res = $res->select([
-                'product_categories.*',
+                'categories.*',
                 DB::raw('pr.name as parent_name')
             ])
-            ->leftJoin('product_categories as pr','pr.id','product_categories.parent_id')
+            ->leftJoin('categories as pr','pr.id','categories.parent_id')
             ->orderBy('priority','ASC')
             ->orderBy('parent_id','ASC')
             ->orderBy('name','ASC')
@@ -53,7 +53,7 @@ class ProductCategoryRepository extends BaseRepository
         return $res;
     }
     static public function getOption($data=null){
-        $res = ProductCategory::select('id','name')->get()->toArray();
+        $res = Category::select('id','name')->get()->toArray();
         return $res;
     }
 }

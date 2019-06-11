@@ -23,6 +23,7 @@
     <form class="product-container" id="frm_product" name="frm_product" autocomplete="off">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#pro-general">General</a></li>
+            <li><a data-toggle="tab" href="#pro-variant">Variant</a></li>
             <li><a data-toggle="tab" href="#pro-sku">Sku</a></li>
             <li><a data-toggle="tab" href="#pro-image">Images</a></li>
             <li><a data-toggle="tab" href="#pro-price">Price</a></li>
@@ -32,7 +33,7 @@
         <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
         <?php $image = isset($data->image)?$data->image:''?>
         <div class="tab-content">
-            <div id="pro-general" class="tab-pane fade ">
+            <div id="pro-general" class="tab-pane fade in active">
                 <div class="row">
                     <div class="col-md-3">
                         <div id="frm_uploadFile" style="width: 100%;">
@@ -59,7 +60,7 @@
                             <div class="col-md-10">
                                 <div class="row" style="padding: 0px !important;">
                                     <div class="col-md-5">
-                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->product_category_id)?$data->product_category_id:''}}" style="width: 100%">
+                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->category_id)?$data->category_id:''}}">
                                     </div>
                                     <label class="col-md-2" style="text-align: center">Status</label>
                                     <div class="col-md-5" style="padding-left: 0px; padding-right: 0px; height: 30px;">
@@ -74,7 +75,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-2">Manuafactuer</label>
+                            <label class="col-md-2">Manufacturer</label>
                             <div class="col-md-10">
                                 <div class="row" style="padding: 0px !important;">
                                     <div class="col-md-5">
@@ -125,7 +126,150 @@
                     </div>
                 </div>
             </div>
-            <div id="pro-image" class="tab-pane fade ">
+            <div id="pro-variant" class="tab-pane fade ">
+                <h4>List of Option:</h4>
+                <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
+                    <table id="t_pro_option" width="100%">
+                        <colgroup>
+                            <col style="width: 5%">
+                            <col style="width: 20%">
+                            <col style="width: 65%">
+                            <col style="width: 10%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Option</th>
+                            <th>Option Value</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="r_clone" class="r_clone" data-no-add="0" style="display:none">
+                            <input type="hidden" name="t_pro_option[--row--][id]" value="" />
+                            <td style="text-align: center;"><span>--row--</span></td>
+                            <td class="t_pro_option_id">
+                                <select id="t_pro_option_--row--" class="t-cbo-option" name="t_pro_option[--row--][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;" onchange="initVartiant(this)">
+                                    <option value="">No option</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </td>
+                            <td class="t_pro_option_value">
+                                <select id="t_pro_option_value_--row--" class="t-cbo-option-value" name="t_pro_option_value[--row--][option_value_id]" multiple="multiple" style="width: 100%">
+                                    <option value="AL">A</option>
+                                    <option value="WY">W</option>
+                                </select>
+                            </td>
+                            <td class="t_pro_option_none">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                            </td>
+                        </tr>
+                        @if(isset($data->skus))
+                            @foreach($data->skus as $k=>$v)
+                                <tr id="t_pro_option_row_{{$k}}" class="t_pro_option_row">
+                                    <input type="hidden" name="t_pro_option[{{$k}}][id]" value="{{$v->id}}" />
+                                    <td style="text-align: center;"><span>{{$k+1}}</span></td>
+                                    <td class="t_pro_option_id">
+                                        <select class="t-cbo-option" name="t_pro_option[{{$k}}][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                            <option value="" selected="">No option</option>
+                                        </select>
+                                    </td>
+                                    <td class="t_pro_option_value">
+                                        <select class="t-cbo-option-value" name="t_pro_option_value[{{$k}}][option_value_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                            <option value="" selected="">No option value</option>
+                                        </select>
+                                    </td>
+                                    <td class="t_pro_option_none">
+                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="6" style="text-align: center">
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_option",true,"#t_pro_option_value_")'>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div id="pro-sku" class="tab-pane fade ">
+                <h4>List of Option:</h4>
+                <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
+                    <table id="t_pro_option" width="100%">
+                        <colgroup>
+                            <col style="width: 5%">
+                            <col style="width: 20%">
+                            <col style="width: 65%">
+                            <col style="width: 10%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Option</th>
+                            <th>Option Value</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="r_clone" class="r_clone" data-no-add="0" style="display: none">
+                            <input type="hidden" name="t_pro_option[--row--][id]" value="" />
+                            <td style="text-align: center;"><span>--row--</span></td>
+                            <td class="t_pro_option_id">
+                                <select class="t-cbo-option" name="t_pro_option[--row--][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                    <option value="" selected="">No option</option>
+                                </select>
+                            </td>
+                            <td class="t_pro_option_value">
+                                <select id="t-cbo-option-value" class="t-cbo-option-value" name="t_pro_option_value[--row--][option_value_id][]" multiple="multiple" style="width: 100%">
+                                    <option value="AL">A</option>
+                                    <option value="WY">W</option>
+                                </select>
+                                {{--<select class="t-cbo-option-value" name="t_pro_option_value[--row--][option_value_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                    <option value="" selected="">No option value</option>
+                                </select>--}}
+                            </td>
+                            <td class="t_pro_option_none">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                            </td>
+                        </tr>
+                        @if(isset($data->skus))
+                            @foreach($data->skus as $k=>$v)
+                                <tr id="t_pro_option_row_{{$k}}" class="t_pro_option_row">
+                                    <input type="hidden" name="t_pro_option[{{$k}}][id]" value="{{$v->id}}" />
+                                    <td style="text-align: center;"><span>{{$k+1}}</span></td>
+                                    <td class="t_pro_option_id">
+                                        <select class="t-cbo-option" name="t_pro_option[{{$k}}][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                            <option value="" selected="">No option</option>
+                                        </select>
+                                    </td>
+                                    <td class="t_pro_option_value">
+                                        <select class="t-cbo-option-value" name="t_pro_option_value[{{$k}}][option_value_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                            <option value="" selected="">No option value</option>
+                                        </select>
+                                    </td>
+                                    <td class="t_pro_option_none">
+                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="6" style="text-align: center">
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_option")'>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div id="pro-image" class="tab-pane fade">
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_image" width="100%">
                         <colgroup>
@@ -179,7 +323,7 @@
                                     <input type="text" name="t_pro_image[--row--][priority]" value="0"/>
                                 </td>
                                 <td class="t_pro_image_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->images) && count($data->images)>0)
@@ -216,7 +360,7 @@
                                             <input type="text" name="t_pro_image[{{$k}}][priority]" value="{{$v->priority}}"/>
                                         </td>
                                         <td class="t_pro_image_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -225,75 +369,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_image")'>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-            <div id="pro-sku" class="tab-pane fade in active">
-                <h4>List of Option:</h4>
-                <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
-                    <table id="t_pro_option" width="100%">
-                        <colgroup>
-                            <col style="width: 5%">
-                            <col style="width: 20%">
-                            <col style="width: 65%">
-                            <col style="width: 10%">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Option</th>
-                                <th>Option Value</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="r_clone" class="r_clone" data-no-add="0" style="display: none">
-                                <input type="hidden" name="t_pro_option[--row--][id]" value="" />
-                                <td style="text-align: center;"><span>--row--</span></td>
-                                <td class="t_pro_option_id">
-                                    <select class="t-cbo-option" name="t_pro_option[--row--][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                        <option value="" selected="">No option</option>
-                                    </select>
-                                </td>
-                                <td class="t_pro_option_value">
-                                    <select class="t-cbo-option-value" name="t_pro_option_value[--row--][option_value_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                        <option value="" selected="">No option value</option>
-                                    </select>
-                                </td>
-                                <td class="t_pro_option_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
-                                </td>
-                            </tr>
-                            @if(isset($data->skus))
-                                @foreach($data->skus as $k=>$v)
-                                    <tr id="t_pro_option_row_{{$k}}" class="t_pro_option_row">
-                                        <input type="hidden" name="t_pro_option[{{$k}}][id]" value="{{$v->id}}" />
-                                        <td style="text-align: center;"><span>{{$k+1}}</span></td>
-                                        <td class="t_pro_option_id">
-                                            <select class="t-cbo-option" name="t_pro_option[{{$k}}][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                                <option value="" selected="">No option</option>
-                                            </select>
-                                        </td>
-                                        <td class="t_pro_option_value">
-                                            <select class="t-cbo-option-value" name="t_pro_option_value[{{$k}}][option_value_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                                <option value="" selected="">No option value</option>
-                                            </select>
-                                        </td>
-                                        <td class="t_pro_option_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_option")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_image")'>
                                 </td>
                             </tr>
                         </tfoot>
@@ -367,7 +443,7 @@
                                 <input type="text" name="t_pro_price[--row--][price]" value=""/>
                             </td>
                             <td class="t_pro_price_none">
-                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                             </td>
                         </tr>
                         @if(isset($data->prices))
@@ -411,7 +487,7 @@
                                         <input type="text" name="t_pro_price[{{$k}}][price]" value="{{$v->price}}"/>
                                     </td>
                                     <td class="t_pro_price_none">
-                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                     </td>
                                 </tr>
                             @endforeach
@@ -420,7 +496,7 @@
                         <tfoot>
                         <tr>
                             <td colspan="9" style="text-align: center">
-                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_price")'>
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_price")'>
                             </td>
                         </tr>
                         </tfoot>
@@ -455,7 +531,7 @@
                                     <input type="text" name="t_pro_attr[--row--][desc]" value=""/>
                                 </td>
                                 <td class="t_pro_attr_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->attrs))
@@ -470,7 +546,7 @@
                                             <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
                                         </td>
                                         <td class="t_pro_attr_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -479,9 +555,68 @@
                         <tfoot>
                             <tr>
                                 <td colspan="5" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_attr")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_attr")'>
                                 </td>
                             </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div id="pro-inv" class="tab-pane fade">
+                <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
+                    <table id="t_pro_attr" width="100%">
+                        <colgroup>
+                            <col style="width: 5%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="r_clone" class="r_clone" data-no-add="0" style="display: none">
+                            <input type="hidden" name="t_pro_attr[--row--][id]" value="" />
+                            <td style="text-align: center;"><span>--row--</span></td>
+                            <td class="t_pro_attr">
+                                <input type="text" name="t_pro_attr[--row--][name]" value=""/>
+                            </td>
+                            <td class="t_pro_attr">
+                                <input type="text" name="t_pro_attr[--row--][desc]" value=""/>
+                            </td>
+                            <td class="t_pro_attr_none">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                            </td>
+                        </tr>
+                        @if(isset($data->attrs))
+                            @foreach($data->attrs as $k=>$v)
+                                <tr id="t_pro_attr_row_{{$k}}" class="t_pro_attr_row">
+                                    <input type="hidden" name="t_pro_attr[{{$k}}][id]" value="{{$v->id}}" />
+                                    <td style="text-align: center;"><span>{{$k+1}}</span></td>
+                                    <td class="t_pro_attr">
+                                        <input type="text" name="t_pro_attr[{{$k}}][name]" value="{{$v->name}}"/>
+                                    </td>
+                                    <td class="t_pro_attr">
+                                        <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
+                                    </td>
+                                    <td class="t_pro_attr_none">
+                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" style="text-align: center">
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_attr")'>
+                            </td>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>
@@ -494,6 +629,10 @@
         }
     </style>
     <script>
+        // function initVartiant(e){
+        //     $(e).empty();
+        //     console.log(123);
+        // }
         $('#colors').on('change',function (e) {
             $('.t-cbo-color').empty();
             var html = '<option value="" selected="">No size</option>';
@@ -536,6 +675,9 @@
         })
         $(function(){
             $('#sizes').select2({
+                placeholder: 'Select option',
+            });
+            $('#t-cbo-option-value').select2({
                 placeholder: 'Select option',
             });
             $('#colors').select2({

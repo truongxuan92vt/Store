@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Repositories;
 
-use App\Models\Option;
+use App\Models\Variant;
 use Illuminate\Support\Facades\DB;
 
-class OptionRepository extends BaseRepository
+class VariantRepository extends BaseRepository
 {
     /**
      * get model
@@ -12,7 +12,7 @@ class OptionRepository extends BaseRepository
      */
     public function model()
     {
-        return Option::class;
+        return Variant::class;
     }
     /*public static function option($data = []){
         $res = OptionValue::select([

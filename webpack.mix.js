@@ -34,7 +34,7 @@ mix.sass('resources/assets/admins/css/app.scss', 'public/assets/admins/app.css')
         'resources/assets/webs/css/header.css',
     ], 'public/webs/css/app.css');*/
 mix.browserSync({
-    proxy: 'tx.me',
+    proxy: 'store.local',
     // startPath: 'resources',
     files: [
         "resources/**",

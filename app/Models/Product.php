@@ -19,8 +19,8 @@ class Product extends BaseModel
     public function skus(){
         return $this->hasMany(ProductSKU::class,'product_id');
     }
-    public function infor(){
-        return $this->hasone(ProductInfor::class,'product_id');
+    public function info(){
+        return $this->hasone(ProductInfo::class,'product_id');
     }
     public function prices(){
         return $this->hasMany(ProductPrice::class,'product_id');

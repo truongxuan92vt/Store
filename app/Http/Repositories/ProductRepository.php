@@ -3,14 +3,16 @@ namespace App\Http\Repositories;
 
 use App\Libraries\Helpers;
 use App\Models\ProductAttribute;
-use App\Models\ProductCategory;
+use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductColor;
+//use App\Models\ProductColor;
 use App\Models\ProductDesc;
 use App\Models\ProductImage;
 use App\Models\ProductPrice;
-use App\Models\ProductSize;
+//use App\Models\ProductSize;
 use App\Models\ProductSKU;
+use App\Models\ProductVariant;
+use App\Models\Variant;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends BaseRepository
@@ -38,22 +40,22 @@ class ProductRepository extends BaseRepository
 
     }
     public function getAllChildOfCategory($id){
-        $category = ProductCategory::get()->toArray();
+        $category = Category::get()->toArray();
         $res = [(int)$id];
         self::getChildCategory($res,$category,$id);
         return $res;
     }
 
     public function getProductForHome(){
-        $categoryNoChild = ProductCategory::where('parent_id',0)->get();
+        $categoryNoChild = Category::where('parent_id',0)->get();
         $arrTop10 = [];
         foreach ($categoryNoChild as $category){
             $temp = [
                 'name'=>$category->name,
-                'product_category_id'=>$category->id,
+                'category_id'=>$category->id,
                 'products'=>[]
             ];
-            $temp['products']=$this->model->where('product_category_id',$category->id)->get();
+            $temp['products']=$this->model->where('category_id',$category->id)->get();
         }
         $query = $this->model;
 
@@ -65,7 +67,7 @@ class ProductRepository extends BaseRepository
         $query = $this->model->select([
                'products.*'
             ])
-            ->whereIn('products.product_category_id',$categoryList);
+            ->whereIn('products.category_id',$categoryList);
         $res = $query->get();
         if(!empty($res)){
             for($i=0; $i<count($res); $i++){
@@ -86,7 +88,60 @@ class ProductRepository extends BaseRepository
                         $data['desc']['product_id'] = $pro->id;
                         ProductDesc::create($data['desc']);
                     }
-                    if(isset($data['sizes'])){
+                    if($data['variants']){
+                        $numV = 1;
+                        $arrV = [];
+                        foreach ($data['variants'] as $variant){
+                            if(count($variant['values'])>0){
+                                $numV *= count($variant['values']);
+                                $arrV[]= $variant['values'];
+                            }
+                        }
+                        $res = [];
+                        foreach ($arrV[0] as $v0){
+                            if(!empty($arrV[1])){
+                                foreach ($arrV[1] as $v1){
+                                    if(!empty($arrV[2])){
+                                        foreach ($arrV[2] as $v2){
+                                            if(!empty($arrV[3])){
+                                                foreach ($arrV[3] as $v3){
+                                                    $res[]=[$v0,$v1,$v2,$v3];
+                                                }
+                                            }
+                                            else{
+                                                $res[]=[$v0,$v1,$v2];
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        $res[]=[$v0,$v1];
+                                    }
+                                }
+                            }
+                            else{
+                                $res[]=[$v0];
+                            }
+                        }
+                        $variants = [];
+                        foreach ($res as $variant){
+                            $sku = ProductSKU::create([
+                                'product_id'=>$pro->id,
+                                'sku'       =>self::generateSku(),
+                                'status'    =>ENABLE
+                            ]);
+                            foreach ($variant as $v){
+                                $variants[]= [
+                                    'product_id'        =>$pro->id,
+                                    'product_sku_id'    =>$sku->id,
+                                    'variant_id'        =>$v,
+                                    'status'            =>ENABLE
+                                ];
+                            }
+                        }
+                        ProductVariant::insert($variants);
+                    }
+
+                   /* if(isset($data['sizes'])){
                         $sizeIns = [];
                         foreach ($data['sizes'] as $id){
                             $sizeIns[]=["product_id"=>$pro->id,"size_id"=>$id];
@@ -147,7 +202,7 @@ class ProductRepository extends BaseRepository
                             }
                         }
                         ProductPrice::insert($prices);
-                    }
+                    }*/
                     if(isset($data['attrs'])){
                         $attrs = [];
                         foreach ($data['attrs'] as $item){
@@ -174,6 +229,10 @@ class ProductRepository extends BaseRepository
             DB::rollBack();
             return ['message'=>'Product was created Unsuccessful','data'=>['error'=>$e->getMessage()." File ".$e->getFile()." line ".$e->getLine()],'status'=>false];
         }
+    }
+    public function generateSku(){
+        $date = date('YmdHis');
+        return $date;
     }
     public function updateProduct($id,$data,$files,$dataDel){
         try{
@@ -411,5 +470,37 @@ class ProductRepository extends BaseRepository
         if(count($urlFiles)>0){
             ProductImage::insert($urlFiles);
         }
+    }
+    public function getVariant(){
+        return Variant::get();
+    }
+    public function getProductDetail($id){
+        $product = Product::where('id',$id)->first();
+        if(empty($product))
+        {
+            throw new \Exception("Product not found");
+        }
+        $variants = ProductVariant::select(
+                "product_variants.id",
+                "product_variants.variant_value_id",
+                "variant_values.variant_id",
+                "variant_values.name as variant_value_name",
+                "variants.name as variant_name"
+            )
+            ->join('variant_values','variant_values.id','product_variants.variant_value_id')
+            ->join('variants','variants.id','variant_values.variant_id')
+            ->where('product_variants.product_id',$id)
+            ->get();
+        $varRes = [];
+        foreach ($variants as $variant){
+            if(!isset($varRes[$variant->variant_id])){
+                $varRes[$variant->variant_id]=[
+                    "variant_id"=>$variant->variant_id
+                ];
+            }
+            $varRes[$variant->variant_id]['values'][] = $variant->variant_value_id;
+        }
+        dd($varRes);
+        return $product;
     }
 }

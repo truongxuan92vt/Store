@@ -75,10 +75,10 @@
                 <div class="row">
                     <label class="col-xs-2">Category</label>
                     <div class="col-xs-4" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                        <select class="form-control" id="cbo_category_detail" name="product_category_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                        <select class="form-control" id="cbo_category_detail" name="category_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                             <option value="" selected="">Select a category</option>
                             @foreach($category as $item)
-                                <option value="{{$item['id']}}" @if(isset($data->product_category_id) && $item['id']==$data->product_category_id) selected="selected" @endif>{{$item['name']}} </option>
+                                <option value="{{$item['id']}}" @if(isset($data->category_id) && $item['id']==$data->category_id) selected="selected" @endif>{{$item['name']}} </option>
                             @endforeach
                         </select>
                     </div>
@@ -190,7 +190,7 @@
             var data = {
                 id  : $('#txt_id').val(),
                 name : $('#txt_productName_detail').val(),
-                product_category_id : $('#cbo_category_detail').val(),
+                category_id : $('#cbo_category_detail').val(),
                 status : $('#cbo_status_detail').val(),
                 long_desc : $('#txt_long_desc_detail').val(),
                 short_desc : $('#txt_short_desc_detail').val(),

@@ -5,8 +5,8 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\URL;
 
-class Option extends BaseModel
+class Variant extends BaseModel
 {
-    protected $table = 'options';
+    protected $table = 'variants';
     protected $guarded = [];
 }

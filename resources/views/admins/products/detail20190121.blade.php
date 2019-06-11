@@ -59,7 +59,7 @@
                             <div class="col-md-10">
                                 <div class="row" style="padding: 0px !important;">
                                     <div class="col-md-5">
-                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->product_category_id)?$data->product_category_id:''}}" style="width: 100%">
+                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->category_id)?$data->category_id:''}}" style="width: 100%">
                                     </div>
                                     <label class="col-md-2" style="text-align: center">Status</label>
                                     <div class="col-md-5" style="padding-left: 0px; padding-right: 0px; height: 30px;">
@@ -179,7 +179,7 @@
                                     <input type="text" name="t_pro_image[--row--][priority]" value="0"/>
                                 </td>
                                 <td class="t_pro_image_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->images) && count($data->images)>0)
@@ -216,7 +216,7 @@
                                             <input type="text" name="t_pro_image[{{$k}}][priority]" value="{{$v->priority}}"/>
                                         </td>
                                         <td class="t_pro_image_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -225,7 +225,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_image")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_image")'>
                                 </td>
                             </tr>
                         </tfoot>
@@ -321,7 +321,7 @@
                                     <input type="text" name="t_pro_sku[--row--][upc]" value=""/>
                                 </td>
                                 <td class="t_pro_sku_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->skus))
@@ -356,7 +356,7 @@
                                             <input type="text" name="t_pro_sku[{{$k}}][upc]" value="{{$v->upc}}"/>
                                         </td>
                                         <td class="t_pro_sku_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -365,7 +365,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_sku")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_sku")'>
                                 </td>
                             </tr>
                         </tfoot>
@@ -439,7 +439,7 @@
                                 <input type="text" name="t_pro_price[--row--][price]" value=""/>
                             </td>
                             <td class="t_pro_price_none">
-                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                             </td>
                         </tr>
                         @if(isset($data->prices))
@@ -483,7 +483,7 @@
                                         <input type="text" name="t_pro_price[{{$k}}][price]" value="{{$v->price}}"/>
                                     </td>
                                     <td class="t_pro_price_none">
-                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                     </td>
                                 </tr>
                             @endforeach
@@ -492,7 +492,7 @@
                         <tfoot>
                         <tr>
                             <td colspan="9" style="text-align: center">
-                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_price")'>
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_price")'>
                             </td>
                         </tr>
                         </tfoot>
@@ -527,7 +527,7 @@
                                     <input type="text" name="t_pro_attr[--row--][desc]" value=""/>
                                 </td>
                                 <td class="t_pro_attr_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->attrs))
@@ -542,7 +542,7 @@
                                             <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
                                         </td>
                                         <td class="t_pro_attr_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delCol(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -551,7 +551,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="5" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addCol("t_pro_attr")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_attr")'>
                                 </td>
                             </tr>
                         </tfoot>

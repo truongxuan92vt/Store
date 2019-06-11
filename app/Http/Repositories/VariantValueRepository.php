@@ -2,9 +2,9 @@
 namespace App\Http\Repositories;
 
 
-use App\Models\OptionValue;
+use App\Models\VariantValue;
 
-class OptionValueRepository extends BaseRepository
+class VariantValueRepository extends BaseRepository
 {
     /**
      * get model
@@ -12,6 +12,6 @@ class OptionValueRepository extends BaseRepository
      */
     public function model()
     {
-        return OptionValue::class;
+        return VariantValue::class;
     }
 }

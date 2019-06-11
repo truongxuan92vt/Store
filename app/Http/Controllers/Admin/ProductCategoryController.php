@@ -2,16 +2,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Repositories\ProductCategoryRepository;
+use App\Http\Repositories\CategoryRepository;
 use App\Libraries\Helpers;
-use App\Models\ProductCategoryBanner;
+use App\Models\CategoryBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductCategoryController extends BaseController {
-    public function __construct(Request $_request,ProductCategoryRepository $_repos)
+    public function __construct(Request $_request, CategoryRepository $_repos)
     {
         parent::__construct($_request,$_repos);
     }
@@ -19,7 +19,7 @@ class ProductCategoryController extends BaseController {
         return view('admins.categories.index',['statusList'=>Helpers::convertCombo(STATUS_SYS)]);
     }
     public static function getCategoryForWeb(){
-        $catogories = ProductCategoryRepository::getCategoryForWeb();
+        $catogories = CategoryRepository::getCategoryForWeb();
         $res = self::recursiveCategory($catogories);
         return $res;
     }
@@ -113,12 +113,12 @@ class ProductCategoryController extends BaseController {
 //                        echo $e->getMessage();
                     }
 //                    \Storage::Delete('../public'.$img);
-                    ProductCategoryBanner::where('product_category_id',$id)->where('url',$img)->delete();
+                    CategoryBanner::where('category_id',$id)->where('url',$img)->delete();
                 }
             }
             foreach ($urlFiles as $url){
-                ProductCategoryBanner::create([
-                    'product_category_id'=>$id,
+                CategoryBanner::create([
+                    'category_id'=>$id,
                     'url'=>$url,
                     'status'=>ENABLE
                 ]);
