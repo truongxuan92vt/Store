@@ -149,16 +149,18 @@
                             <input type="hidden" name="t_pro_option[--row--][id]" value="" />
                             <td style="text-align: center;"><span>--row--</span></td>
                             <td class="t_pro_option_id">
-                                <select id="t_pro_option_--row--" class="t-cbo-option" name="t_pro_option[--row--][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;" onchange="initVartiant(this)">
-                                    <option value="">No option</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
+                                <select id="t_pro_option_--row--" class="t-cbo-option" name="t_pro_option[--row--][option_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;" onchange="changeVariant(this)" data-placeholder="">
+                                    <option selected>No Option</option>
+                                    <?php
+                                        $variants = \App\Models\Variant::get();
+                                        foreach ($variants as $row){
+                                            echo "<option value='{$row->id}'>{$row->name}</option>";
+                                        }
+                                    ?>
                                 </select>
                             </td>
                             <td class="t_pro_option_value">
-                                <select id="t_pro_option_value_--row--" class="t-cbo-option-value" name="t_pro_option_value[--row--][option_value_id]" multiple="multiple" style="width: 100%">
-                                    <option value="AL">A</option>
-                                    <option value="WY">W</option>
+                                <select id="t_pro_option_value_--row--" class="t-cbo-option-value" name="t_pro_option_value[--row--][option_value_id]" multiple="multiple" style="width: 100%" data-placeholder="No Option Value">
                                 </select>
                             </td>
                             <td class="t_pro_option_none">
@@ -629,10 +631,31 @@
         }
     </style>
     <script>
-        // function initVartiant(e){
-        //     $(e).empty();
-        //     console.log(123);
-        // }
+        function changeVariant(e){
+            variantId = $(e).val();
+            // $(e).empty();
+            variantValue = $(e).parent().parent().find('.t-cbo-option-value');
+            // console.log($(e).parents().find('.t-cbo-option-value'));
+            variantValue.empty();
+            var html = '';
+            $.ajax({
+                url:"{{route('admin.option.variant-value')}}",
+                data: {"variant_id":variantId},
+                type: 'GET',
+                dataType:"json",
+                success: function (res) {
+                    console.log(res);
+                    res.forEach(function(row){
+                        html += '<option value="'+row.id+'">'+row.name+'</option>';
+                    });
+                    $(html).show().appendTo(variantValue);
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+            console.log(123);
+        }
         $('#colors').on('change',function (e) {
             $('.t-cbo-color').empty();
             var html = '<option value="" selected="">No size</option>';

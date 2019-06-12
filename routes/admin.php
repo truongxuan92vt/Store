@@ -188,3 +188,16 @@ $router->group([
     ]);
 });
 
+$router->group([
+    'prefix'        =>  'option',
+    'middleware'    =>  ['auth.admin'],
+], function($router){
+    $router->get('variant',[
+        'as'    =>  'admin.option.variant',
+        'uses'  =>  'OptionController@getVariant'
+    ]);
+    $router->get('variant-value',[
+        'as'    =>  'admin.option.variant-value',
+        'uses'  =>  'OptionController@getVariantValue'
+    ]);
+});

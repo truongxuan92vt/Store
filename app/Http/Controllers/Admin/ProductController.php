@@ -30,7 +30,7 @@ class ProductController extends BaseController {
         $id = $this->request->id??null;
         $category = CategoryRepository::getOption();
         $product = $this->repos->getProductDetail($id);
-        dd(json_encode($product));
+//        dd(json_encode($product));
         return view('admins.products.detail',[
             'data'=>$product,
             'category'=>$category,

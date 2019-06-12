@@ -478,7 +478,8 @@ class ProductRepository extends BaseRepository
         $product = Product::where('id',$id)->first();
         if(empty($product))
         {
-            throw new \Exception("Product not found");
+            return null;
+//            throw new \Exception("Product not found");
         }
         $variants = ProductVariant::select(
                 "product_variants.id",
@@ -500,7 +501,7 @@ class ProductRepository extends BaseRepository
             }
             $varRes[$variant->variant_id]['values'][] = $variant->variant_value_id;
         }
-        dd($varRes);
+//        dd($varRes);
         return $product;
     }
 }
