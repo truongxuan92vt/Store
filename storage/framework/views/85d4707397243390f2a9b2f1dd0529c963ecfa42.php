@@ -1,25 +1,23 @@
-@extends('admins.layouts.master')
-{{--@section('title', 'Product')
-@section('controller', 'Product')
-@section('action'){{isset($data->id)?'Detail':'New'}}@endsection--}}
-@section('parent', 'Home')
-@section('parent2', 'Master Data')
-@section('parent3', 'Product')
-@section('action'){{isset($data->id)?'Detail':'New'}}@endsection
-@section('header-button')
+
+
+<?php $__env->startSection('parent', 'Home'); ?>
+<?php $__env->startSection('parent2', 'Master Data'); ?>
+<?php $__env->startSection('parent3', 'Product'); ?>
+<?php $__env->startSection('action'); ?><?php echo e(isset($data->id)?'Detail':'New'); ?><?php $__env->stopSection(); ?>
+<?php $__env->startSection('header-button'); ?>
     <input id='btn_save' type="button" class="btn btn-success btn-sm" value="Save">
     <input id='btn_cancel' type="button" class="btn btn-default btn-sm" value="Cancel">
-@endsection
-@section('content')
-    <link rel="stylesheet" type="text/css" href="{{plugin_path('/easyui/themes/bootstrap/easyui.css')}}">
-    <script type="text/javascript" src="{{plugin_path('/easyui/jquery.easyui.min.js')}}"></script>
-    {{--<script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/ckeditor.js"></script>--}}
-    {{--<script type="text/javascript" src="{{URL::to('/')}}/node_modules/ckeditor-full/adapters/jquery.js"></script>--}}
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo e(plugin_path('/easyui/themes/bootstrap/easyui.css')); ?>">
+    <script type="text/javascript" src="<?php echo e(plugin_path('/easyui/jquery.easyui.min.js')); ?>"></script>
+    
+    
 
-    <script type="text/javascript" src="{{URL::to('/')}}/node_modules/tinymce/tinymce.js"></script>
+    <script type="text/javascript" src="<?php echo e(URL::to('/')); ?>/node_modules/tinymce/tinymce.js"></script>
 
-    <link href="{{module_path()}}/select2/dist/css/select2.css" rel="stylesheet"/>
-    <script src="{{module_path()}}/select2/dist/js/select2.js"></script>
+    <link href="<?php echo e(module_path()); ?>/select2/dist/css/select2.css" rel="stylesheet"/>
+    <script src="<?php echo e(module_path()); ?>/select2/dist/js/select2.js"></script>
     <form class="product-container" id="frm_product" name="frm_product" autocomplete="off">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#pro-general">General</a></li>
@@ -30,29 +28,29 @@
             <li><a data-toggle="tab" href="#pro-attr">Attribute</a></li>
             <li><a data-toggle="tab" href="#pro-invt">Inventory</a></li>
         </ul>
-        <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
+        <input type="hidden" id="txt_id" name="id" value="<?php echo e(isset($data->id)?$data->id:''); ?>">
         <?php $image = isset($data->image)?$data->image:''?>
         <div class="tab-content">
             <div id="pro-general" class="tab-pane fade in active">
                 <div class="row">
                     <div class="col-md-3">
                         <div id="frm_uploadFile" style="width: 100%;">
-                            <img id="imageView" src="{{empty($image)?URL::to('/').'/image/no_image.jpg':$image}}">
-                            <label id="lbl_image" title="{{!empty($image)?$image:'No file select'}}">Choose file...</label>
-                            <input type="file" id="image" name="image" onchange="readURL(this)" style="display: none" value="{{$image}}">
+                            <img id="imageView" src="<?php echo e(empty($image)?URL::to('/').'/image/no_image.jpg':$image); ?>">
+                            <label id="lbl_image" title="<?php echo e(!empty($image)?$image:'No file select'); ?>">Choose file...</label>
+                            <input type="file" id="image" name="image" onchange="readURL(this)" style="display: none" value="<?php echo e($image); ?>">
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="row">
                             <label class="col-md-2">Product name</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_name_detail" name="name" value="{{isset($data->name)?$data->name:''}}">
+                                <input class="pro-input" type="text" id="txt_name_detail" name="name" value="<?php echo e(isset($data->name)?$data->name:''); ?>">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">Product Code</label>
                             <div class="col-md-10">
-                                <input  class="pro-input" type="text" id="txt_code_detail" name="code" value="{{isset($data->code)?$data->code:''}}">
+                                <input  class="pro-input" type="text" id="txt_code_detail" name="code" value="<?php echo e(isset($data->code)?$data->code:''); ?>">
                             </div>
                         </div>
                         <div class="row">
@@ -60,15 +58,15 @@
                             <div class="col-md-10">
                                 <div class="row" style="padding: 0px !important;">
                                     <div class="col-md-5">
-                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->category_id)?$data->category_id:''}}">
+                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="<?php echo e(isset($data->category_id)?$data->category_id:''); ?>">
                                     </div>
                                     <label class="col-md-2" style="text-align: center">Status</label>
                                     <div class="col-md-5" style="padding-left: 0px; padding-right: 0px; height: 30px;">
                                         <select class="pro-input" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                            {{--<option value="0" selected="">Select a Status</option>--}}
-                                            @foreach($statusList as $item)
-                                                <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
-                                            @endforeach
+                                            
+                                            <?php $__currentLoopData = $statusList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($item['value']); ?>" <?php if(isset($data->status) && $item['value']==$data->status): ?> selected="selected" <?php endif; ?>><?php echo e($item['text']); ?> </option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -81,14 +79,14 @@
                                     <div class="col-md-5">
                                         <select class="pro-input" id="cbo_manufactuer_detail" name="manufacturer_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                             <option value="0" selected="">Select a manufacturer</option>
-                                            {{--@foreach($statusList as $item)--}}
-                                                {{--<option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>--}}
-                                            {{--@endforeach--}}
+                                            
+                                                
+                                            
                                         </select>
                                     </div>
                                     <label class="col-md-2" style="text-align: center">Priority</label>
                                     <div class="col-md-5" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                                        <input id="txt_priority_detail" class="pro-input" name="priority" value="{{isset($data->priority)?$data->priority:''}}" style="width: 100%">
+                                        <input id="txt_priority_detail" class="pro-input" name="priority" value="<?php echo e(isset($data->priority)?$data->priority:''); ?>" style="width: 100%">
                                     </div>
                                 </div>
                             </div>
@@ -96,19 +94,19 @@
                         <div class="row">
                             <label class="col-md-2">Meta title</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_title_detail" name="title" value="{{isset($data->title)?$data->title:''}}">
+                                <input class="pro-input" type="text" id="txt_title_detail" name="title" value="<?php echo e(isset($data->title)?$data->title:''); ?>">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">Tags</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_tag_detail" name="tag" value="{{isset($data->tag)?$data->tag:''}}">
+                                <input class="pro-input" type="text" id="txt_tag_detail" name="tag" value="<?php echo e(isset($data->tag)?$data->tag:''); ?>">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">URL SEO</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_url_seo_detail" name="url_seo" value="{{isset($data->url_seo)?$data->url_seo:''}}">
+                                <input class="pro-input" type="text" id="txt_url_seo_detail" name="url_seo" value="<?php echo e(isset($data->url_seo)?$data->url_seo:''); ?>">
                             </div>
                         </div>
                     </div>
@@ -116,13 +114,13 @@
                 <div class="row">
                     <label class="col-md-2">Short description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" id="txt_short_desc_detail" name="short_desc">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
+                        <textarea class="pro-input" id="txt_short_desc_detail" name="short_desc"><?php echo e(isset($data->desc->short_desc)?$data->desc->short_desc:''); ?></textarea>
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-md-2">Full description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" id="txt_long_desc_detail" name="long_desc">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
+                        <textarea class="pro-input" id="txt_long_desc_detail" name="long_desc"><?php echo e(isset($data->desc->long_desc)?$data->desc->long_desc:''); ?></textarea>
                     </div>
                 </div>
             </div>
@@ -167,27 +165,27 @@
                                 <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                             </td>
                         </tr>
-                        @if(isset($data->variants))
-                            @foreach($data->variants as $k=>$v)
-                            <tr id="t_pro_variant_row_{{$k}}" class="t_pro_variant_row">
-                                <input type="hidden" name="t_pro_variant[{{$k}}][id]" value="" />
-                                <td style="text-align: center;"><span>{{$k}}</span></td>
+                        <?php if(isset($data->variants)): ?>
+                            <?php $__currentLoopData = $data->variants; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k=>$v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr id="t_pro_variant_row_<?php echo e($k); ?>" class="t_pro_variant_row">
+                                <input type="hidden" name="t_pro_variant[<?php echo e($k); ?>][id]" value="" />
+                                <td style="text-align: center;"><span><?php echo e($k); ?></span></td>
                                 <td class="t_pro_variant_id">
-                                    <select id="t_pro_variant_{{$k}}" class="t-cbo-variant" name="t_pro_variant[{{$k}}][variant_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;" onchange="changeVariant(this)" placeholder="">
-                                        <option value={{$v['variant_id']}} selected>{{$v['variant_name']}}</option>
+                                    <select id="t_pro_variant_<?php echo e($k); ?>" class="t-cbo-variant" name="t_pro_variant[<?php echo e($k); ?>][variant_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;" onchange="changeVariant(this)" placeholder="">
+                                        <option value=<?php echo e($v['variant_id']); ?> selected><?php echo e($v['variant_name']); ?></option>
                                     </select>
                                 </td>
                                 <td class="t_pro_variant_value">
-                                    <select id="t_pro_variant_value_{{$k}}" class="t-cbo-variant-value" name="t_pro_variant[{{$k}}][values][]" multiple="multiple" style="width: 100%" placeholder="No Variant Value">
-                                        @if(isset($v['values']))
-                                            @foreach($v['values'] as $value)
-                                                <option value={{$value['variant_value_id']}} selected>{{$value['variant_value_name']}}</option>
-                                            @endforeach
-                                        @endif
+                                    <select id="t_pro_variant_value_<?php echo e($k); ?>" class="t-cbo-variant-value" name="t_pro_variant[<?php echo e($k); ?>][values][]" multiple="multiple" style="width: 100%" placeholder="No Variant Value">
+                                        <?php if(isset($v['values'])): ?>
+                                            <?php $__currentLoopData = $v['values']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value=<?php echo e($value['variant_value_id']); ?> selected><?php echo e($value['variant_value_name']); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                     </select>
                                     <script>
                                         $(function() {
-                                            $('#t_pro_variant_value_{{$k}}').select2({
+                                            $('#t_pro_variant_value_<?php echo e($k); ?>').select2({
                                                 placeholder: 'Select option',
                                             });
                                         })
@@ -197,8 +195,8 @@
                                     <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
-                            @endforeach
-                        @endif
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?>
                         <tfoot>
                         <tr>
                             <td colspan="6" style="text-align: center">
@@ -228,35 +226,35 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @if(isset($data->skus))
-                            @foreach($data->skus as $k=>$v)
-                                <tr id="t_pro_sku_row_{{$k}}" class="t_pro_sku_row">
-                                    <input type="hidden" name="t_pro_sku[{{$k}}][id]" value="{{$v['id']??null}}" />
-                                    <td style="text-align: center;"><span>{{$k+1}}</span></td>
+                        <?php if(isset($data->skus)): ?>
+                            <?php $__currentLoopData = $data->skus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k=>$v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr id="t_pro_sku_row_<?php echo e($k); ?>" class="t_pro_sku_row">
+                                    <input type="hidden" name="t_pro_sku[<?php echo e($k); ?>][id]" value="<?php echo e($v['id']??null); ?>" />
+                                    <td style="text-align: center;"><span><?php echo e($k+1); ?></span></td>
                                     <td style="text-align: center;">
-                                        <span>{{$v['sku']}}</span>
+                                        <span><?php echo e($v['sku']); ?></span>
                                     </td>
                                     <td>
-                                        <input type="hidden" name="t_pro_sku[{{$k}}][sku_id]" value="{{$v['id']}}">
-                                        <select id="t_pro_sku_variant_{{$k}}" class="t-cbo-sku-variant" multiple="multiple" style="width: 100%" placeholder="No Variant" disabled>
-                                            @if(isset($v['variant_values']))
-                                                @foreach($v['variant_values'] as $sku)
-                                                    <option value={{$sku['variant_value_id']}} selected>{{$sku['variant_value_name']}}</option>
-                                                @endforeach
-                                            @endif
+                                        <input type="hidden" name="t_pro_sku[<?php echo e($k); ?>][sku_id]" value="<?php echo e($v['id']); ?>">
+                                        <select id="t_pro_sku_variant_<?php echo e($k); ?>" class="t-cbo-sku-variant" multiple="multiple" style="width: 100%" placeholder="No Variant" disabled>
+                                            <?php if(isset($v['variant_values'])): ?>
+                                                <?php $__currentLoopData = $v['variant_values']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sku): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value=<?php echo e($sku['variant_value_id']); ?> selected><?php echo e($sku['variant_value_name']); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
                                         </select>
                                         <script>
                                             $(function() {
-                                                $('#t_pro_sku_variant_{{$k}}').select2({});
+                                                $('#t_pro_sku_variant_<?php echo e($k); ?>').select2({});
                                             })
                                         </script>
                                     </td>
                                     <td style="text-align: center;">
-                                        <input type="text" name="t_pro_sku[{{$k}}][upc]" value="{{$v['upc']??''}}">
+                                        <input type="text" name="t_pro_sku[<?php echo e($k); ?>][upc]" value="<?php echo e($v['upc']??''); ?>">
                                     </td>
                                 </tr>
-                            @endforeach
-                        @endif
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -284,18 +282,18 @@
                             <tr id="r_clone" class="r_clone" data-no-add="0" style="display: none">
                                 <input type="hidden" name="t_pro_image[--row--][id]" value="" />
                                 <td class="t_pro_image_picture" style="text-align: center">
-                                    <img id="img_pro" src="{{URL::to("/image/no_image.png")}}" alt="your image" style="max-width: 200px"/>
+                                    <img id="img_pro" src="<?php echo e(URL::to("/image/no_image.png")); ?>" alt="your image" style="max-width: 200px"/>
                                 </td>
                                 <td class="t_pro_image_file">
                                     <input type='file' name="t_pro_image[--row--][file]" onchange="TABLE_PRO.readURL(this)" />
                                 </td>
                                 <td class="t_pro_image_variant">
                                     <select name="t_pro_image[--row--][product_sku_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                        @if(isset($data->skus))
-                                            @foreach($data->skus as $sku)
-                                                <option value="{{$sku['id']??""}}">{{$sku['sku']??""}} - {{$sku['variant_value_name']??""}}</option>
-                                            @endforeach
-                                        @endif
+                                        <?php if(isset($data->skus)): ?>
+                                            <?php $__currentLoopData = $data->skus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sku): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($sku['id']??""); ?>"><?php echo e($sku['sku']??""); ?> - <?php echo e($sku['variant_value_name']??""); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                     </select>
                                 </td>
                                 <td class="t_pro_image_priority">
@@ -305,38 +303,40 @@
                                     <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
-                            @if(isset($data->images) && count($data->images)>0)
-                                @foreach($data->images as $k=>$v)
-                                    <tr id="t_pro_image_row_{{$k}}" class="t_pro_image_row">
-                                        <input type="hidden" name="t_pro_image[{{$k}}][id]" value="{{$v->id}}" />
+                            <?php if(isset($data->images) && count($data->images)>0): ?>
+                                <?php $__currentLoopData = $data->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k=>$v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <tr id="t_pro_image_row_<?php echo e($k); ?>" class="t_pro_image_row">
+                                        <input type="hidden" name="t_pro_image[<?php echo e($k); ?>][id]" value="<?php echo e($v->id); ?>" />
                                         <td class="t_pro_image_picture" style="text-align: center">
-                                            <img id="img_pro" src="{{$v->url??URL::to("/image/no_image.png")}}" alt="your image" style="max-width: 200px"/>
+                                            <img id="img_pro" src="<?php echo e($v->url??URL::to("/image/no_image.png")); ?>" alt="your image" style="max-width: 200px"/>
                                         </td>
                                         <td class="t_pro_image_file">
-                                            <input type='file' name="t_pro_image[{{$k}}][file]" onchange="TABLE_PRO.readURL(this)" />
+                                            <input type='file' name="t_pro_image[<?php echo e($k); ?>][file]" onchange="TABLE_PRO.readURL(this)" />
                                         </td>
                                         <td class="t_pro_image_variant">
-                                            <select name="t_pro_image[{{$k}}][product_sku_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
-                                                @if(isset($data->skus))
-                                                    @foreach($data->skus as $sku)
-                                                        {{$selected = ""}}
-                                                        @if($sku['id'] == $v->product_sku_id)
-                                                            {{$selected = "selected"}}
-                                                        @endif
-                                                        <option value="{{$sku['id']??""}}" {{$selected}}>{{$sku['sku']??""}} - {{$sku['variant_value_name']??""}}</option>
-                                                    @endforeach
-                                                @endif
+                                            <select name="t_pro_image[<?php echo e($k); ?>][product_sku_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                                <?php if(isset($data->skus)): ?>
+                                                    <?php $__currentLoopData = $data->skus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sku): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php echo e($selected = ""); ?>
+
+                                                        <?php if($sku['id'] == $v->product_sku_id): ?>
+                                                            <?php echo e($selected = "selected"); ?>
+
+                                                        <?php endif; ?>
+                                                        <option value="<?php echo e($sku['id']??""); ?>" <?php echo e($selected); ?>><?php echo e($sku['sku']??""); ?> - <?php echo e($sku['variant_value_name']??""); ?></option>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                <?php endif; ?>
                                             </select>
                                         </td>
                                         <td class="t_pro_image_priority">
-                                            <input type="text" name="t_pro_image[{{$k}}][priority]" value="0"/>
+                                            <input type="text" name="t_pro_image[<?php echo e($k); ?>][priority]" value="0"/>
                                         </td>
                                         <td class="t_pro_image_none">
                                             <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                         </td>
                                     </tr>
-                                @endforeach
-                            @endif
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -374,43 +374,44 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @if(isset($data->prices))
-                            @foreach($data->prices as $k=>$v)
-                                <tr id="t_pro_price_row_{{$k}}" class="t_pro_price_row">
-                                    <input type="hidden" name="t_pro_price[{{$k}}][id]" value="{{$v['id']??null}}" />
-                                    <td style="text-align: center;"><span>{{$k+1}}</span></td>
+                        <?php if(isset($data->prices)): ?>
+                            <?php $__currentLoopData = $data->prices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k=>$v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr id="t_pro_price_row_<?php echo e($k); ?>" class="t_pro_price_row">
+                                    <input type="hidden" name="t_pro_price[<?php echo e($k); ?>][id]" value="<?php echo e($v['id']??null); ?>" />
+                                    <td style="text-align: center;"><span><?php echo e($k+1); ?></span></td>
                                     <td class="t_pro_price_variant">
-                                        <input type="hidden" name="t_pro_price[{{$k}}][product_sku_id]" value="{{$v['product_sku_id']}}"/>
-                                        @if(isset($data->skus))
-                                            @foreach($data->skus as $sku)
-                                                @if($sku['id'] == $v['product_sku_id'])
-                                                    {{$sku['sku']??''}} -  {{$sku['variant_value_name']}}
-                                                    @break
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                        <input type="hidden" name="t_pro_price[<?php echo e($k); ?>][product_sku_id]" value="<?php echo e($v['product_sku_id']); ?>"/>
+                                        <?php if(isset($data->skus)): ?>
+                                            <?php $__currentLoopData = $data->skus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sku): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if($sku['id'] == $v['product_sku_id']): ?>
+                                                    <?php echo e($sku['sku']??''); ?> -  <?php echo e($sku['variant_value_name']); ?>
+
+                                                    <?php break; ?>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="t_pro_price_customer_group_id">
-                                        <input type="text" name="t_pro_price[{{$k}}][customer_group_id]" value="{{$v['customer_group_id']??null}}"/>
+                                        <input type="text" name="t_pro_price[<?php echo e($k); ?>][customer_group_id]" value="<?php echo e($v['customer_group_id']??null); ?>"/>
                                     </td>
                                     <td class="t_pro_price_qty_from">
-                                        <input type="text" name="t_pro_price[{{$k}}][qty_from]" value="{{$v['qty_from']??null}}"/>
+                                        <input type="text" name="t_pro_price[<?php echo e($k); ?>][qty_from]" value="<?php echo e($v['qty_from']??null); ?>"/>
                                     </td>
                                     <td class="t_pro_price_qty_to">
-                                        <input type="text" name="t_pro_price[{{$k}}][qty_to]" value="{{$v['qty_to']??null}}"/>
+                                        <input type="text" name="t_pro_price[<?php echo e($k); ?>][qty_to]" value="<?php echo e($v['qty_to']??null); ?>"/>
                                     </td>
                                     <td class="t_pro_price_price_in">
-                                        <input type="text" name="t_pro_price[{{$k}}][import_price]" value="{{$v['import_price']??null}}"/>
+                                        <input type="text" name="t_pro_price[<?php echo e($k); ?>][import_price]" value="<?php echo e($v['import_price']??null); ?>"/>
                                     </td>
                                     <td class="t_pro_price_price_in">
-                                        <input type="text" name="t_pro_price[{{$k}}][normal_price]" value="{{$v['normal_price']??null}}"/>
+                                        <input type="text" name="t_pro_price[<?php echo e($k); ?>][normal_price]" value="<?php echo e($v['normal_price']??null); ?>"/>
                                     </td>
                                     <td class="t_pro_price_price">
-                                        <input type="text" name="t_pro_price[{{$k}}][price]" value="{{$v['price']??null}}"/>
+                                        <input type="text" name="t_pro_price[<?php echo e($k); ?>][price]" value="<?php echo e($v['price']??null); ?>"/>
                                     </td>
                                 </tr>
-                            @endforeach
-                        @endif
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -446,23 +447,23 @@
                                     <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                 </td>
                             </tr>
-                            @if(isset($data->attrs))
-                                @foreach($data->attrs as $k=>$v)
-                                    <tr id="t_pro_attr_row_{{$k}}" class="t_pro_attr_row">
-                                        <input type="hidden" name="t_pro_attr[{{$k}}][id]" value="{{$v->id}}" />
-                                        <td style="text-align: center;"><span>{{$k+1}}</span></td>
+                            <?php if(isset($data->attrs)): ?>
+                                <?php $__currentLoopData = $data->attrs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k=>$v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <tr id="t_pro_attr_row_<?php echo e($k); ?>" class="t_pro_attr_row">
+                                        <input type="hidden" name="t_pro_attr[<?php echo e($k); ?>][id]" value="<?php echo e($v->id); ?>" />
+                                        <td style="text-align: center;"><span><?php echo e($k+1); ?></span></td>
                                         <td class="t_pro_attr">
-                                            <input type="text" name="t_pro_attr[{{$k}}][name]" value="{{$v->name}}"/>
+                                            <input type="text" name="t_pro_attr[<?php echo e($k); ?>][name]" value="<?php echo e($v->name); ?>"/>
                                         </td>
                                         <td class="t_pro_attr">
-                                            <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
+                                            <input type="text" name="t_pro_attr[<?php echo e($k); ?>][desc]" value="<?php echo e($v->desc); ?>"/>
                                         </td>
                                         <td class="t_pro_attr_none">
                                             <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                         </td>
                                     </tr>
-                                @endforeach
-                            @endif
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -505,23 +506,23 @@
                                 <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                             </td>
                         </tr>
-                        @if(isset($data->attrs))
-                            @foreach($data->attrs as $k=>$v)
-                                <tr id="t_pro_attr_row_{{$k}}" class="t_pro_attr_row">
-                                    <input type="hidden" name="t_pro_attr[{{$k}}][id]" value="{{$v->id}}" />
-                                    <td style="text-align: center;"><span>{{$k+1}}</span></td>
+                        <?php if(isset($data->attrs)): ?>
+                            <?php $__currentLoopData = $data->attrs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k=>$v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr id="t_pro_attr_row_<?php echo e($k); ?>" class="t_pro_attr_row">
+                                    <input type="hidden" name="t_pro_attr[<?php echo e($k); ?>][id]" value="<?php echo e($v->id); ?>" />
+                                    <td style="text-align: center;"><span><?php echo e($k+1); ?></span></td>
                                     <td class="t_pro_attr">
-                                        <input type="text" name="t_pro_attr[{{$k}}][name]" value="{{$v->name}}"/>
+                                        <input type="text" name="t_pro_attr[<?php echo e($k); ?>][name]" value="<?php echo e($v->name); ?>"/>
                                     </td>
                                     <td class="t_pro_attr">
-                                        <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
+                                        <input type="text" name="t_pro_attr[<?php echo e($k); ?>][desc]" value="<?php echo e($v->desc); ?>"/>
                                     </td>
                                     <td class="t_pro_attr_none">
                                         <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
                                     </td>
                                 </tr>
-                            @endforeach
-                        @endif
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?>
                         </tbody>
                         <tfoot>
                         <tr>
@@ -547,7 +548,7 @@
             variantValue.empty();
             var html = '';
             $.ajax({
-                url:"{{route('admin.option.variant-value')}}",
+                url:"<?php echo e(route('admin.option.variant-value')); ?>",
                 data: {"variant_id":variantId},
                 type: 'GET',
                 dataType:"json",
@@ -575,7 +576,7 @@
             });
         })*/
         $('#cbo_category_detail').combotree({
-            url: "{{route('admin.category.option')}}",
+            url: "<?php echo e(route('admin.category.option')); ?>",
             method:'GET',
             // data: JSON.parse('[{"id":1,"text":"City","children":[{"id":11,"text":"Wyoming","children":[{"id":111,"text":"Albin"}]}]}]'),
             // required: true
@@ -597,7 +598,7 @@
             plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help',
             toolbar: 'codesample |  fontselect fontsizeselect bold italic strikethrough forecolor backcolor | link | hr alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
-            baseURL:"{{URL::to('/')}}/node_modules/tinymce/",
+            baseURL:"<?php echo e(URL::to('/')); ?>/node_modules/tinymce/",
             maxCharacters : 250,
             menubar: false,
             // setup: function (editor) {
@@ -617,7 +618,7 @@
             // toolbar: 'codesample | bold italic sizeselect fontselect fontsizeselect | hr alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | insertfile undo redo | forecolor backcolor emoticons | code',
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
             image_advtab: true,
-            baseURL:"{{URL::to('/')}}/node_modules/tinymce/",
+            baseURL:"<?php echo e(URL::to('/')); ?>/node_modules/tinymce/",
             // templates: [
             //     { title: 'Test template 1', content: 'Test 1' },
             //     { title: 'Test template 2', content: 'Test 2' }
@@ -636,7 +637,7 @@
         //         filebrowserWindowHeight : '700'
         // });
         function backToIndex(){
-            document.location.href="{{route('admin.product.index')}}";
+            document.location.href="<?php echo e(route('admin.product.index')); ?>";
         }
         $('#btn_cancel').click(function(){
             backToIndex();
@@ -653,7 +654,7 @@
             form_data.append('skuDel',TABLE_PRO.skuDel);
             form_data.append('attrDel',TABLE_PRO.attrDel);
             $.ajax({
-                url:"{{route('admin.product.save')}}",
+                url:"<?php echo e(route('admin.product.save')); ?>",
                 // dataType: 'text', // what to expect back from the PHP script
                 cache: false,
                 contentType: false,
@@ -678,4 +679,6 @@
             // console.log(form_data);
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admins.layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

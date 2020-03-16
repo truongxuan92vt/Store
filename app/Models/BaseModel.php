@@ -13,7 +13,7 @@ class BaseModel extends Model
     public $timestamps = false;
     protected $primaryKey = 'id';
 
-    public static function getTableName()
+    public static function table()
     {
         return (new static)->getTable();
     }
@@ -23,9 +23,9 @@ class BaseModel extends Model
         return (new static)->getKeyName();
     }
 
-    public static function getColumnName($column)
+    public static function column($column)
     {
-        return self::getTableName() . '.' . $column;
+        return self::table() . '.' . $column;
     }
 
     public function getCreatedAtAttribute($attr)

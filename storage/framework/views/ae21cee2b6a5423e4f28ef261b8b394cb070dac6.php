@@ -29,7 +29,7 @@
                                 <li><!-- start message -->
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="{{!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'}}" class="img-circle" alt="User Image">
+                                            <img src="<?php echo e(!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'); ?>" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Support Team
@@ -42,7 +42,7 @@
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="{{!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'}}" class="img-circle" alt="User Image">
+                                            <img src="<?php echo e(!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'); ?>" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             AdminLTE Design Team
@@ -54,7 +54,7 @@
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="{{!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'}}" class="img-circle" alt="User Image">
+                                            <img src="<?php echo e(!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'); ?>" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Developers
@@ -66,7 +66,7 @@
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="{{!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'}}" class="img-circle" alt="User Image">
+                                            <img src="<?php echo e(!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'); ?>" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Sales Department
@@ -78,7 +78,7 @@
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="{{!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'}}" class="img-circle" alt="User Image">
+                                            <img src="<?php echo e(!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'); ?>" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Reviewers
@@ -215,17 +215,17 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{!empty(Auth::user()->image)?Auth::user()->image:asset('/').'/image/avatar.jpeg'}}" class="user-image" alt="User Image">
+                        <img src="<?php echo e(!empty(Auth::user()->image)?Auth::user()->image:asset('/').'/image/avatar.jpeg'); ?>" class="user-image" alt="User Image">
                         <?php $full_name=Auth::user()->last_name.' '.Auth::user()->first_name;if(empty(Auth::user()->first_name) && empty(Auth::user()->first_name))$full_name=Auth::user()->username?>
-                        <span class="hidden-xs">{{$full_name}}</span>
+                        <span class="hidden-xs"><?php echo e($full_name); ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="{{!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'}}" class="img-circle" alt="User Image">
+                            <img src="<?php echo e(!empty(Auth::user()->image)?Auth::user()->image:url('/').'/image/avatar.jpeg'); ?>" class="img-circle" alt="User Image">
                             <p>
-                                {{ Auth::user()->username }} - Web Developer
-                                <small>Member since {{Carbon\Carbon::parse(Auth::user()->created_at)->format('M. Y')}}</small>
+                                <?php echo e(Auth::user()->username); ?> - Web Developer
+                                <small>Member since <?php echo e(Carbon\Carbon::parse(Auth::user()->created_at)->format('M. Y')); ?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -249,7 +249,7 @@
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{route('admin.auth.logout')}}" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="<?php echo e(route('admin.auth.logout')); ?>" class="btn btn-default btn-flat">Sign out</a>
                             </div>
                         </li>
                     </ul>

@@ -74,9 +74,12 @@ class ProductController extends BaseController {
         if($attrs!=null){
             unset($attrs['--row--']);
         }
-        if($this->request->hasFile('image')){
-            $image = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_ITEM,$id.'_');
+        if($variants!=null){
+            unset($variants['--row--']);
         }
+        /*if($this->request->hasFile('image')){
+            $image = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_ITEM,$id.'_');
+        }*/
         $product = [
             'name'=>$name,
             'category_id'=>$categoryId,
@@ -108,15 +111,16 @@ class ProductController extends BaseController {
             'info'      =>$info,
             'prices'    =>$prices,
             'attrs'     =>$attrs,
-            'variants'  =>$variants
+            'variants'  =>$variants,
+            'skus'      =>$skus
         ];
-        dd($data);
         $dataDel=[
             'images'    =>explode(',',$imgDel),
             'skus'      =>explode(',',$skuDel),
             'prices'    =>explode(',',$priceDel),
             'attrs'     =>explode(',',$attrDel)
         ];
+//        $res = $this->repos->createProduct($data,$files);
         if(!empty($id)){
             $res = $this->repos->updateProduct($id,$data,$files,$dataDel);
         }

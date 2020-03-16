@@ -2,6 +2,7 @@
 namespace App\Http\Repositories;
 
 use App\Libraries\Helpers;
+use App\Models\Inventory;
 use App\Models\ProductAttribute;
 use App\Models\Category;
 use App\Models\Product;
@@ -13,6 +14,7 @@ use App\Models\ProductPrice;
 use App\Models\ProductSKU;
 use App\Models\ProductVariant;
 use App\Models\Variant;
+use App\Models\VariantValue;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends BaseRepository
@@ -83,6 +85,8 @@ class ProductRepository extends BaseRepository
             DB::beginTransaction();
             if(isset($data['product'])){
                 $pro = Product::create($data['product']);
+                $skus = [];
+                $prices = [];
                 if($pro){
                     if($data['desc']){
                         $data['desc']['product_id'] = $pro->id;
@@ -129,80 +133,31 @@ class ProductRepository extends BaseRepository
                                 'sku'       =>self::generateSku(),
                                 'status'    =>ENABLE
                             ]);
+
                             foreach ($variant as $v){
                                 $variants[]= [
                                     'product_id'        =>$pro->id,
                                     'product_sku_id'    =>$sku->id,
-                                    'variant_id'        =>$v,
+                                    'variant_value_id'  =>$v,
                                     'status'            =>ENABLE
                                 ];
                             }
+                            $prices[]=[
+                                'product_id'        =>$pro->id,
+                                'product_sku_id'    =>$sku->id,
+                                'status'            =>ENABLE
+                            ];
+                            $inventories[]=[
+                                'product_id'        =>$pro->id,
+                                'product_sku_id'    =>$sku->id,
+                                'status'            =>ENABLE
+                            ];
                         }
                         ProductVariant::insert($variants);
+                        ProductPrice::insert($prices);
+                        Inventory::insert($inventories);
                     }
 
-                   /* if(isset($data['sizes'])){
-                        $sizeIns = [];
-                        foreach ($data['sizes'] as $id){
-                            $sizeIns[]=["product_id"=>$pro->id,"size_id"=>$id];
-                        }
-                        ProductSize::insert($sizeIns);
-                    }
-                    if(isset($data['colors'])){
-                        $colorIns = [];
-                        foreach ($data['colors'] as $id){
-                            $colorIns[]=["product_id"=>$pro->id,"color_id"=>$id];
-                        }
-                        ProductColor::insert($colorIns);
-                    }
-                    if(isset($data['skus'])){
-                        $skus = [];
-                        foreach ($data['skus'] as $sku){
-                            $isExist = false;
-                            foreach ($skus as $v){
-                                if($v['color_id'] == $sku['color_id'] && $v['size_id'] == $sku['size_id']){
-                                    $isExist = true;
-                                    break;
-                                }
-                            }
-                            if(!$isExist){
-                                $skus[]=[
-                                    "product_id"=>$pro->id,
-                                    "color_id"=>empty($sku['color_id'])?0:$sku['color_id'],
-                                    "size_id"=>empty($sku['size_id'])?0:$sku['size_id'],
-                                    "sku"=>$sku['sku'],
-                                    "upc"=>$sku['upc']
-                                ];
-                            }
-                        }
-                        ProductSKU::insert($skus);
-                    }
-                    if(isset($data['prices'])){
-                        $prices = [];
-                        foreach ($data['prices'] as $item){
-                            $isExist = false;
-                            foreach ($prices as $v){
-                                if($v['color_id'] == $item['color_id'] && $v['size_id'] == $item['size_id']){
-                                    $isExist = true;
-                                    break;
-                                }
-                            }
-                            if(!$isExist){
-                                $prices[]=[
-                                    "product_id"=>$pro->id,
-                                    "color_id"=>empty($item['color_id'])?0:$item['color_id'],
-                                    "size_id"=>empty($item['size_id'])?0:$item['size_id'],
-                                    "qty_from"=>$item['qty_form']??0,
-                                    "qty_to"=>$item['qty_to']??0,
-                                    "customer_group_id"=>$item['customer_group_id']??1,
-                                    "import_price"=>$item['import_price'],
-                                    "normal_price"=>$item['normal_price'],
-                                    "price"=>$item['price']
-                                ];
-                            }
-                        }
-                        ProductPrice::insert($prices);
-                    }*/
                     if(isset($data['attrs'])){
                         $attrs = [];
                         foreach ($data['attrs'] as $item){
@@ -226,9 +181,102 @@ class ProductRepository extends BaseRepository
             }
         }
         catch (\Exception $e){
+            dd($e->getMessage());
             DB::rollBack();
             return ['message'=>'Product was created Unsuccessful','data'=>['error'=>$e->getMessage()." File ".$e->getFile()." line ".$e->getLine()],'status'=>false];
         }
+    }
+    public function getSkuOfProduct($productId){
+        $skus = ProductSKU::select(
+                ProductSKU::column('id'),
+                ProductSKU::column('sku'),
+                ProductSKU::column('product_id'),
+                ProductSKU::column('upc'),
+                ProductSKU::column('desc'),
+                ProductSKU::column('status'),
+                VariantValue::column('variant_id'),
+                VariantValue::column('id')." as variant_value_id",
+                VariantValue::column('code')." as variant_value_code",
+                VariantValue::column('name')." as variant_value_name"
+            )
+            ->leftJoin(ProductVariant::table(),ProductVariant::column('product_sku_id'),ProductSKU::column('id'))
+            ->leftJoin(VariantValue::table(),VariantValue::column('id'),ProductVariant::column('variant_value_id'))
+            ->where(ProductSKU::column('product_id'),$productId)
+            ->get();
+        $res = [];
+        foreach ($skus as $sku){
+            $index = $sku->id;
+            if(!isset($res[$index])){
+                $res[$index]=[
+                    'id'            =>$sku->id,
+                    'sku'           =>$sku->sku,
+                    'product_id'    =>$sku->product_id,
+                    'upc'           =>$sku->upc,
+                    'desc'          =>$sku->desc,
+                    'status'        =>$sku->status,
+                    'variant_values'=>[],
+                    'variant_value_name'=>''
+                ];
+            }
+            $res[$index]['variant_values'][]=[
+                'variant_id'            => $sku->variant_id,
+                'variant_value_id'      => $sku->variant_value_id,
+                'variant_value_code'    => $sku->variant_value_code,
+                'variant_value_name'    => $sku->variant_value_name,
+            ];
+            $comma = '';
+            if(!empty($res[$index]['variant_value_name']))
+                $comma = ', ';
+            $res[$index]['variant_value_name'] .= $comma.$sku->variant_value_name;
+        }
+        return array_values($res);
+    }
+    public function getProductDetail($id){
+        $product = Product::where('id',$id)->first();
+        if(empty($product))
+        {
+            return null;
+//            throw new \Exception("Product not found");
+        }
+        $product->skus = self::getSkuOfProduct($id);
+        $variants = ProductVariant::select(
+                ProductVariant::column('id'),
+                ProductVariant::column('product_sku_id'),
+                ProductVariant::column('variant_value_id'),
+                VariantValue::column('code').' as variant_value_code',
+                VariantValue::column('name').' as variant_value_name',
+                Variant::column('id').' as variant_id',
+                Variant::column('code').' as variant_code',
+                Variant::column('name').' as variant_name'
+            )
+            ->leftJoin(VariantValue::table(),VariantValue::column('id'),ProductVariant::column('variant_value_id'))
+            ->leftJoin(Variant::table(),Variant::column('id'),VariantValue::column('variant_id'))
+            ->where('product_id',$id)
+            ->get();
+        $variantP = [];
+        foreach($variants as $variant){
+            $index = $variant->variant_id;
+            if(!isset($variantP[$index])){
+                $variantP[$index]=[
+                    'product_sku_id'    =>$variant->product_sku_id,
+                    'variant_id'        =>$variant->variant_id,
+                    'variant_code'      =>$variant->variant_code,
+                    'variant_name'      =>$variant->variant_name,
+                    'values'            =>[]
+                ];
+            }
+            if(!isset($variantP[$index]['values'][$variant->variant_value_id]))
+                $variantP[$index]['values'][$variant->variant_value_id] =[
+                    'variant_value_id'  =>$variant->variant_value_id,
+                    'variant_value_code'=>$variant->variant_value_code,
+                    'variant_value_name'=>$variant->variant_value_name,
+                ];
+        }
+        $product->variants = $variantP;
+        $product->prices = ProductPrice::where('product_id',$id)->get();
+        $product->images = ProductImage::where('product_id',$id)->get();
+        $product->inventories = Inventory::where('product_id',$id)->get();
+        return $product;
     }
     public function generateSku(){
         $date = date('YmdHis');
@@ -250,145 +298,20 @@ class ProductRepository extends BaseRepository
                             ProductDesc::create(array_merge($data['desc'],['product_id'=>$id]));
                         }
                     }
-                    if(isset($data['sizes'])){
-                        $sizeIns = [];
-                        ProductSize::where('product_id',$id)->delete();
-                        foreach ($data['sizes'] as $sizeId){
-                            $sizeIns[]=["product_id"=>$id,"size_id"=>$sizeId];
+                    if($data['prices']){
+                        foreach ($data['prices'] as $row){
+                            $priceUpdate = [
+                                "customer_group_id" =>$row["customer_group_id"]??null,
+                                "qty_from"          =>$row["qty_from"]??null,
+                                "qty_to"            =>$row["qty_to"]??null,
+                                "import_price"      =>$row["import_price"]??0,
+                                "normal_price"      =>$row["normal_price"]??0,
+                                "price"             =>$row["price"]??0,
+                                "desc"              =>$row["desc"]??null,
+                                "status"            =>$row["status"]??ENABLE,
+                            ];
+                            ProductPrice::where('id',$row['id'])->update($priceUpdate);
                         }
-                        ProductSize::insert($sizeIns);
-                    }
-                    if(isset($data['colors'])){
-                        $colorIns = [];
-                        ProductColor::where('product_id',$id)->delete();
-                        foreach ($data['colors'] as $colorId){
-                            $colorIns[]=["product_id"=>$id,"color_id"=>$colorId];
-                        }
-                        ProductColor::insert($colorIns);
-                    }
-                    if(!empty($dataDel["skus"])){
-                        ProductSKU::where('product_id',$id)->whereIn('id',$dataDel["skus"])->delete();
-                    }
-                    if(!empty($dataDel["prices"])){
-                        ProductPrice::where('product_id',$id)->whereIn('id',$dataDel["prices"])->delete();
-                    }
-                    if(!empty($dataDel["attrs"])){
-                        ProductAttribute::where('product_id',$id)->whereIn('id',$dataDel["attrs"])->delete();
-                    }
-                    if(!empty($data['skus'])){
-                        $skus = [];
-                        foreach ($data['skus'] as $sku){
-                            $colorId = empty($sku['color_id']) ? 0 : $sku['color_id'];
-                            $sizeId = empty($sku['size_id']) ? 0 : $sku['size_id'];
-                            if($sku['id']){
-                                $isExist = ProductSKU::where('product_id',$id)
-                                    ->where('size_id',$sizeId)
-                                    ->where('color_id',$colorId)
-                                    ->count()>1;
-                                if(!$isExist){
-                                    ProductSKU::where('product_id',$id)->where('id',$sku['id'])->update([
-                                        "color_id"=>$colorId,
-                                        "size_id"=>$sizeId,
-                                        "sku"=>$sku['sku'],
-                                        "upc"=>$sku['upc']
-                                    ]);
-                                }
-                            }
-                            else{
-                                $isExist = false;
-                                foreach ($skus as $v){
-                                    if($v['color_id'] == $sku['color_id'] && $v['size_id'] == $sku['size_id']){
-                                        $isExist = true;
-                                        break;
-                                    }
-                                }
-                                if(!$isExist){
-                                    $isExist = ProductSKU::where('product_id',$id)
-                                        ->where('size_id',$sizeId)
-                                        ->where('color_id',$colorId)
-                                        ->count()>0;
-                                    if(!$isExist){
-                                        $skus[]=[
-                                            "product_id"=>$pro->id,
-                                            "color_id"=>$colorId,
-                                            "size_id"=>$sizeId,
-                                            "sku"=>$sku['sku'],
-                                            "upc"=>$sku['upc']
-                                        ];
-                                    }
-                                }
-                            }
-                        }
-                        ProductSKU::insert($skus);
-                    }
-                    if(!empty($data['prices'])){
-                        $prices = [];
-                        foreach ($data['prices'] as $item){
-                            $colorId = empty($item['color_id']) ? 0 : $item['color_id'];
-                            $sizeId = empty($item['size_id']) ? 0 : $item['size_id'];
-                            $qtyFrom = empty($item['qty_form']) ? 0 : $item['qty_form'];
-                            $qtyTo = empty($item['qty_to']) ? 0 : $item['qty_to'];
-                            $customerGroupId = empty($item['customer_group_id']) ? 1 : $item['customer_group_id'];
-                            if($item['id']){
-                                $isExist = ProductPrice::where('product_id',$id)
-                                    ->where('color_id',$colorId)
-                                    ->where('size_id',$sizeId)
-                                    ->where('qty_from',$qtyFrom)
-                                    ->where('qty_to',$qtyTo)
-                                    ->where('customer_group_id',$customerGroupId)
-                                    ->count()>1;
-                                if($isExist){
-                                    DB::rollBack();
-                                    return ['message'=>'Price was Existed in DB (Price '.$item['price'].')','data'=>[],'status'=>false];
-                                }
-                                else{
-                                    ProductPrice::where('product_id',$id)->where('id',$item['id'])->update([
-                                        "color_id" => $colorId,
-                                        "size_id" => $sizeId,
-                                        "qty_from" => $qtyFrom,
-                                        "qty_to" => $qtyTo,
-                                        "customer_group_id" => $customerGroupId,
-                                        "import_price" => $item['import_price'],
-                                        "normal_price" => $item['normal_price'],
-                                        "price" => $item['price']
-                                    ]);
-                                }
-                            }
-                            else {
-                                $isExist = false;
-                                foreach ($prices as $v) {
-                                    if ($v['color_id'] == $item['color_id']
-                                        && $v['size_id'] == $item['size_id']
-                                    ) {
-                                        $isExist = true;
-                                        break;
-                                    }
-                                }
-                                if(!$isExist){
-                                    $isExist = ProductPrice::where('product_id',$id)
-                                        ->where('color_id',$colorId)
-                                        ->where('size_id',$sizeId)
-                                        ->where('qty_from',$qtyFrom)
-                                        ->where('qty_to',$qtyTo)
-                                        ->where('customer_group_id',$customerGroupId)
-                                        ->count()>0;
-                                    if (!$isExist) {
-                                        $prices[] = [
-                                            "product_id" => $pro->id,
-                                            "color_id" => $colorId,
-                                            "size_id" => $sizeId,
-                                            "qty_from" => $qtyFrom,
-                                            "qty_to" => $qtyTo,
-                                            "customer_group_id" => $customerGroupId,
-                                            "import_price" => $item['import_price'],
-                                            "normal_price" => $item['normal_price'],
-                                            "price" => $item['price']
-                                        ];
-                                    }
-                                }
-                            }
-                        }
-                        ProductPrice::insert($prices);
                     }
                     if(!empty($data['attrs'])){
                         $attrs = [];
@@ -408,6 +331,9 @@ class ProductRepository extends BaseRepository
                             }
                         }
                         ProductAttribute::insert($attrs);
+                    }
+                    if(!empty($dataDel["attrs"])){
+                        ProductAttribute::where('product_id',$id)->whereIn('id',$dataDel["attrs"])->delete();
                     }
                     self::uploadProductImage($pro->id, $files,$dataDel['images']??[]);
                     DB::commit();
@@ -432,13 +358,12 @@ class ProductRepository extends BaseRepository
         $urlFiles = [];
         if($files){
             foreach ($files as $k=>$v){
-                if(!empty($v['id']) && empty($v['file'])){
+                /*if(!empty($v['id']) && empty($v['file'])){
                     ProductImage::where('product_id',$id)->where('id',$v['id'])->update([
                         'priority'=>$v['priority']??null,
-                        'size_id'=>$v['size_id']??null,
-                        'color_id'=>$v['color_id']??null
+                        'product_sku_id'=>$v['product_sku_id']??null,
                     ]);
-                }
+                }*/
                 if(!empty($v['file'])){
                     $url = Helpers::uploadImage($v['file'],PATH_IMAGE_ITEM,$id.'_'.$k.'_');
                     if($url['status']){
@@ -446,6 +371,7 @@ class ProductRepository extends BaseRepository
                             ProductImage::where('product_id',$id)->where('id',$v['id'])->delete();
                         $urlFiles[]=[
                             'product_id'=>$id,
+                            'product_sku_id'=>$v['product_sku_id'],
                             'url'=>$url['url'],
                             'status'=>ENABLE,
                             'priority'=>$v['priority']??0
@@ -473,35 +399,5 @@ class ProductRepository extends BaseRepository
     }
     public function getVariant(){
         return Variant::get();
-    }
-    public function getProductDetail($id){
-        $product = Product::where('id',$id)->first();
-        if(empty($product))
-        {
-            return null;
-//            throw new \Exception("Product not found");
-        }
-        $variants = ProductVariant::select(
-                "product_variants.id",
-                "product_variants.variant_value_id",
-                "variant_values.variant_id",
-                "variant_values.name as variant_value_name",
-                "variants.name as variant_name"
-            )
-            ->join('variant_values','variant_values.id','product_variants.variant_value_id')
-            ->join('variants','variants.id','variant_values.variant_id')
-            ->where('product_variants.product_id',$id)
-            ->get();
-        $varRes = [];
-        foreach ($variants as $variant){
-            if(!isset($varRes[$variant->variant_id])){
-                $varRes[$variant->variant_id]=[
-                    "variant_id"=>$variant->variant_id
-                ];
-            }
-            $varRes[$variant->variant_id]['values'][] = $variant->variant_value_id;
-        }
-//        dd($varRes);
-        return $product;
     }
 }
