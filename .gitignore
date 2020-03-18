@@ -16,3 +16,4 @@ composer.log
 composer.lock
 package-log.json
 .lock
+/storage/framework/views/
