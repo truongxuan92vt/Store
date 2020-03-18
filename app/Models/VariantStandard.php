@@ -7,6 +7,6 @@ use Illuminate\Support\Facades\URL;
 
 class VariantStandard extends BaseModel
 {
-    protected $table = 'variant_standards';
+    protected $table = 'variant_standard';
     protected $guarded = [];
 }

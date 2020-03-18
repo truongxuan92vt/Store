@@ -1,4 +1,4 @@
-TABLE_PRO = {
+TABLE_ITEM = {
     imgDel:[],
     priceDel:[],
     skuDel:[],

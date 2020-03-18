@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProductCategoryController extends BaseController {
+class ItemCategoryController extends BaseController {
     public function __construct(Request $_request, CategoryRepository $_repos)
     {
-        parent::__construct($_request,$_repos);
+        $this->repos = $_repos;
+        $this->request = $_request;
     }
     public function index(){
         return view('admins.categories.index',['statusList'=>Helpers::convertCombo(STATUS_SYS)]);
@@ -44,7 +45,9 @@ class ProductCategoryController extends BaseController {
     }
     public function detail(){
         $id = $this->request->id??null;
-        $detail = $this->repos->find($id);
+        $detail = [];
+        if(!empty($id))
+            $detail = $this->repos->find($id);
         return view('admins.categories.detail',['data'=>$detail,'statusList'=>Helpers::convertCombo(STATUS_SYS)]);
     }
     public function save(){
@@ -120,7 +123,7 @@ class ProductCategoryController extends BaseController {
                 CategoryBanner::create([
                     'category_id'=>$id,
                     'url'=>$url,
-                    'status'=>ENABLE
+                    'status'=>ACTIVE
                 ]);
             }
         }

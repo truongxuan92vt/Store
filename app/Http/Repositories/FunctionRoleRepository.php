@@ -19,7 +19,7 @@ class FunctionRoleRepository extends BaseRepository
 
     public function getFunctionRoleByRoleId($roleId)
     {
-        $res = $this->model->select('function_id')->where('role_id', $roleId)->where("status", ENABLE)->get();
+        $res = $this->model->select('function_id')->where('role_id', $roleId)->where("status", ACTIVE)->get();
         return $res;
     }
 
@@ -27,10 +27,10 @@ class FunctionRoleRepository extends BaseRepository
     {
         try {
             DB::beginTransaction();
-            $children = Functions::where('parent_id', $functionId)->where('status', 'EN')->get();
+            $children = Functions::where('parent_id', $functionId)->where('status', ACTIVE)->get();
             if (count($children) > 0) {
                 foreach ($children as $item) {
-                    $childrenL2 = Functions::where('parent_id', $item->id)->where('status', 'EN')->get();
+                    $childrenL2 = Functions::where('parent_id', $item->id)->where('status', ACTIVE)->get();
                     if (count($childrenL2) > 0) {
                         foreach ($childrenL2 as $childL2) {
                             $isExistPermission = $this->model->where('function_id', $childL2->id)->where('role_id', $roleId)->first();
@@ -58,12 +58,12 @@ class FunctionRoleRepository extends BaseRepository
                 $this->model->insert(['role_id' => $roleId, 'function_id' => $functionId, 'status' => $status]);
             }
             //Check parent
-            $functionDB = Functions::where('id', $functionId)->where('status', 'EN')->first();
+            $functionDB = Functions::where('id', $functionId)->where('status', ACTIVE)->first();
             if ($functionDB) {
-                $parent = Functions::where('id', $functionDB->parent_id)->where('status', 'EN')->first();
+                $parent = Functions::where('id', $functionDB->parent_id)->where('status', ACTIVE)->first();
                 if ($parent) {
                     //Check parent of Parent
-                    $parentL1 = Functions::where('id', $parent->parent_id)->where('status', 'EN')->first();
+                    $parentL1 = Functions::where('id', $parent->parent_id)->where('status', ACTIVE)->first();
                     if ($parentL1) {
                         $isExistPermission = $this->model->where('function_id', $parentL1->id)->where('role_id', $roleId)->first();
                         if ($isExistPermission) {

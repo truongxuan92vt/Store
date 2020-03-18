@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\URL;
 
 class ManufacturerAddresses extends BaseModel
 {
-    protected $table = 'manufacturer_addresses';
+    protected $table = 'manufacturer_address';
 
     protected $guarded = [];
 }

@@ -1,10 +1,10 @@
 @extends('admins.layouts.master')
-{{--@section('title', 'Product')
-@section('controller', 'Product')
+{{--@section('title', 'Item')
+@section('controller', 'Item')
 @section('action'){{isset($data->id)?'Detail':'New'}}@endsection--}}
 @section('parent', 'Home')
 @section('parent2', 'Master Data')
-@section('parent3', 'Product')
+@section('parent3', 'Item')
 @section('action'){{isset($data->id)?'Detail':'New'}}@endsection
 @section('header-button')
     <input id='btn_save' type="button" class="btn btn-success btn-sm" value="Save">
@@ -20,20 +20,20 @@
 
     <link href="{{module_path()}}/select2/dist/css/select2.css" rel="stylesheet"/>
     <script src="{{module_path()}}/select2/dist/js/select2.js"></script>
-    <form class="product-container" id="frm_product" name="frm_product" autocomplete="off">
+    <form class="item-container" id="frm_item" name="frm_item" autocomplete="off">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#pro-general">General</a></li>
-            <li><a data-toggle="tab" href="#pro-variant">Variant</a></li>
-            <li><a data-toggle="tab" href="#pro-sku">Sku</a></li>
-            <li><a data-toggle="tab" href="#pro-image">Images</a></li>
-            <li><a data-toggle="tab" href="#pro-price">Price</a></li>
-            <li><a data-toggle="tab" href="#pro-attr">Attribute</a></li>
-            <li><a data-toggle="tab" href="#pro-invt">Inventory</a></li>
+            <li class="active"><a data-toggle="tab" href="#item-general">General</a></li>
+            <li><a data-toggle="tab" href="#item-variant">Variant</a></li>
+            <li><a data-toggle="tab" href="#item-sku">Sku</a></li>
+            <li><a data-toggle="tab" href="#item-image">Images</a></li>
+            <li><a data-toggle="tab" href="#item-price">Price</a></li>
+            <li><a data-toggle="tab" href="#item-attr">Attribute</a></li>
+            <li><a data-toggle="tab" href="#item-invt">Inventory</a></li>
         </ul>
         <input type="hidden" id="txt_id" name="id" value="{{isset($data->id)?$data->id:''}}">
         <?php $image = isset($data->image)?$data->image:''?>
         <div class="tab-content">
-            <div id="pro-general" class="tab-pane fade in active">
+            <div id="item-general" class="tab-pane fade in active">
                 <div class="row">
                     <div class="col-md-3">
                         <div id="frm_uploadFile" style="width: 100%;">
@@ -44,15 +44,15 @@
                     </div>
                     <div class="col-md-9">
                         <div class="row">
-                            <label class="col-md-2">Product name</label>
+                            <label class="col-md-2">Item name</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_name_detail" name="name" value="{{isset($data->name)?$data->name:''}}">
+                                <input class="item-input" type="text" id="txt_name_detail" name="name" value="{{isset($data->name)?$data->name:''}}">
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-md-2">Product Code</label>
+                            <label class="col-md-2">Item Code</label>
                             <div class="col-md-10">
-                                <input  class="pro-input" type="text" id="txt_code_detail" name="code" value="{{isset($data->code)?$data->code:''}}">
+                                <input  class="item-input" type="text" id="txt_code_detail" name="code" value="{{isset($data->code)?$data->code:''}}">
                             </div>
                         </div>
                         <div class="row">
@@ -60,11 +60,11 @@
                             <div class="col-md-10">
                                 <div class="row" style="padding: 0px !important;">
                                     <div class="col-md-5">
-                                        <input id="cbo_category_detail" class="pro-input" name="category_id" value="{{isset($data->category_id)?$data->category_id:''}}">
+                                        <input id="cbo_category_detail" class="item-input" name="category_id" value="{{isset($data->category_id)?$data->category_id:''}}">
                                     </div>
                                     <label class="col-md-2" style="text-align: center">Status</label>
                                     <div class="col-md-5" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                                        <select class="pro-input" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <select class="item-input" id="cbo_status_detail" name="status" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                             {{--<option value="0" selected="">Select a Status</option>--}}
                                             @foreach($statusList as $item)
                                                 <option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>
@@ -79,7 +79,7 @@
                             <div class="col-md-10">
                                 <div class="row" style="padding: 0px !important;">
                                     <div class="col-md-5">
-                                        <select class="pro-input" id="cbo_manufactuer_detail" name="manufacturer_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                        <select class="item-input" id="cbo_manufactuer_detail" name="manufacturer_id" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                             <option value="0" selected="">Select a manufacturer</option>
                                             {{--@foreach($statusList as $item)--}}
                                                 {{--<option value="{{$item['value']}}" @if(isset($data->status) && $item['value']==$data->status) selected="selected" @endif>{{$item['text']}} </option>--}}
@@ -88,7 +88,7 @@
                                     </div>
                                     <label class="col-md-2" style="text-align: center">Priority</label>
                                     <div class="col-md-5" style="padding-left: 0px; padding-right: 0px; height: 30px;">
-                                        <input id="txt_priority_detail" class="pro-input" name="priority" value="{{isset($data->priority)?$data->priority:''}}" style="width: 100%">
+                                        <input id="txt_priority_detail" class="item-input" name="priority" value="{{isset($data->priority)?$data->priority:''}}" style="width: 100%">
                                     </div>
                                 </div>
                             </div>
@@ -96,19 +96,19 @@
                         <div class="row">
                             <label class="col-md-2">Meta title</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_title_detail" name="title" value="{{isset($data->title)?$data->title:''}}">
+                                <input class="item-input" type="text" id="txt_title_detail" name="title" value="{{isset($data->title)?$data->title:''}}">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">Tags</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_tag_detail" name="tag" value="{{isset($data->tag)?$data->tag:''}}">
+                                <input class="item-input" type="text" id="txt_tag_detail" name="tag" value="{{isset($data->tag)?$data->tag:''}}">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-md-2">URL SEO</label>
                             <div class="col-md-10">
-                                <input class="pro-input" type="text" id="txt_url_seo_detail" name="url_seo" value="{{isset($data->url_seo)?$data->url_seo:''}}">
+                                <input class="item-input" type="text" id="txt_url_seo_detail" name="url_seo" value="{{isset($data->url_seo)?$data->url_seo:''}}">
                             </div>
                         </div>
                     </div>
@@ -116,17 +116,17 @@
                 <div class="row">
                     <label class="col-md-2">Short description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" id="txt_short_desc_detail" name="short_desc">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
+                        <textarea class="item-input" id="txt_short_desc_detail" name="short_desc">{{isset($data->desc->short_desc)?$data->desc->short_desc:''}}</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-md-2">Full description</label>
                     <div class="col-md-10">
-                        <textarea class="pro-input" id="txt_long_desc_detail" name="long_desc">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
+                        <textarea class="item-input" id="txt_long_desc_detail" name="long_desc">{{isset($data->desc->long_desc)?$data->desc->long_desc:''}}</textarea>
                     </div>
                 </div>
             </div>
-            <div id="pro-variant" class="tab-pane fade ">
+            <div id="item-variant" class="tab-pane fade ">
                 <h4>List of Option:</h4>
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_variant" width="100%">
@@ -164,7 +164,7 @@
                                 </select>
                             </td>
                             <td class="t_pro_variant_none">
-                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                             </td>
                         </tr>
                         @if(isset($data->variants))
@@ -194,7 +194,7 @@
                                     </script>
                                 </td>
                                 <td class="t_pro_variant_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                 </td>
                             </tr>
                             @endforeach
@@ -202,14 +202,14 @@
                         <tfoot>
                         <tr>
                             <td colspan="6" style="text-align: center">
-                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_variant",true,"#t_pro_variant_value_")'>
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_variant",true,"#t_pro_variant_value_")'>
                             </td>
                         </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
-            <div id="pro-sku" class="tab-pane fade ">
+            <div id="item-sku" class="tab-pane fade ">
                 <h4>List of SKU:</h4>
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_sku" width="100%">
@@ -261,7 +261,7 @@
                     </table>
                 </div>
             </div>
-            <div id="pro-image" class="tab-pane fade">
+            <div id="item-image" class="tab-pane fade">
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_image" width="100%">
                         <colgroup>
@@ -287,10 +287,10 @@
                                     <img id="img_pro" src="{{URL::to("/image/no_image.png")}}" alt="your image" style="max-width: 200px"/>
                                 </td>
                                 <td class="t_pro_image_file">
-                                    <input type='file' name="t_pro_image[--row--][file]" onchange="TABLE_PRO.readURL(this)" />
+                                    <input type='file' name="t_pro_image[--row--][file]" onchange="TABLE_ITEM.readURL(this)" />
                                 </td>
                                 <td class="t_pro_image_variant">
-                                    <select name="t_pro_image[--row--][product_sku_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                    <select name="t_pro_image[--row--][item_sku_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                         @if(isset($data->skus))
                                             @foreach($data->skus as $sku)
                                                 <option value="{{$sku['id']??""}}">{{$sku['sku']??""}} - {{$sku['variant_value_name']??""}}</option>
@@ -302,7 +302,7 @@
                                     <input type="text" name="t_pro_image[--row--][priority]" value="0"/>
                                 </td>
                                 <td class="t_pro_image_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->images) && count($data->images)>0)
@@ -313,14 +313,14 @@
                                             <img id="img_pro" src="{{$v->url??URL::to("/image/no_image.png")}}" alt="your image" style="max-width: 200px"/>
                                         </td>
                                         <td class="t_pro_image_file">
-                                            <input type='file' name="t_pro_image[{{$k}}][file]" onchange="TABLE_PRO.readURL(this)" />
+                                            <input type='file' name="t_pro_image[{{$k}}][file]" onchange="TABLE_ITEM.readURL(this)" />
                                         </td>
                                         <td class="t_pro_image_variant">
-                                            <select name="t_pro_image[{{$k}}][product_sku_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
+                                            <select name="t_pro_image[{{$k}}][item_sku_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
                                                 @if(isset($data->skus))
                                                     @foreach($data->skus as $sku)
                                                         {{$selected = ""}}
-                                                        @if($sku['id'] == $v->product_sku_id)
+                                                        @if($sku['id'] == $v->item_sku_id)
                                                             {{$selected = "selected"}}
                                                         @endif
                                                         <option value="{{$sku['id']??""}}" {{$selected}}>{{$sku['sku']??""}} - {{$sku['variant_value_name']??""}}</option>
@@ -332,7 +332,7 @@
                                             <input type="text" name="t_pro_image[{{$k}}][priority]" value="0"/>
                                         </td>
                                         <td class="t_pro_image_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -341,14 +341,14 @@
                         <tfoot>
                             <tr>
                                 <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_image")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_image")'>
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
-            <div id="pro-price" class="tab-pane fade">
+            <div id="item-price" class="tab-pane fade">
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_price" width="100%">
                         <colgroup>
@@ -380,10 +380,10 @@
                                     <input type="hidden" name="t_pro_price[{{$k}}][id]" value="{{$v['id']??null}}" />
                                     <td style="text-align: center;"><span>{{$k+1}}</span></td>
                                     <td class="t_pro_price_variant">
-                                        <input type="hidden" name="t_pro_price[{{$k}}][product_sku_id]" value="{{$v['product_sku_id']}}"/>
+                                        <input type="hidden" name="t_pro_price[{{$k}}][item_sku_id]" value="{{$v['item_sku_id']}}"/>
                                         @if(isset($data->skus))
                                             @foreach($data->skus as $sku)
-                                                @if($sku['id'] == $v['product_sku_id'])
+                                                @if($sku['id'] == $v['item_sku_id'])
                                                     {{$sku['sku']??''}} -  {{$sku['variant_value_name']}}
                                                     @break
                                                 @endif
@@ -415,7 +415,7 @@
                     </table>
                 </div>
             </div>
-            <div id="pro-attr" class="tab-pane fade">
+            <div id="item-attr" class="tab-pane fade">
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_attr" width="100%">
                         <colgroup>
@@ -443,7 +443,7 @@
                                     <input type="text" name="t_pro_attr[--row--][desc]" value=""/>
                                 </td>
                                 <td class="t_pro_attr_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->attrs))
@@ -458,7 +458,7 @@
                                             <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
                                         </td>
                                         <td class="t_pro_attr_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -467,14 +467,14 @@
                         <tfoot>
                             <tr>
                                 <td colspan="5" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_attr")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_attr")'>
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
-            <div id="pro-invt" class="tab-pane fade">
+            <div id="item-invt" class="tab-pane fade">
                 <div style="width:100%;height:400px;overflow-y:auto;z-index:0">
                     <table id="t_pro_attr" width="100%">
                         <colgroup>
@@ -502,7 +502,7 @@
                                 <input type="text" name="t_pro_attr[--row--][desc]" value=""/>
                             </td>
                             <td class="t_pro_attr_none">
-                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                             </td>
                         </tr>
                         @if(isset($data->attrs))
@@ -517,7 +517,7 @@
                                         <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
                                     </td>
                                     <td class="t_pro_attr_none">
-                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                     </td>
                                 </tr>
                             @endforeach
@@ -526,7 +526,7 @@
                         <tfoot>
                         <tr>
                             <td colspan="5" style="text-align: center">
-                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_attr")'>
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_attr")'>
                             </td>
                         </tr>
                         </tfoot>
@@ -636,7 +636,7 @@
         //         filebrowserWindowHeight : '700'
         // });
         function backToIndex(){
-            document.location.href="{{route('admin.product.index')}}";
+            document.location.href="{{route('admin.item.index')}}";
         }
         $('#btn_cancel').click(function(){
             backToIndex();
@@ -644,16 +644,16 @@
         $('#btn_save').on('click',function(){
             tinymce.triggerSave();
             // alert($('#txt_short_desc_detail').val());
-            var frm_product = document.getElementById('frm_product');
-            var form_data = new FormData(frm_product);
+            var frm_item = document.getElementById('frm_item');
+            var form_data = new FormData(frm_item);
             // form_data.append('short_desc',$('#txt_short_desc_detail').val());
             // form_data.append('long_desc',$('#txt_long_desc_detail').val());
-            form_data.append('imgDel',TABLE_PRO.imgDel);
-            form_data.append('priceDel',TABLE_PRO.priceDel);
-            form_data.append('skuDel',TABLE_PRO.skuDel);
-            form_data.append('attrDel',TABLE_PRO.attrDel);
+            form_data.append('imgDel',TABLE_ITEM.imgDel);
+            form_data.append('priceDel',TABLE_ITEM.priceDel);
+            form_data.append('skuDel',TABLE_ITEM.skuDel);
+            form_data.append('attrDel',TABLE_ITEM.attrDel);
             $.ajax({
-                url:"{{route('admin.product.save')}}",
+                url:"{{route('admin.item.save')}}",
                 // dataType: 'text', // what to expect back from the PHP script
                 cache: false,
                 contentType: false,

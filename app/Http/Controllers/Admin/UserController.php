@@ -41,7 +41,7 @@ class UserController extends BaseController {
                 $data = $user;
             }
         }
-        $role = $this->roleRepos->getAll();
+        $role = $this->roleRepos->getList();
         return view('admins.users.detail',['data'=>$data,'roles'=>$role]);
     }
     public function save(){

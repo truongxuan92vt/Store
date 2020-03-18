@@ -5,7 +5,7 @@ namespace App\Models;
 
 class Functions extends BaseModel
 {
-    protected $table = 'functions';
+    protected $table = 'function';
 
     protected $fillable = [
         'name',

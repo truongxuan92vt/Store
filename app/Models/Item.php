@@ -5,31 +5,31 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\URL;
 
-class Product extends BaseModel
+class Item extends BaseModel
 {
-    protected $table = 'products';
+    protected $table = 'item';
 
     protected $guarded = [];
     public function images(){
-        return $this->hasMany(ProductImage::class,'product_id')->orderBy('priority');
+        return $this->hasMany(ItemImage::class,'item_id')->orderBy('priority');
     }
     public function desc(){
-        return $this->hasOne(ProductDesc::class,'product_id');
+        return $this->hasOne(ItemDesc::class,'item_id');
     }
     public function skus(){
-        return $this->hasMany(ProductSKU::class,'product_id');
+        return $this->hasMany(ItemSKU::class,'item_id');
     }
     public function info(){
-        return $this->hasone(ProductInfo::class,'product_id');
+        return $this->hasone(ItemInfo::class,'item_id');
     }
     public function prices(){
-        return $this->hasMany(ProductPrice::class,'product_id');
+        return $this->hasMany(ItemPrice::class,'item_id');
     }
     public function attrs(){
-        return $this->hasMany(ProductAttribute::class,'product_id');
+        return $this->hasMany(ItemAttribute::class,'item_id');
     }
     public function inventories(){
-        return $this->hasMany(Inventory::class,'product_id');
+        return $this->hasMany(Inventory::class,'item_id');
     }
 //    public static function boot(){
 //        static::retrieved(function ($model) {

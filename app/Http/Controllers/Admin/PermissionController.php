@@ -73,7 +73,7 @@ class PermissionController extends BaseController
         $roleId = $this->request->get('roleId');
         $function = $this->request->get('function');
         $functionId = $function['id']??'';
-        $status = $function['status'] == 1 ? 'EN' : 'DI';
+        $status = $function['status'] == 1 ? ACTIVE : INACTIVE;
         if ($roleId == 0) {
             return $this->respondForward(['status' => false, 'message' => 'Please choise permission']);
         }

@@ -38,19 +38,19 @@
             </a>
         </div>
     @endif
-    <div class="product">
-        @foreach($products as $pro)
-            <div class="product-box">
-                <a href="{{route('web.product.detail',['id'=>$pro->id])}}">
+    <div class="item">
+        @foreach($items as $pro)
+            <div class="item-box">
+                <a href="{{route('web.item.detail',['id'=>$pro->id])}}">
                     <div>
                         <img src="{{$pro['image']}}">
                     </div>
-                    <div class="product-info">
-                        <div class="product-color"></div>
-                        <div class="product-name">
+                    <div class="item-info">
+                        <div class="item-color"></div>
+                        <div class="item-name">
                             <span>{{$pro['name']}}</span>
                         </div>
-                        <div class="product-star">
+                        <div class="item-star">
                             <div class="rating">
                                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
                             </div>
@@ -61,15 +61,15 @@
                             <i class="fa fa-star-o" aria-hidden="true"></i>&nbsp;--}}
                         </div>
                         <div class="price">
-                            <span class="product-price">
+                            <span class="item-price">
                                 {{number_format($pro['price']??0)}}đ
                             </span>
-                            <span class="product-old-price">
+                            <span class="item-old-price">
                                 @if($pro['normal_price']>0)
                                     {{number_format($pro['normal_price']??0)}}đ
                                 @endif
                             </span>
-                            <span class="product-percent">
+                            <span class="item-percent">
                                 @if($pro['price']>0 && $pro['normal_price']>0)
                                     {{(1-round($pro['price']/$pro['normal_price'],2))*100}}%
                                 @endif

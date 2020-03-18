@@ -18,7 +18,7 @@ mix.sass('resources/assets/webs/css/app.scss', 'public/assets/webs/app.css');
 
 mix.js([
     'resources/assets/admins/js/app.js',
-    'resources/assets/admins/js/product-detail.js',
+    'resources/assets/admins/js/item-detail.js',
 ], 'public/assets/admins/app.js');
 mix.sass('resources/assets/admins/css/app.scss', 'public/assets/admins/app.css');
 /*mix.sass([

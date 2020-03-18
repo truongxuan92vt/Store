@@ -4,7 +4,7 @@ namespace App\Models;
 
 class Role extends BaseModel
 {
-    protected $table = 'roles';
+    protected $table = 'role';
 
     protected $fillable = [
         'name',

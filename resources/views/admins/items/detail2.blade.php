@@ -181,7 +181,7 @@
             filebrowserWindowHeight : '700'
         });
         function backToIndex(){
-            document.location.href="{{route('admin.product.index')}}";
+            document.location.href="{{route('admin.item.index')}}";
         }
         $('#btn_cancel').click(function(){
             backToIndex();
@@ -213,7 +213,7 @@
                 form_data.append("files[]",arrPush[i]);
             }
             $.ajax({
-                url:"{{route('admin.product.save')}}",
+                url:"{{route('admin.item.save')}}",
                 // dataType: 'text', // what to expect back from the PHP script
                 cache: false,
                 contentType: false,
@@ -238,7 +238,7 @@
 
             /*$.ajax({
                 type:'post',
-                url:"{{route('admin.product.save')}}",
+                url:"{{route('admin.item.save')}}",
                 data:JSON.stringify(data),
                 dataType:'json',
                 contentType:'application/json',

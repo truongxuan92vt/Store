@@ -4,7 +4,7 @@ namespace App\Models;
 
 class CodeDetail extends BaseModel
 {
-    protected $table = 'code_details';
+    protected $table = 'code_detail';
 
     protected $fillable = [
         'code',

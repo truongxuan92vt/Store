@@ -1,10 +1,12 @@
 <?php
 
+define('ACTIVE','AT');
+define('INACTIVE','IA');
 define('ENABLE','EN');
 define('DISABLE','DI');
 define('STATUS_SYS',[
-    ENABLE=>'Enable',
-    DISABLE=>'Disable'
+    ACTIVE=>'Active',
+    INACTIVE=>'Inactive'
 ]);
 define('PAGINATION',10);
 define('GOOGLE','GG');

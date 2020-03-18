@@ -1,5 +1,5 @@
 <?php
-    $categories = \App\Http\Controllers\Admin\ProductCategoryController::getCategoryForWeb();
+    $categories = \App\Http\Controllers\Admin\ItemCategoryController::getCategoryForWeb();
 ?>
 <div class="top-header">
     <div class="container">

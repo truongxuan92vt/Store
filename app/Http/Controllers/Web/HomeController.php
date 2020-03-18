@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Repositories\CategoryRepository;
-use App\Http\Repositories\ProductRepository;
+use App\Http\Repositories\ItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ class HomeController extends BaseController {
     public function __construct(
         Request $_request,
         CategoryRepository $_categoryRepo,
-        ProductRepository $_item
+        ItemRepository $_item
     ){
         parent::__construct($_request);
         $this->categoryRepo = $_categoryRepo;
@@ -29,7 +29,7 @@ class HomeController extends BaseController {
         $categoryId = $this->request->get('category_id');
         if(empty($categoryId)) $categoryId = 1;
         $category = $this->categoryRepo->find($categoryId);
-        $product = $this->itemRepo->getProductByCategory($categoryId);
-        return view('webs.categories.index',['category'=>$category,'products'=>$product]);
+        $item = $this->itemRepo->getItemByCategory($categoryId);
+        return view('webs.categories.index',['category'=>$category,'items'=>$item]);
     }
 }

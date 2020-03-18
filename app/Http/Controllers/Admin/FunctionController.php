@@ -39,7 +39,7 @@ class FunctionController extends BaseController
         $user = Auth::user();
         $menu = $this->getMenuByUser($user->id);
         $data = [];
-        $currentFunctionId = DB::table('functions')->where('url', '/' . $routeUrl)->first();
+        $currentFunctionId = DB::table('function')->where('url', '/' . $routeUrl)->first();
         if ($currentFunctionId) {
             $res = $this->getListParent($menu, $currentFunctionId->id, $data);
             return json_encode($data);
@@ -60,12 +60,12 @@ class FunctionController extends BaseController
 
     public function getMenuByUser($user_id)
     {
-        $functions = DB::table('functions')->select('functions.*')
-            ->leftJoin('function_roles', 'function_roles.function_id', 'functions.id')
-            ->leftJoin('user_roles', 'user_roles.role_id', 'function_roles.role_id')
-            ->where('user_roles.user_id', $user_id)
-            ->where('functions.status', 'EN')
-            ->where('function_roles.status', 'EN')
+        $functions = DB::table('function')->select('function.*')
+            ->leftJoin('function_role', 'function_role.function_id', 'function.id')
+            ->leftJoin('user_role', 'user_role.role_id', 'function_role.role_id')
+            ->where('user_role.user_id', $user_id)
+            ->where('function.status', ACTIVE)
+            ->where('function_role.status', ACTIVE)
             ->get();
         $functions = json_decode(json_encode($functions), true);
         return $functions;
@@ -79,7 +79,7 @@ class FunctionController extends BaseController
 
     function getDataFullMenu()
     {
-        $functions = DB::table('functions')->select('id', 'icon', 'name as text', 'parent_id', 'status')
+        $functions = DB::table('function')->select('id', 'icon', 'name as text', 'parent_id', 'status')
             ->get();
         $functions = json_decode(json_encode($functions), true);
         $menu = $this->subFunction($functions);
@@ -91,7 +91,7 @@ class FunctionController extends BaseController
         $temp_array = array();
         foreach ($array as $element) {
             $status = false;
-            if ($element['status'] == 'EN') {
+            if ($element['status'] == ACTIVE) {
                 $status = true;
             }
             $element['state'] = ['selected' => $status];
@@ -110,18 +110,18 @@ class FunctionController extends BaseController
         $data = $request->all();
         if (!empty($data)) {
             $id = $data['id'];
-            $sts = $data['status'] == 1 ? ENABLE : DISABLE;
-            DB::table('functions')->where('id', $id)->update(['status' => $sts]);
-            DB::table('functions')->where('parent_id', $id)->update(['status' => $sts]);
-            $isExistParent = DB::table('functions')->where('id', $id)->first();
+            $sts = $data['status'] == 1 ? ACTIVE : INACTIVE;
+            DB::table('function')->where('id', $id)->update(['status' => $sts]);
+            DB::table('function')->where('parent_id', $id)->update(['status' => $sts]);
+            $isExistParent = DB::table('function')->where('id', $id)->first();
             if ($isExistParent && $sts == "EN") {
-                DB::table('functions')->where('id', $isExistParent->parent_id)->update(['status' => $sts]);
+                DB::table('function')->where('id', $isExistParent->parent_id)->update(['status' => $sts]);
             }
-            if ($isExistParent && $sts == "DI") {
-                $numChild = DB::table('functions')->where('parent_id', $isExistParent->parent_id)->count();
-                $numDisable = DB::table('functions')->where('parent_id', $isExistParent->parent_id)->where('status', 'DI')->count();
+            if ($isExistParent && $sts == INACTIVE) {
+                $numChild = DB::table('function')->where('parent_id', $isExistParent->parent_id)->count();
+                $numDisable = DB::table('function')->where('parent_id', $isExistParent->parent_id)->where('status', INACTIVE)->count();
                 if ($numChild == $numDisable)
-                    DB::table('functions')->where('id', $isExistParent->parent_id)->update(['status' => $sts]);
+                    DB::table('function')->where('id', $isExistParent->parent_id)->update(['status' => $sts]);
             }
         }
         return $this->respondForward(['status' => true, 'message' => 'Function was updated success']);

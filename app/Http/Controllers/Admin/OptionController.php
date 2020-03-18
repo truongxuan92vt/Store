@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\BaseController;
-use App\Http\Repositories\ProductRepository;
+use App\Http\Repositories\ItemRepository;
 use App\Models\Variant;
 use App\Models\VariantValue;
 use Illuminate\Http\Request;

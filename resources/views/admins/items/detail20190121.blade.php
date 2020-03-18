@@ -153,7 +153,7 @@
                                     <img id="img_pro" src="{{URL::to("/image/no_image.png")}}" alt="your image" style="max-width: 200px"/>
                                 </td>
                                 <td class="t_pro_image_file">
-                                    <input type='file' name="t_pro_image[--row--][file]" onchange="TABLE_PRO.readURL(this)" />
+                                    <input type='file' name="t_pro_image[--row--][file]" onchange="TABLE_ITEM.readURL(this)" />
                                 </td>
                                 <td class="t_pro_image_color">
                                     <select class="t-cbo-color" name="t_pro_image[--row--][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
@@ -179,7 +179,7 @@
                                     <input type="text" name="t_pro_image[--row--][priority]" value="0"/>
                                 </td>
                                 <td class="t_pro_image_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->images) && count($data->images)>0)
@@ -190,7 +190,7 @@
                                             <img id="img_pro" src="{{$v->url}}" alt="your image" style="max-width: 200px"/>
                                         </td>
                                         <td class="t_pro_image_file">
-                                            <input type='file' name="t_pro_image[{{$k}}][file]" onchange="TABLE_PRO.readURL(this)" />
+                                            <input type='file' name="t_pro_image[{{$k}}][file]" onchange="TABLE_ITEM.readURL(this)" />
                                         </td>
                                         <td class="t_pro_image_color">
                                             <select class="t-cbo-color" name="t_pro_image[{{$k}}][color_id]" style="padding-top: 2px; padding-bottom: 2px; height: 29px;">
@@ -216,7 +216,7 @@
                                             <input type="text" name="t_pro_image[{{$k}}][priority]" value="{{$v->priority}}"/>
                                         </td>
                                         <td class="t_pro_image_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -225,7 +225,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_image")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_image")'>
                                 </td>
                             </tr>
                         </tfoot>
@@ -321,7 +321,7 @@
                                     <input type="text" name="t_pro_sku[--row--][upc]" value=""/>
                                 </td>
                                 <td class="t_pro_sku_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->skus))
@@ -356,7 +356,7 @@
                                             <input type="text" name="t_pro_sku[{{$k}}][upc]" value="{{$v->upc}}"/>
                                         </td>
                                         <td class="t_pro_sku_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -365,7 +365,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="6" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_sku")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_sku")'>
                                 </td>
                             </tr>
                         </tfoot>
@@ -439,7 +439,7 @@
                                 <input type="text" name="t_pro_price[--row--][price]" value=""/>
                             </td>
                             <td class="t_pro_price_none">
-                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                             </td>
                         </tr>
                         @if(isset($data->prices))
@@ -483,7 +483,7 @@
                                         <input type="text" name="t_pro_price[{{$k}}][price]" value="{{$v->price}}"/>
                                     </td>
                                     <td class="t_pro_price_none">
-                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                        <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                     </td>
                                 </tr>
                             @endforeach
@@ -492,7 +492,7 @@
                         <tfoot>
                         <tr>
                             <td colspan="9" style="text-align: center">
-                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_price")'>
+                                <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_price")'>
                             </td>
                         </tr>
                         </tfoot>
@@ -527,7 +527,7 @@
                                     <input type="text" name="t_pro_attr[--row--][desc]" value=""/>
                                 </td>
                                 <td class="t_pro_attr_none">
-                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                    <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                 </td>
                             </tr>
                             @if(isset($data->attrs))
@@ -542,7 +542,7 @@
                                             <input type="text" name="t_pro_attr[{{$k}}][desc]" value="{{$v->desc}}"/>
                                         </td>
                                         <td class="t_pro_attr_none">
-                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_PRO.delRow(this)">
+                                            <input type="button" class="btn btn-danger" value="Delete" onclick="TABLE_ITEM.delRow(this)">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -551,7 +551,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="5" style="text-align: center">
-                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_PRO.addRow("t_pro_attr")'>
+                                    <input type="button" class="btn btn-primary" value="Add more rows..." style="width: 200px;" onclick='TABLE_ITEM.addRow("t_pro_attr")'>
                                 </td>
                             </tr>
                         </tfoot>
@@ -676,7 +676,7 @@
         //         filebrowserWindowHeight : '700'
         // });
         function backToIndex(){
-            document.location.href="{{route('admin.product.index')}}";
+            document.location.href="{{route('admin.item.index')}}";
         }
         $('#btn_cancel').click(function(){
             backToIndex();
@@ -688,12 +688,12 @@
             var form_data = new FormData(frm_product);
             // form_data.append('short_desc',$('#txt_short_desc_detail').val());
             // form_data.append('long_desc',$('#txt_long_desc_detail').val());
-            form_data.append('imgDel',TABLE_PRO.imgDel);
-            form_data.append('priceDel',TABLE_PRO.priceDel);
-            form_data.append('skuDel',TABLE_PRO.skuDel);
-            form_data.append('attrDel',TABLE_PRO.attrDel);
+            form_data.append('imgDel',TABLE_ITEM.imgDel);
+            form_data.append('priceDel',TABLE_ITEM.priceDel);
+            form_data.append('skuDel',TABLE_ITEM.skuDel);
+            form_data.append('attrDel',TABLE_ITEM.attrDel);
             $.ajax({
-                url:"{{route('admin.product.save')}}",
+                url:"{{route('admin.item.save')}}",
                 // dataType: 'text', // what to expect back from the PHP script
                 cache: false,
                 contentType: false,

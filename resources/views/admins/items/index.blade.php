@@ -1,5 +1,5 @@
 @extends('admins.layouts.master')
-@section('title', 'Product')
+@section('title', 'Item')
 @section('controller', 'Product')
 @section('action', 'Index')
 @section('parent', 'Home')
@@ -54,7 +54,7 @@
     </div>
     <script>
         $('#btn_create').on('click',function(){
-            document.location.href="{!! route('admin.product.detail'); !!}";
+            document.location.href="{!! route('admin.item.detail'); !!}";
             {{--location.href="{{route('admin.item.detail')}}"--}}
 {{--            window.location.assign('{{route('admin.item.detail')}}');--}}
             // loadpopup('item/detail','<b>New</b>','60%',true);
@@ -63,7 +63,7 @@
             categoryTbl.ajax.reload( null, false );
         }
         function openDetail(id) {
-            url = "{{route('admin.product.detail')}}"+'?id='+id;
+            url = "{{route('admin.item.detail')}}"+'?id='+id;
             document.location.href=url;
             // loadpopup('item/detail?id='+id,'<b>Detail</b>','60%',false);
         }
@@ -76,7 +76,7 @@
                 "searching": false,
                 "dom": "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i> <'col-sm-2'l><'col-sm-5'p>>",
                 "ajax": {
-                    "url": "{{route('admin.product.list')}}",
+                    "url": "{{route('admin.item.list')}}",
                     "contentType": "application/json",
                     "type": "GET",
                     "dataType":'json',

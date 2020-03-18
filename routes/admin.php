@@ -116,53 +116,53 @@ $router->group([
 ], function($router){
     $router->get('',[
         'as'    =>  'admin.category.index',
-        'uses'  =>  'ProductCategoryController@index'
+        'uses'  =>  'ItemCategoryController@index'
     ]);
     $router->get('list',[
         'as'    =>  'admin.category.list',
-        'uses'    =>  'ProductCategoryController@list',
+        'uses'    =>  'ItemCategoryController@list',
     ]);
     $router->get('/search',[
         'as'    =>'admin.category.search',
-        'uses'  =>'ProductCategoryController@search'
+        'uses'  =>'ItemCategoryController@search'
     ]);
     $router->get('detail',[
         'as'     =>  'admin.category.detail',
-        'uses'   =>  'ProductCategoryController@detail'
+        'uses'   =>  'ItemCategoryController@detail'
     ]);
     $router->post('save',[
         'as'     =>  'admin.category.save',
-        'uses'   =>  'ProductCategoryController@save'
+        'uses'   =>  'ItemCategoryController@save'
     ]);
     $router->get('list-web',[
         'as'     =>  'admin.category.web',
-        'uses'   =>  'ProductCategoryController@getCategoryForWeb'
+        'uses'   =>  'ItemCategoryController@getCategoryForWeb'
     ]);
     $router->get('option',[
         'as'    =>  'admin.category.option',
-        'uses'  =>  'ProductCategoryController@getOption'
+        'uses'  =>  'ItemCategoryController@getOption'
     ]);
 });
 
 $router->group([
-    'prefix'        =>  'product',
+    'prefix'        =>  'item',
     'middleware'    =>  ['auth.admin'],
 ], function($router){
     $router->get('',[
-        'as'    =>  'admin.product.index',
-        'uses'  =>  'ProductController@index'
+        'as'    =>  'admin.item.index',
+        'uses'  =>  'ItemController@index'
     ]);
     $router->get('list',[
-        'as'    =>  'admin.product.list',
-        'uses'    =>  'ProductController@list',
+        'as'    =>  'admin.item.list',
+        'uses'    =>  'ItemController@list',
     ]);
     $router->get('detail',[
-        'as'     =>  'admin.product.detail',
-        'uses'   =>  'ProductController@detail'
+        'as'     =>  'admin.item.detail',
+        'uses'   =>  'ItemController@detail'
     ]);
     $router->post('save',[
-        'as'     =>  'admin.product.save',
-        'uses'   =>  'ProductController@save'
+        'as'     =>  'admin.item.save',
+        'uses'   =>  'ItemController@save'
     ]);
 });
 

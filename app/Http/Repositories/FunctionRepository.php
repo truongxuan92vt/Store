@@ -17,7 +17,7 @@ class FunctionRepository extends BaseRepository
 
     public function getDataForPermission(){
         $res = $this->model->select('id', 'icon', 'name as text', 'parent_id', 'status')
-            ->where('status', 'EN')
+            ->where('status', ACTIVE)
             ->get();
         return $res;
     }

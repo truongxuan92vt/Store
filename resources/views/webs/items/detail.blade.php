@@ -7,22 +7,22 @@
     <link rel="stylesheet" href="{{module_path()}}/slick-carousel/slick/slick.css">
     <link rel="stylesheet" href="{{module_path()}}/slick-carousel/slick/slick-theme.css">
 
-<div class="product-container">
+<div class="item-container">
     <div class="menu-title">
         <ul>
             <li class="menu-title-item"><a href="/">Trang chủ</a></li>
             <li class="menu-title-item"><a href="#">Điện thoại máy tính bảng</a></li>
-            <li class="menu-title-item"><a href="#">{{$product->name}}</a></li>
+            <li class="menu-title-item"><a href="#">{{$item->name}}</a></li>
         </ul>
     </div>
-    <div class="product-summary">
-        <div class="product-image">
+    <div class="item-summary">
+        <div class="item-image">
             <div class="slider-for">
                 <div class="gallery-preview">
-                    <img src="{{$product->image??""}}">
+                    <img src="{{$item->image??""}}">
                 </div>
-                @if(count($product->images))
-                    @foreach($product->images as $item)
+                @if(isset($item->images))
+                    @foreach($item->images as $item)
                         <div>
                             <img src="{{$item->url}}">
                         </div>
@@ -31,25 +31,25 @@
             </div>
             <div class="slider-nav">
                 <div class="slider-nav-item">
-                    <img src="{{$product->image??""}}">
+                    <img src="{{$item->image??""}}">
                 </div>
-                @if(count($product->images))
-                    @foreach($product->images as $item)
+                @if(isset($item->images))
+                    @foreach($item->images as $item)
                         <div class="slider-nav-item">
                             <img src="{{$item->url}}">
                         </div>
                     @endforeach
                 @endif
             </div>
-            {{--<div class="product-gallery">
+            {{--<div class="item-gallery">
                 <div class="gallery-preview">
-                    <img src="{{$product->image??""}}">
+                    <img src="{{$item->image??""}}">
                 </div>
                 <div class="gallery-slick-horizontal">
                     <div class="slick-list">
                         <div class="slick-track">
-                            @if(count($product->images))
-                                @foreach($product->images as $item)
+                            @if(count($item->images))
+                                @foreach($item->images as $item)
                                     <div>
                                         <img src="{{$item->url}}">
                                     </div>
@@ -66,13 +66,13 @@
                 </div>
             </div>--}}
         </div>
-        <div class="product-cart">
-            <div class="product-info">
-                <div class="product-header">
-                    <div class="product-name">
-                        <p>{{$product->name}}</p>
+        <div class="item-cart">
+            <div class="item-info">
+                <div class="item-header">
+                    <div class="item-name">
+                        <p>{{$item->name}}</p>
                     </div>
-                    <div class="product-star">
+                    <div class="item-star">
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
@@ -85,10 +85,10 @@
                     </div>
                 </div>
 
-                <div class="product-price">
+                <div class="item-price">
                     <div class="current-price">
-                        @if(isset($product->prices) && count($product->prices)>0)
-                            @foreach($product->prices as $item)
+                        @if(isset($item->prices) && count($item->prices)>0)
+                            @foreach($item->prices as $item)
                                 {{number_format($item->price)}}đ
                                 @break
                             @endforeach
@@ -98,8 +98,8 @@
                     </div>
                     <div class="old-price">
                         <span class="decrease-price">
-                            @if(isset($product->prices))
-                                @foreach($product->prices as $item)
+                            @if(isset($item->prices))
+                                @foreach($item->prices as $item)
                                     @if($item->normal_price>0)
                                         {{number_format($item->normal_price)}}đ
                                         @break
@@ -108,8 +108,8 @@
                             @endif
                         </span>
                         <span class="percent-decrease-price">
-                            @if(isset($product->prices))
-                                @foreach($product->prices as $item)
+                            @if(isset($item->prices))
+                                @foreach($item->prices as $item)
                                     @if($item->normal_price>0 && ($item->price/$item->normal_price)>0)
                                         -{{(1-round($item->price/$item->normal_price,2))*100}}%
                                         @break
@@ -119,7 +119,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="product-quantity">
+                <div class="item-quantity">
                     <div class="input-group">
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
@@ -134,12 +134,12 @@
                           </span>
                     </div>
                 </div>
-                <div class="product-add-to-cart">
+                <div class="item-add-to-cart">
                     <button type="button" class="btn btn-warning">MUA NGAY</button>
                     <button id="btn_addToCart" type="button" class="btn btn-danger" style="background: #f57224;margin-left: 10px">THÊM VÀO GIỎ HÀNG</button>
                 </div>
             </div>
-            <div class="product-delivery">
+            <div class="item-delivery">
                 <div class="seller-delivery">
                     <div class="delivery-header">
                         <div class="delivery-header-title">Tùy chọn giao hàng</div>
@@ -174,11 +174,11 @@
             </div>
         </div>
     </div>
-    <div class="product-content">
-        <div class="product-detail">
-            <h4><b>Mô tả {{$product->name}}</b></h4>
-            <div class="product-desc">
-                {!! $product->desc->long_desc??"" !!}
+    <div class="item-content">
+        <div class="item-detail">
+            <h4><b>Mô tả {{$item->name}}</b></h4>
+            <div class="item-desc">
+                {!! $item->desc->long_desc??"" !!}
             </div>
         </div>
     </div>
@@ -278,23 +278,23 @@
     });
     $("#btn_addToCart").click(function(){
         pro = {
-            "id":"{{$product->id}}",
-            "name":"{{$product->name}}",
-            "image":"{{$product->image??""}}"
+            "id":"{{$item->id}}",
+            "name":"{{$item->name}}",
+            "image":"{{$item->image??""}}"
         }
         pro.quantity = parseInt($("#txt_quantityCart").val());
         var price = 0;
-        var listPrice = '<?php echo(isset($product->prices)?json_encode($product->prices):"");?>'
+        var listPrice = '<?php echo(isset($item->prices)?json_encode($item->prices):"");?>'
         listPrice = JSON.parse(listPrice);
         for(i = 0; i<listPrice.length; i++){
             price = listPrice[i].price
         }
         pro.price = parseFloat(price);
         pro.amount = parseFloat(pro.price*pro.quantity);
-        productCart = localStorage.getItem("productCart")?JSON.parse(localStorage.getItem("productCart")):[];
+        itemCart = localStorage.getItem("itemCart")?JSON.parse(localStorage.getItem("itemCart")):[];
         isExist = false;
-        if(productCart!=null){
-            productCart.forEach(function(e,i) {
+        if(itemCart!=null){
+            itemCart.forEach(function(e,i) {
                 if(e!=null){
                     if(e.id == pro.id){
                         e.quantity += pro.quantity;
@@ -303,23 +303,23 @@
                     }
                 }
                 else{
-                    delete productCart[null];
+                    delete itemCart[null];
                 }
             })
         }
         if(!isExist){
-            productCart.push(pro);
+            itemCart.push(pro);
         }
         res = [];
-        for(i = 0; i<productCart.length;i++){
-            if(productCart[i]!=null){
-                res.push(productCart[i]);
+        for(i = 0; i<itemCart.length;i++){
+            if(itemCart[i]!=null){
+                res.push(itemCart[i]);
             }
         }
         // localStorage.clear();
-        localStorage.removeItem('productCart');
+        localStorage.removeItem('itemCart');
         if(res.length>0){
-            localStorage.setItem('productCart',JSON.stringify(res));
+            localStorage.setItem('itemCart',JSON.stringify(res));
         }
         generateShortCart();
     })

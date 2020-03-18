@@ -111,7 +111,7 @@
                         name: "Status 2",
                         data: "status",
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                            if (oData.status == 'EN') {
+                            if (oData.status == ACTIVE) {
                                 $html = '<label class="switch">\n' +
                                     '  <input type="checkbox" checked>\n' +
                                     '  <span class="slider round"></span>\n' +

@@ -1,11 +1,11 @@
-.product{
+.item{
   position: relative;
   margin: 0px;
   padding: 0px;
   background-color: white;
   margin-top: 5px;
   //height: 100%;
-  .product-box{
+  .item-box{
     display: inline-block;
     vertical-align: top;
     height: 330px;
@@ -32,12 +32,12 @@
         transform: scale(1.1);
       }
     }
-    .product-info{
+    .item-info{
       margin-top: 10px;
-      .product-color{
+      .item-color{
         display: inline;
       }
-      .product-star {
+      .item-star {
         //color: red;
         >div{
 
@@ -59,12 +59,12 @@
           color: yellow;
         }
       }
-      .product-price{
+      .item-price{
         font-size: 16px;
         color: red;
         font-family: bold;
       }
-      .product-old-price{
+      .item-old-price{
         text-decoration: line-through double red;
         font-size: 11px;
         color: #a2a2a2;
@@ -73,7 +73,7 @@
         //-webkit-text-decoration-line: line-through;
         //text-decoration-line: line-through;
       }
-      .product-percent{
+      .item-percent{
         color: red;
         float: right;
         //padding: 5px;

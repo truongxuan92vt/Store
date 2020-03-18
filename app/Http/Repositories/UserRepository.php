@@ -17,27 +17,27 @@ class UserRepository extends BaseRepository{
 
     public function getList(){
         $selectField = array(
-            'users.id',
-            'users.username',
-            'users.password',
-            'users.email',
-            'users.first_name',
-            'users.last_name',
-            'users.image',
-            'users.created_by',
-            'users.created_at',
-            'users.updated_by',
-            'users.updated_at',
-            'roles.name',
-            'roles.name',
-            'user_roles.role_id'
+            'user.id',
+            'user.username',
+            'user.password',
+            'user.email',
+            'user.first_name',
+            'user.last_name',
+            'user.image',
+            'user.created_by',
+            'user.created_at',
+            'user.updated_by',
+            'user.updated_at',
+            'role.name',
+            'role.name',
+            'user_role.role_id'
         );
         $res = $this->model
             ->select($selectField)
-            ->leftJoin('user_roles','users.id','user_roles.user_id')
-            ->leftJoin('roles','user_roles.role_id','roles.id')
+            ->leftJoin('user_role','user.id','user_role.user_id')
+            ->leftJoin('role','user_role.role_id','role.id')
             ->groupBy($selectField)
-            ->paginate( Helpers::getLimit(),['users.id']);
+            ->paginate( Helpers::getLimit(),['user.id']);
         return $res;
     }
     public function searchUser($data){
@@ -59,10 +59,10 @@ class UserRepository extends BaseRepository{
     }
     public function detail($user_id){
         $res = $this->model
-            ->select('users.*','roles.name', 'user_roles.role_id')
-            ->leftJoin('user_roles','users.id','user_roles.user_id')
-            ->leftJoin('roles','user_roles.role_id','roles.id')
-            ->where('users.id',$user_id)
+            ->select('user.*','role.name', 'user_role.role_id')
+            ->leftJoin('user_role','user.id','user_role.user_id')
+            ->leftJoin('role','user_role.role_id','role.id')
+            ->where('user.id',$user_id)
             ->first();
         return $res;
     }

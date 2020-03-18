@@ -5,9 +5,9 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\URL;
 
-class ProductDesc extends BaseModel
+class ItemVariant extends BaseModel
 {
-    protected $table = 'product_descs';
+    protected $table = 'item_variant';
 
     protected $guarded = [];
 }

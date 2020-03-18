@@ -6,13 +6,13 @@ use App\Http\Repositories\ColorRepository;
 use App\Http\Repositories\CategoryRepository;
 use App\Http\Repositories\VariantRepository;
 use App\Libraries\Helpers;
-use App\Models\Product;
-use App\Models\ProductImage;
+use App\Models\Item;
+use App\Models\ItemImage;
 use Illuminate\Http\Request;
-use App\Http\Repositories\ProductRepository;
+use App\Http\Repositories\ItemRepository;
 
-class ProductController extends BaseController {
-    public function __construct(Request $_request,ProductRepository $_repos)
+class ItemController extends BaseController {
+    public function __construct(Request $_request,ItemRepository $_repos)
     {
         parent::__construct($_request);
         $this->repos = $_repos;
@@ -24,15 +24,15 @@ class ProductController extends BaseController {
     ];
     public function index(){
         $category = CategoryRepository::getOption();
-        return view('admins.products.index',['category'=>$category,'statusList'=>Helpers::convertCombo(STATUS_SYS)]);
+        return view('admins.items.index',['category'=>$category,'statusList'=>Helpers::convertCombo(STATUS_SYS)]);
     }
     public function detail(){
         $id = $this->request->id??null;
         $category = CategoryRepository::getOption();
-        $product = $this->repos->getProductDetail($id);
-//        dd(json_encode($product));
-        return view('admins.products.detail',[
-            'data'=>$product,
+        $item = $this->repos->getItemDetail($id);
+//        dd(json_encode($item));
+        return view('admins.items.detail',[
+            'data'=>$item,
             'category'=>$category,
             'statusList'=>Helpers::convertCombo(STATUS_SYS)]
         );
@@ -43,7 +43,7 @@ class ProductController extends BaseController {
         return $this->respondForward(['status'=>true,'data'=>$res,'message'=>'']);
     }
     public function save(){
-        $res = ['message'=>'Product was updated successful','data'=>[],'status'=>true];
+        $res = ['message'=>'Item was updated successful','data'=>[],'status'=>true];
         $req = $this->request->all();
         $id = $this->request->id??null;
         $name = $this->request->get('name');
@@ -80,7 +80,7 @@ class ProductController extends BaseController {
         /*if($this->request->hasFile('image')){
             $image = Helpers::uploadImage($this->request->file('image'),PATH_IMAGE_ITEM,$id.'_');
         }*/
-        $product = [
+        $item = [
             'name'=>$name,
             'category_id'=>$categoryId,
             'status'=>$status,
@@ -92,7 +92,7 @@ class ProductController extends BaseController {
             'manufacturer_id'=>$this->request->manufacturer_id??null,
         ];
         if(!empty($image) && $image['status'] && !empty($image['url'])){
-            $product['image']=$image['url'];
+            $item['image']=$image['url'];
         }
 
         $desc = [
@@ -100,18 +100,18 @@ class ProductController extends BaseController {
             'long_desc'=>$longDesc
         ];
 
-        $validate = $this->validator($product,$this->rules);
+        $validate = $this->validator($item,$this->rules);
 
         if(!empty(!empty($validate))){
             return $this->respondForward(['message'=>$validate,'data'=>null,'status'=>false]);
         }
         $data = [
-            "product"   =>$product,
+            "item"   =>$item,
             'desc'      =>$desc,
             'info'      =>$info,
             'prices'    =>$prices,
             'attrs'     =>$attrs,
-            'variants'  =>$variants,
+            'variant'  =>$variants,
             'skus'      =>$skus
         ];
         $dataDel=[
@@ -120,12 +120,12 @@ class ProductController extends BaseController {
             'prices'    =>explode(',',$priceDel),
             'attrs'     =>explode(',',$attrDel)
         ];
-//        $res = $this->repos->createProduct($data,$files);
+//        $res = $this->repos->createItem($data,$files);
         if(!empty($id)){
-            $res = $this->repos->updateProduct($id,$data,$files,$dataDel);
+            $res = $this->repos->updateItem($id,$data,$files,$dataDel);
         }
         else{
-            $res = $this->repos->createProduct($data,$files);
+            $res = $this->repos->createItem($data,$files);
         }
         return $this->respondForward($res);
     }

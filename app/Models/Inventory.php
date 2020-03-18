@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\URL;
 
 class Inventory extends BaseModel
 {
-    protected $table = 'inventories';
+    protected $table = 'inventory';
 
     protected $guarded = [];
 }

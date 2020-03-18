@@ -11,9 +11,9 @@ $router->get('/category',[
     'as'=>'web.category.index',
     'uses'=>'HomeController@getCategory'
 ]);
-$router->get('/product',[
-    'as'=>'web.product.detail',
-    'uses'=>'ProductController@detail'
+$router->get('/item',[
+    'as'=>'web.item.detail',
+    'uses'=>'ItemController@detail'
 ]);
 $router->get('/cart',[
     'as'=>'web.cart.detail',

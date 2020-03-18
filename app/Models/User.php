@@ -6,7 +6,7 @@ use App\Models\BaseModel;
 
 class User extends BaseModel
 {
-    protected $table = 'users';
+    protected $table = 'user';
 
     protected $fillable = [
         'username',
